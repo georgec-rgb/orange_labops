@@ -145,6 +145,14 @@
     padding: 4px 8px; color: var(--text); font-size: 13px; outline: none;
     font-family: inherit; box-shadow: 0 0 0 3px var(--accent-soft);
   }
+  .navside { display: flex; align-items: center; gap: 4px; }
+  .nav-item .act { display: none; background: none; border: none; color: var(--muted); cursor: pointer; font-size: 12px; padding: 0 2px; }
+  .nav-item:hover .act { display: inline; }
+  .nav-item .act:hover { color: var(--accent); }
+  .thumb .acts { position: absolute; top: 8px; right: 8px; display: flex; gap: 6px; opacity: 0; transition: opacity .15s; z-index: 5; }
+  .card:hover .thumb .acts { opacity: 1; }
+  .thumb .act { background: rgba(0,0,0,.6); border: 1px solid rgba(255,255,255,.25); color: #fff; border-radius: 8px; width: 30px; height: 26px; cursor: pointer; font-size: 13px; line-height: 1; }
+  .thumb .act:hover { border-color: var(--accent); color: var(--accent); }
 </style>
 </head>
 <body>
@@ -265,6 +273,7 @@ async function load() {
 }
 
 function render() {
+  const admin = getToken() || DEMO;
   const q = document.getElementById("search").value.trim().toLowerCase();
   const files = allFiles.filter(f =>
     (!activeCategory || f.category === activeCategory) &&
@@ -282,18 +291,12 @@ function render() {
     '<div class="nav-item ' + (!activeCategory ? "active" : "") + '" data-cat="">All pages<span class="count">' + allFiles.length + '</span></div>' +
     allCats.map(c =>
       '<div class="nav-item ' + (activeCategory === c ? "active" : "") + '" data-cat="' + esc(c) + '">' +
-      esc(pretty(c)) + '<span class="count">' + (counts[c] || 0) + '</span></div>').join("");
-  document.querySelectorAll(".nav-item").forEach(el => {
-    el.onclick = () => {
-      activeCategory = el.dataset.cat || null;
-      render();
-      if (window.innerWidth <= 800) toggleSide(true);
-    };
-    if (el.dataset.cat && (getToken() || DEMO)) {
-      el.title = "Double-click to rename";
-      el.ondblclick = e => { e.preventDefault(); startCatRename(el); };
-    }
-  });
+      esc(pretty(c)) + '<span class="navside">' +
+      (admin ? '<button class="act" data-act="ren" title="Rename">\u270e</button><button class="act" data-act="del" title="Delete">\ud83d\uddd1</button>' : '') +
+      '<span class="count">' + (counts[c] || 0) + '</span></span></div>').join("");
+  if (getToken() || DEMO) {
+    document.querySelectorAll(".nav-item").forEach(el => { if (el.dataset.cat) el.title = "Double-click to rename"; });
+  }
 
   const content = document.getElementById("content");
   if (!files.length) {
@@ -309,6 +312,7 @@ function render() {
     grouped[cat].map(f =>
       '<a class="card" href="' + esc(f.path) + '" target="_blank" rel="noopener">' +
         '<div class="thumb"><div class="ph">' + esc(f.name.charAt(0)) + '</div>' +
+        (admin ? '<div class="acts"><button class="act" data-act="ren" title="Rename">\u270e</button><button class="act" data-act="del" title="Delete">\ud83d\uddd1</button></div>' : '') +
         (DEMO ? "" : '<iframe src="' + esc(f.path) + '" loading="lazy" scrolling="no" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>') +
         '</div><div class="card-body">' +
         '<div class="name">' + esc(f.name) + '</div>' +
@@ -316,22 +320,8 @@ function render() {
         '</div></a>').join("") +
     '</div></div>').join("");
 
-  // Admin: single click opens (slight delay), double-click renames
   if (getToken() || DEMO) {
-    document.querySelectorAll(".card").forEach(card => {
-      let clickTimer = null;
-      card.title = "Double-click to rename";
-      card.onclick = e => {
-        e.preventDefault();
-        clearTimeout(clickTimer);
-        clickTimer = setTimeout(() => window.open(card.getAttribute("href"), "_blank", "noopener"), 300);
-      };
-      card.ondblclick = e => {
-        e.preventDefault();
-        clearTimeout(clickTimer);
-        startFileRename(card);
-      };
-    });
+    document.querySelectorAll(".card").forEach(card => { card.title = "Double-click to rename"; });
   }
 }
 
@@ -358,7 +348,7 @@ function renderAdmin() {
     '<input type="file" id="upFiles" accept=".html,.htm" multiple>' +
     '<button class="btn" id="upBtn" onclick="doUpload()">Upload</button>' +
     '<div id="upStatus"></div>' +
-    '<div class="hint" style="margin-top:10px">Tip: double-click a category or a page card to rename it.</div>';
+    '<div class="hint" style="margin-top:10px">Tip: hover a card or category for \u270e rename / \ud83d\uddd1 delete. Double-click also renames.</div>';
   if (!allCats.length) document.getElementById("upCat").value = "__new__";
 }
 
@@ -561,6 +551,46 @@ function startFileRename(card) {
   });
 }
 
+async function deleteFile(path) {
+  if (!confirm("Delete " + path + "?")) return;
+  if (DEMO) {
+    allFiles = allFiles.filter(f => f.path !== path);
+    render();
+    toast("Deleted (demo mode — not saved)");
+    return;
+  }
+  try {
+    toast("Deleting…");
+    const f = await ghGetFile(path);
+    await ghDelete(path, f.sha, "Delete " + path);
+    toast("Deleted ✓");
+    setTimeout(load, 1500);
+  } catch (e) { toast(e.message, "err"); }
+}
+
+async function deleteCategory(cat) {
+  if (!confirm('Delete category "' + cat + '" and ALL files in it?')) return;
+  if (DEMO) {
+    allFiles = allFiles.filter(f => f.category !== cat);
+    allCats = allCats.filter(c => c !== cat);
+    if (activeCategory === cat) activeCategory = null;
+    render();
+    toast("Deleted (demo mode — not saved)");
+    return;
+  }
+  try {
+    const paths = await listDirFiles(cat);
+    for (let i = 0; i < paths.length; i++) {
+      toast("Deleting " + (i + 1) + "/" + paths.length + "…");
+      const f = await ghGetFile(paths[i]);
+      await ghDelete(paths[i], f.sha, "Delete category " + cat);
+    }
+    if (activeCategory === cat) activeCategory = null;
+    toast("Category deleted ✓");
+    setTimeout(load, 1500);
+  } catch (e) { toast(e.message, "err"); }
+}
+
 /* ── UI chrome ── */
 function toggleSide(forceClose) {
   document.body.classList[forceClose === true ? "add" : "toggle"]("side-collapsed");
@@ -577,6 +607,61 @@ themeBtn.onclick = () => setTheme(document.documentElement.dataset.theme === "da
 let savedTheme = null;
 try { savedTheme = localStorage.getItem("hub-theme"); } catch (e) {}
 setTheme(savedTheme || "dark");
+
+// Delegated click/double-click handlers (survive re-renders)
+const navEl = document.getElementById("catNav");
+let navTimer = null;
+navEl.addEventListener("click", e => {
+  if (e.target.closest(".rename-input")) return;
+  const el = e.target.closest(".nav-item");
+  if (!el) return;
+  const act = e.target.closest(".act");
+  if (act) {
+    e.preventDefault();
+    if (!el.dataset.cat) return;
+    if (act.dataset.act === "ren") startCatRename(el); else deleteCategory(el.dataset.cat);
+    return;
+  }
+  const go = () => {
+    activeCategory = el.dataset.cat || null;
+    render();
+    if (window.innerWidth <= 800) toggleSide(true);
+  };
+  if (getToken() || DEMO) { clearTimeout(navTimer); navTimer = setTimeout(go, 250); } else go();
+});
+navEl.addEventListener("dblclick", e => {
+  if (e.target.closest(".rename-input")) return;
+  const el = e.target.closest(".nav-item");
+  if (!el || !el.dataset.cat || !(getToken() || DEMO)) return;
+  e.preventDefault();
+  clearTimeout(navTimer);
+  startCatRename(el);
+});
+const contentEl = document.getElementById("content");
+let cardTimer = null;
+contentEl.addEventListener("click", e => {
+  if (e.target.closest(".rename-input")) return;
+  const card = e.target.closest(".card");
+  if (!card) return;
+  const act = e.target.closest(".act");
+  if (act) {
+    e.preventDefault();
+    if (act.dataset.act === "ren") startFileRename(card); else deleteFile(card.getAttribute("href"));
+    return;
+  }
+  if (!(getToken() || DEMO)) return; // visitors: normal link behavior
+  e.preventDefault();
+  clearTimeout(cardTimer);
+  cardTimer = setTimeout(() => window.open(card.getAttribute("href"), "_blank", "noopener"), 300);
+});
+contentEl.addEventListener("dblclick", e => {
+  if (e.target.closest(".rename-input")) return;
+  const card = e.target.closest(".card");
+  if (!card || !(getToken() || DEMO)) return;
+  e.preventDefault();
+  clearTimeout(cardTimer);
+  startFileRename(card);
+});
 
 document.getElementById("search").addEventListener("input", render);
 load();
