@@ -29,7 +29,6 @@
     font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
     min-height: 100vh; transition: background .25s, color .25s;
   }
-  /* ── Sidebar ── */
   #sidebar {
     position: fixed; top: 0; left: 0; bottom: 0; width: 272px; z-index: 40;
     background: var(--side); border-right: 1px solid var(--border);
@@ -57,7 +56,6 @@
   .nav-item:hover { color: var(--text); background: var(--card-hover); }
   .nav-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 650; border-color: var(--accent); }
   .nav-item .count { font-size: 11.5px; opacity: .7; }
-  /* Admin */
   #adminBox { border-top: 1px solid var(--border); padding: 14px 16px 18px; font-size: 13px; }
   #adminBox h3 { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 700; }
   .btn {
@@ -84,7 +82,6 @@
     background: var(--card); color: var(--text); border: 1px solid var(--border);
     border-radius: 8px; padding: 6px 10px; margin-right: 8px; cursor: pointer; font-size: 12px;
   }
-  /* ── Main ── */
   #main { margin-left: 272px; transition: margin .22s ease; }
   body.side-collapsed #main { margin-left: 0; }
   .topbar {
@@ -136,6 +133,18 @@
     #stats { display: none; }
   }
   #shade { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 35; }
+  #toast {
+    display: none; position: fixed; bottom: 22px; right: 22px; z-index: 100;
+    background: var(--card); border: 1px solid var(--accent); color: var(--text);
+    padding: 11px 18px; border-radius: 12px; font-size: 13px; box-shadow: var(--shadow);
+    max-width: 340px; line-height: 1.5;
+  }
+  #toast.err { border-color: #ff6b6b; color: #ff6b6b; }
+  .rename-input {
+    width: 100%; background: var(--bg2); border: 1px solid var(--accent); border-radius: 7px;
+    padding: 4px 8px; color: var(--text); font-size: 13px; outline: none;
+    font-family: inherit; box-shadow: 0 0 0 3px var(--accent-soft);
+  }
 </style>
 </head>
 <body>
@@ -151,6 +160,7 @@
   <div id="adminBox"></div>
 </aside>
 <div id="shade" onclick="toggleSide()"></div>
+<div id="toast"></div>
 
 <div id="main">
   <div class="topbar">
@@ -241,7 +251,6 @@ async function load() {
       })
       .filter(f => okCat(f.category));
 
-    // Categories = top-level folders (including empty ones)
     allCats = [...new Set(
       tree.tree.filter(t => t.type === "tree" && !t.path.includes("/") && okCat(t.path)).map(t => t.path)
         .concat(allFiles.map(f => f.category))
@@ -266,7 +275,6 @@ function render() {
     '<div class="stat"><b>' + allFiles.length + '</b>pages</div>' +
     '<div class="stat"><b>' + allCats.length + '</b>categories</div>';
 
-  // Sidebar nav
   const counts = {};
   allFiles.forEach(f => counts[f.category] = (counts[f.category] || 0) + 1);
   document.getElementById("catNav").innerHTML =
@@ -275,12 +283,17 @@ function render() {
     allCats.map(c =>
       '<div class="nav-item ' + (activeCategory === c ? "active" : "") + '" data-cat="' + esc(c) + '">' +
       esc(pretty(c)) + '<span class="count">' + (counts[c] || 0) + '</span></div>').join("");
-  document.querySelectorAll(".nav-item").forEach(el =>
+  document.querySelectorAll(".nav-item").forEach(el => {
     el.onclick = () => {
       activeCategory = el.dataset.cat || null;
       render();
       if (window.innerWidth <= 800) toggleSide(true);
-    });
+    };
+    if (el.dataset.cat && (getToken() || DEMO)) {
+      el.title = "Double-click to rename";
+      el.ondblclick = e => { e.preventDefault(); startCatRename(el); };
+    }
+  });
 
   const content = document.getElementById("content");
   if (!files.length) {
@@ -302,13 +315,31 @@ function render() {
         '<div class="file">' + esc(f.path) + '</div>' +
         '</div></a>').join("") +
     '</div></div>').join("");
+
+  // Admin: single click opens (slight delay), double-click renames
+  if (getToken() || DEMO) {
+    document.querySelectorAll(".card").forEach(card => {
+      let clickTimer = null;
+      card.title = "Double-click to rename";
+      card.onclick = e => {
+        e.preventDefault();
+        clearTimeout(clickTimer);
+        clickTimer = setTimeout(() => window.open(card.getAttribute("href"), "_blank", "noopener"), 300);
+      };
+      card.ondblclick = e => {
+        e.preventDefault();
+        clearTimeout(clickTimer);
+        startFileRename(card);
+      };
+    });
+  }
 }
 
 /* ── Admin ── */
 function renderAdmin() {
   const box = document.getElementById("adminBox");
   if (DEMO) {
-    box.innerHTML = '<h3>Admin</h3><div class="hint">Admin tools activate once this is hosted on GitHub Pages.</div>';
+    box.innerHTML = '<h3>Admin</h3><div class="hint">Admin tools activate once this is hosted on GitHub Pages. Double-click renaming can be previewed in demo mode.</div>';
     return;
   }
   if (!getToken()) {
@@ -326,7 +357,8 @@ function renderAdmin() {
     '<input id="newCatName" class="field" placeholder="new-category-name" style="display:' + (allCats.length ? "none" : "block") + '">' +
     '<input type="file" id="upFiles" accept=".html,.htm" multiple>' +
     '<button class="btn" id="upBtn" onclick="doUpload()">Upload</button>' +
-    '<div id="upStatus"></div>';
+    '<div id="upStatus"></div>' +
+    '<div class="hint" style="margin-top:10px">Tip: double-click a category or a page card to rename it.</div>';
   if (!allCats.length) document.getElementById("upCat").value = "__new__";
 }
 
@@ -349,14 +381,14 @@ async function doLogin() {
   const j = await r.json().catch(() => ({}));
   if (r.ok && j.permissions && j.permissions.push) {
     try { localStorage.setItem("hub-token", t); } catch (e) {}
-    renderAdmin();
+    renderAdmin(); render();
   } else {
     st.className = "err";
     st.textContent = r.ok ? "Token valid but has no write access to this repo." : "Login failed (" + r.status + "). Check the token.";
   }
 }
 
-function logout() { try { localStorage.removeItem("hub-token"); } catch (e) {} renderAdmin(); }
+function logout() { try { localStorage.removeItem("hub-token"); } catch (e) {} renderAdmin(); render(); }
 
 function onCatSel() {
   document.getElementById("newCatName").style.display =
@@ -372,14 +404,15 @@ async function toB64(file) {
   return btoa(s);
 }
 
+const contentsUrl = p => "/repos/" + OWNER + "/" + REPO + "/contents/" + p.split("/").map(encodeURIComponent).join("/");
+
 async function putFile(path, b64, msg) {
-  const url = "/repos/" + OWNER + "/" + REPO + "/contents/" + path.split("/").map(encodeURIComponent).join("/");
   let sha = null;
-  const g = await gh(url + "?ref=" + BRANCH);
+  const g = await gh(contentsUrl(path) + "?ref=" + BRANCH);
   if (g.ok) { const j = await g.json(); if (j && j.sha) sha = j.sha; }
   const body = { message: msg, content: b64, branch: BRANCH };
   if (sha) body.sha = sha;
-  const r = await gh(url, { method: "PUT", body: JSON.stringify(body) });
+  const r = await gh(contentsUrl(path), { method: "PUT", body: JSON.stringify(body) });
   if (!r.ok) {
     const j = await r.json().catch(() => ({}));
     throw new Error((j.message || "upload failed") + " (" + r.status + ")");
@@ -412,6 +445,120 @@ async function doUpload() {
     st.className = "err"; st.textContent = e.message;
   }
   btn.disabled = false;
+}
+
+/* ── Rename (GitHub has no rename API: copy + delete) ── */
+let toastTimer = null;
+function toast(msg, kind) {
+  const t = document.getElementById("toast");
+  t.className = kind === "err" ? "err" : "";
+  t.textContent = msg;
+  t.style.display = "block";
+  clearTimeout(toastTimer);
+  toastTimer = setTimeout(() => { t.style.display = "none"; }, kind === "err" ? 6000 : 3500);
+}
+
+async function ghGetFile(path) {
+  const r = await gh(contentsUrl(path) + "?ref=" + BRANCH);
+  if (!r.ok) throw new Error("couldn't read " + path + " (" + r.status + ")");
+  const j = await r.json();
+  return { sha: j.sha, content: (j.content || "").replace(/\n/g, "") };
+}
+
+async function ghDelete(path, sha, msg) {
+  const r = await gh(contentsUrl(path), { method: "DELETE", body: JSON.stringify({ message: msg, sha: sha, branch: BRANCH }) });
+  if (!r.ok) throw new Error("couldn't delete " + path + " (" + r.status + ")");
+}
+
+async function movePath(oldPath, newPath, msg) {
+  const f = await ghGetFile(oldPath);
+  await putFile(newPath, f.content, msg);
+  await ghDelete(oldPath, f.sha, msg);
+}
+
+async function listDirFiles(dir) {
+  const r = await gh(contentsUrl(dir) + "?ref=" + BRANCH);
+  if (!r.ok) throw new Error("couldn't list " + dir + " (" + r.status + ")");
+  const entries = await r.json();
+  let out = [];
+  for (const e of entries) {
+    if (e.type === "file") out.push(e.path);
+    else if (e.type === "dir") out = out.concat(await listDirFiles(e.path));
+  }
+  return out;
+}
+
+function inlineEdit(el, initial, onCommit) {
+  const prev = el.innerHTML;
+  el.innerHTML = '<input class="rename-input" value="' + esc(initial) + '">';
+  const input = el.querySelector("input");
+  input.focus(); input.select();
+  input.onclick = input.ondblclick = e => e.stopPropagation();
+  let done = false;
+  const cancel = () => { if (!done) { done = true; el.innerHTML = prev; render(); } };
+  input.onkeydown = e => {
+    if (e.key === "Escape") cancel();
+    if (e.key === "Enter") {
+      const v = input.value.trim();
+      done = true;
+      if (!v || v === initial) { render(); return; }
+      onCommit(v);
+    }
+  };
+  input.onblur = () => setTimeout(cancel, 150);
+}
+
+function startCatRename(el) {
+  const oldCat = el.dataset.cat;
+  inlineEdit(el, oldCat, async v => {
+    const newCat = slugify(v);
+    if (!newCat || newCat === oldCat) { render(); return; }
+    if (DEMO) {
+      allFiles.forEach(f => { if (f.category === oldCat) { f.category = newCat; f.path = newCat + f.path.slice(oldCat.length); } });
+      allCats = [...new Set(allCats.map(c => c === oldCat ? newCat : c))].sort();
+      if (activeCategory === oldCat) activeCategory = newCat;
+      render();
+      toast("Renamed (demo mode — not saved)");
+      return;
+    }
+    try {
+      toast("Renaming category…");
+      const paths = await listDirFiles(oldCat);
+      for (let i = 0; i < paths.length; i++) {
+        toast("Moving " + (i + 1) + "/" + paths.length + "…");
+        await movePath(paths[i], newCat + paths[i].slice(oldCat.length), "Rename category " + oldCat + " → " + newCat);
+      }
+      toast("Category renamed ✓");
+      if (activeCategory === oldCat) activeCategory = newCat;
+      setTimeout(load, 1500);
+    } catch (e) { toast(e.message, "err"); render(); }
+  });
+}
+
+function startFileRename(card) {
+  const oldPath = card.getAttribute("href");
+  const dir = oldPath.split("/").slice(0, -1).join("/");
+  const oldFile = oldPath.split("/").pop();
+  const nameEl = card.querySelector(".name");
+  inlineEdit(nameEl, oldFile, async v => {
+    let newFile = v.replace(/[\/\\]/g, "-");
+    if (!/\.html?$/i.test(newFile)) newFile += ".html";
+    if (newFile === oldFile) { render(); return; }
+    const newPath = dir + "/" + newFile;
+    if (DEMO) {
+      const f = allFiles.find(x => x.path === oldPath);
+      if (f) { f.path = newPath; f.name = pretty(newFile); }
+      render();
+      toast("Renamed (demo mode — not saved)");
+      return;
+    }
+    try {
+      toast("Renaming…");
+      await movePath(oldPath, newPath, "Rename " + oldPath + " → " + newPath);
+      toast("Renamed ✓");
+      setTimeout(load, 1500);
+    } catch (e) { toast(e.message, "err"); render(); }
+  });
 }
 
 /* ── UI chrome ── */
