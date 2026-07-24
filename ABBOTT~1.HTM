@@ -1,0 +1,335 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Abbott Volume Rebate Simulator — FY26-27</title>
+<style>
+  :root{
+    --bg:#f4f6f9; --card:#ffffff; --ink:#1a2332; --muted:#66707f;
+    --accent:#0b6e4f; --accent2:#0d7dc1; --red:#c0392b; --amber:#b7791f;
+    --green-bg:#e6f4ee; --red-bg:#fdecea; --amber-bg:#fdf3e0;
+    --border:#dde3ec;
+  }
+  *{box-sizing:border-box;margin:0;padding:0}
+  body{font-family:'Segoe UI',system-ui,-apple-system,sans-serif;background:var(--bg);color:var(--ink);padding:24px;font-size:14px}
+  h1{font-size:22px;margin-bottom:4px}
+  .sub{color:var(--muted);margin-bottom:20px;font-size:13px}
+  .card{background:var(--card);border:1px solid var(--border);border-radius:10px;padding:18px;margin-bottom:18px;box-shadow:0 1px 3px rgba(20,30,50,.05)}
+  .card h2{font-size:15px;margin-bottom:12px;display:flex;align-items:center;gap:8px;flex-wrap:wrap}
+  .badge{font-size:11px;background:var(--accent2);color:#fff;border-radius:20px;padding:2px 10px;font-weight:600}
+  table{border-collapse:collapse;width:100%}
+  th,td{border:1px solid var(--border);padding:8px 10px;text-align:left;vertical-align:middle}
+  th{background:#0f1724;color:#fff;font-weight:600;font-size:12.5px}
+  select{padding:6px 8px;border:1px solid var(--border);border-radius:6px;font-size:12.5px;background:#fff;cursor:pointer;width:100%}
+  select:focus{outline:2px solid var(--accent2)}
+  select.mixed{border-color:var(--amber);background:var(--amber-bg)}
+  .presets{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:14px}
+  .presets button{padding:7px 14px;border:1px solid var(--border);background:#fff;border-radius:20px;cursor:pointer;font-size:12.5px;font-weight:600;color:var(--ink)}
+  .presets button:hover{border-color:var(--accent2);color:var(--accent2)}
+  .modewrap{margin-left:auto;display:flex;gap:0;border:1px solid var(--border);border-radius:20px;overflow:hidden}
+  .modewrap button{padding:6px 16px;border:none;background:#fff;cursor:pointer;font-size:12px;font-weight:700;color:var(--muted)}
+  .modewrap button.active{background:var(--accent2);color:#fff}
+  .monthly-table select{padding:4px 4px;font-size:11px}
+  .monthly-table th,.monthly-table td{padding:5px 5px}
+  .monthly-table th{font-size:10.5px;white-space:nowrap}
+  .monthly-table .qsep{border-left:3px solid #6b7686}
+  .scrollx{overflow-x:auto}
+  .qgrid{display:grid;grid-template-columns:repeat(auto-fit,minmax(230px,1fr));gap:14px}
+  .qcard{border:1px solid var(--border);border-radius:10px;padding:14px;background:#fafbfd}
+  .qcard.tier6{background:var(--green-bg);border-color:#8fc7ae}
+  .qcard.tier3{background:var(--amber-bg);border-color:#e0c184}
+  .qcard.tier0{background:var(--red-bg);border-color:#e8a49c}
+  .qcard h3{font-size:13px;margin-bottom:6px;color:var(--muted)}
+  .qval{font-size:21px;font-weight:700}
+  .qtier{font-size:12.5px;font-weight:700;margin-top:4px}
+  .tier6 .qtier{color:var(--accent)} .tier3 .qtier{color:var(--amber)} .tier0 .qtier{color:var(--red)}
+  .qrebate{font-size:14px;margin-top:6px}
+  .qgap{font-size:11.5px;color:var(--muted);margin-top:5px;line-height:1.5}
+  .bar{height:9px;background:#e2e7ef;border-radius:5px;margin-top:9px;position:relative;overflow:visible}
+  .bar .fill{height:100%;border-radius:5px;background:linear-gradient(90deg,#0d7dc1,#0b6e4f)}
+  .bar .mark{position:absolute;top:-3px;width:2px;height:15px;background:#333}
+  .bar .marklabel{position:absolute;top:15px;font-size:9.5px;color:var(--muted);transform:translateX(-50%);white-space:nowrap}
+  .summary{display:flex;gap:24px;flex-wrap:wrap;margin-top:4px}
+  .sumbox{flex:1;min-width:180px;border-left:4px solid var(--accent2);padding:8px 14px;background:#f6f9fc;border-radius:0 8px 8px 0}
+  .sumbox .lbl{font-size:11.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.4px}
+  .sumbox .val{font-size:20px;font-weight:700;margin-top:2px}
+  .warn{margin-top:12px;padding:10px 14px;border-radius:8px;font-size:12.5px;display:none}
+  .warn.show{display:block}
+  .warn.trigger{background:var(--red-bg);border:1px solid #e8a49c;color:var(--red)}
+  .warn.near{background:var(--amber-bg);border:1px solid #e0c184;color:var(--amber)}
+  .filters{display:flex;gap:12px;margin-bottom:12px;flex-wrap:wrap;align-items:center}
+  .filters label{font-size:12.5px;color:var(--muted);font-weight:600}
+  .filters select{width:auto;min-width:130px}
+  .num{text-align:right;font-variant-numeric:tabular-nums}
+  .cityname{font-weight:700}
+  tr.included td{background:#f2faf6}
+  tr.excluded td{background:#fbfbfb;color:#a6adb8}
+  .tag{font-size:10.5px;padding:1px 8px;border-radius:10px;font-weight:700}
+  .tag.in{background:var(--green-bg);color:var(--accent)}
+  .tag.out{background:#eceff4;color:var(--muted)}
+  .foot{font-size:11.5px;color:var(--muted);line-height:1.7;margin-top:6px}
+  .totalrow td{font-weight:700;background:#eef2f8}
+  .setall{font-size:11px;color:var(--accent2);cursor:pointer;text-decoration:underline;white-space:nowrap}
+</style>
+</head>
+<body>
+
+<h1>Abbott Volume Rebate Simulator</h1>
+<div class="sub">FY Apr-26 → Mar-27 &nbsp;•&nbsp; Slabs (excl. taxes, per calendar quarter): <b>≥ ₹1.875 Cr → 3%</b> rebate &nbsp;|&nbsp; <b>≥ ₹2.5 Cr → 6%</b> rebate &nbsp;|&nbsp; <b>&gt; ₹3.75 Cr for 2 consecutive quarters → price-revision discussion</b></div>
+
+<div class="card">
+  <h2>1 · Choose movement per city <span class="badge">what moves to Abbott</span>
+    <span class="modewrap">
+      <button id="modeQ" class="active" onclick="setMode('q')">Quarter-wise</button>
+      <button id="modeM" onclick="setMode('m')">Month-wise</button>
+    </span>
+  </h2>
+  <div class="presets">
+    <b style="font-size:12px;align-self:center;color:var(--muted)">Presets:</b>
+    <button onclick="preset('matrix')">Your Selection Matrix</button>
+    <button onclick="preset('currentIA')">Current IA only (all cities)</button>
+    <button onclick="preset('fullIA')">Full IA (all cities)</button>
+    <button onclick="preset('everything')">Everything (Full IA + CC)</button>
+    <button onclick="preset('none')">Clear all</button>
+  </div>
+
+  <div id="qView">
+    <table id="selTable">
+      <thead><tr>
+        <th>City</th>
+        <th>Q1 · AMJ</th><th>Q2 · JAS</th><th>Q3 · OND</th><th>Q4 · JFM</th>
+        <th style="width:90px">Quick set</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="foot">Setting a quarter applies to all 3 months in it. A quarter shows <b style="color:var(--amber)">Mixed</b> (amber) when its months were configured differently in month-wise view — switch to <b>Month-wise</b> to see or change them.</div>
+  </div>
+
+  <div id="mView" style="display:none" class="scrollx">
+    <table id="selTableM" class="monthly-table">
+      <thead><tr>
+        <th>City</th>
+        <th>Apr</th><th>May</th><th>Jun</th>
+        <th class="qsep">Jul</th><th>Aug</th><th>Sep</th>
+        <th class="qsep">Oct</th><th>Nov</th><th>Dec</th>
+        <th class="qsep">Jan</th><th>Feb</th><th>Mar</th>
+      </tr></thead>
+      <tbody></tbody>
+    </table>
+    <div class="foot">Each month can be set independently. Rebate slabs are still evaluated on the <b>calendar-quarter total</b> (thick borders mark quarter boundaries).</div>
+  </div>
+
+  <div class="foot" style="margin-top:10px">Movement options — <b>Current IA</b>: IA volume already moved · <b>Full IA</b>: Current + Non-Moved IA · <b>+ CC</b>: clinical chemistry also moves from OCD to Abbott · <b>None</b>: city excluded.</div>
+</div>
+
+<div class="card">
+  <h2>2 · Quarterly rebate result</h2>
+  <div class="qgrid" id="qgrid"></div>
+  <div class="warn trigger" id="warnTrigger"></div>
+  <div class="warn near" id="warnNear"></div>
+  <div class="summary">
+    <div class="sumbox"><div class="lbl">Annual Abbott purchases</div><div class="val" id="sumPurch">–</div></div>
+    <div class="sumbox" style="border-color:var(--accent)"><div class="lbl">Annual rebate earned</div><div class="val" id="sumRebate" style="color:var(--accent)">–</div></div>
+    <div class="sumbox"><div class="lbl">Effective rebate %</div><div class="val" id="sumPct">–</div></div>
+    <div class="sumbox"><div class="lbl">Quarters at 6% / 3% / 0%</div><div class="val" id="sumTiers">–</div></div>
+  </div>
+</div>
+
+<div class="card">
+  <h2>3 · Monthly / city breakdown</h2>
+  <div class="filters">
+    <label>Quarter</label>
+    <select id="fQtr"><option value="all">All quarters</option><option value="0">Q1 · Apr–Jun</option><option value="1">Q2 · Jul–Sep</option><option value="2">Q3 · Oct–Dec</option><option value="3">Q4 · Jan–Mar</option></select>
+    <label>Month</label>
+    <select id="fMonth"><option value="all">All months</option></select>
+    <label>City</label>
+    <select id="fCity"><option value="all">All cities</option></select>
+  </div>
+  <table id="detTable">
+    <thead><tr><th>City</th><th>Month</th><th>Movement</th><th class="num">Current IA (₹)</th><th class="num">Non-Moved IA (₹)</th><th class="num">CC (₹)</th><th class="num">Counted to Abbott (₹)</th></tr></thead>
+    <tbody></tbody>
+  </table>
+  <div class="foot">Only the "Counted to Abbott" column feeds the quarterly slab check above, based on each city's selected movement for that month.</div>
+</div>
+
+<script>
+const MONTHS=["Apr-26","May-26","Jun-26","Jul-26","Aug-26","Sep-26","Oct-26","Nov-26","Dec-26","Jan-27","Feb-27","Mar-27"];
+const QLBL=["Q1 · Apr–Jun 26","Q2 · Jul–Sep 26","Q3 · Oct–Dec 26","Q4 · Jan–Mar 27"];
+const CITIES=["BLR 1","BLR 2","HYD","MUM"];
+const D={
+ cur:{ "BLR 1":[2512417,3186542,3491361,3831645,4241136,4417807,3833930,3834216,4288431,4755213,4813076,5512449],
+       "BLR 2":[984417,1226376,1323073,1354475,1499229,1561681,1355282,1355383,1515947,1680953,1701407,1948634],
+       "HYD":[1032736,1132183,1182678,1325439,1553682,1760840,1447126,1512798,1793434,1887436,2014032,2329678],
+       "MUM":[827493,758098,938207,1098219,1250802,1332852,1177480,1205099,1440451,1620384,1697125,1950561]},
+ nm:{  "BLR 1":[1431749,1495487,1668814,1857342,2055838,2141477,1858450,1858588,2078764,2305030,2333078,2672091],
+       "BLR 2":[462849,483454,539486,600433,664601,692286,600791,600836,672013,745159,754226,863821],
+       "HYD":[478452,482897,537001,620491,727341,824320,677458,708202,839579,883585,942850,1090617],
+       "MUM":[557967,582417,623908,753691,858406,914715,808086,827041,988559,1112044,1164710,1338639]},
+ cc:{  "BLR 1":[3812947,3982690,4444285,4946361,5474983,5703051,4949310,4949679,5536037,6138617,6213312,7116150],
+       "BLR 2":[1204073,1257675,1403440,1561988,1728919,1800940,1562920,1563036,1748199,1938485,1962073,2247176],
+       "HYD":[1202751,1213927,1349933,1559816,1828419,2072209,1703020,1780306,2110567,2221191,2370173,2741635],
+       "MUM":[1084447,1131967,1212608,1464849,1668370,1777811,1570570,1607410,1921332,2161333,2263694,2601736]}
+};
+// Movement options: what counts toward Abbott purchases
+const OPTS=[
+ {v:"none",     lbl:"None",              sh:"—",        f:(c,m)=>0},
+ {v:"cur",      lbl:"Current IA",        sh:"Cur IA",   f:(c,m)=>D.cur[c][m]},
+ {v:"cur_cc",   lbl:"Current IA + CC",   sh:"Cur+CC",   f:(c,m)=>D.cur[c][m]+D.cc[c][m]},
+ {v:"full",     lbl:"Full IA",           sh:"Full IA",  f:(c,m)=>D.cur[c][m]+D.nm[c][m]},
+ {v:"full_cc",  lbl:"Full IA + CC",      sh:"Full+CC",  f:(c,m)=>D.cur[c][m]+D.nm[c][m]+D.cc[c][m]}
+];
+const OPTMAP=Object.fromEntries(OPTS.map(o=>[o.v,o]));
+const SLAB3=18750000, SLAB6=25000000, SLABREV=37500000;
+
+// state: sel[city] = array of 12 monthly option values (single source of truth)
+let sel={}, mode="q";
+const MATRIX={"BLR 1":"cur","BLR 2":"full_cc","HYD":"full_cc","MUM":"cur"};
+
+function preset(p){
+ CITIES.forEach(c=>{
+  const v = p==="matrix"?MATRIX[c] : p==="currentIA"?"cur" : p==="fullIA"?"full" : p==="everything"?"full_cc" : "none";
+  sel[c]=Array(12).fill(v);
+ });
+ renderSelectors(); recalc();
+}
+function setMode(m){
+ mode=m;
+ document.getElementById("modeQ").classList.toggle("active",m==="q");
+ document.getElementById("modeM").classList.toggle("active",m==="m");
+ document.getElementById("qView").style.display=m==="q"?"":"none";
+ document.getElementById("mView").style.display=m==="m"?"":"none";
+ renderSelectors();
+}
+function setQtr(c,q,v){ if(v==="__mixed") return; for(let m=q*3;m<q*3+3;m++) sel[c][m]=v; renderSelectors(); recalc(); }
+function setMonth(c,m,v){ sel[c][m]=v; renderSelectors(); recalc(); }
+function setCityAll(c){ const v=sel[c][0]; sel[c]=Array(12).fill(v); renderSelectors(); recalc(); }
+// quarter value: option if all 3 months equal, else null (mixed)
+function qVal(c,q){ const a=sel[c].slice(q*3,q*3+3); return a.every(v=>v===a[0])?a[0]:null; }
+
+const fmt=n=>"₹"+Math.round(n).toLocaleString("en-IN");
+const cr=n=>(n/1e7).toFixed(3)+" Cr";
+
+function renderSelectors(){
+ // Quarter-wise table
+ const tb=document.querySelector("#selTable tbody"); tb.innerHTML="";
+ CITIES.forEach(c=>{
+  let h=`<td class="cityname">${c}</td>`;
+  for(let q=0;q<4;q++){
+   const v=qVal(c,q), mixed=v===null;
+   h+=`<td><select class="${mixed?"mixed":""}" onchange="setQtr('${c}',${q},this.value)">`+
+     (mixed?`<option value="__mixed" selected>Mixed (see month-wise)</option>`:"")+
+     OPTS.map(o=>`<option value="${o.v}" ${v===o.v?"selected":""}>${o.lbl}</option>`).join("")+
+     `</select></td>`;
+  }
+  h+=`<td><span class="setall" onclick="setCityAll('${c}')">Apr → all months</span></td>`;
+  tb.insertAdjacentHTML("beforeend",`<tr>${h}</tr>`);
+ });
+ // Month-wise table
+ const tm=document.querySelector("#selTableM tbody"); tm.innerHTML="";
+ CITIES.forEach(c=>{
+  let h=`<td class="cityname">${c}</td>`;
+  for(let m=0;m<12;m++){
+   h+=`<td class="${m%3===0&&m>0?"qsep":""}"><select onchange="setMonth('${c}',${m},this.value)" title="${c} · ${MONTHS[m]}">`+
+     OPTS.map(o=>`<option value="${o.v}" ${sel[c][m]===o.v?"selected":""}>${o.sh}</option>`).join("")+
+     `</select></td>`;
+  }
+  tm.insertAdjacentHTML("beforeend",`<tr>${h}</tr>`);
+ });
+}
+
+function qtrTotal(q){
+ let t=0;
+ CITIES.forEach(c=>{ for(let m=q*3;m<q*3+3;m++) t+=OPTMAP[sel[c][m]].f(c,m); });
+ return t;
+}
+function tier(t){ return t>=SLAB6?0.06 : t>=SLAB3?0.03 : 0; }
+
+function recalc(){
+ const qg=document.getElementById("qgrid"); qg.innerHTML="";
+ let totP=0, totR=0, counts={6:0,3:0,0:0}, over375=[];
+ const MAXBAR=SLABREV*1.35;
+ for(let q=0;q<4;q++){
+  const t=qtrTotal(q), r=tier(t), reb=t*r;
+  totP+=t; totR+=reb; counts[r*100]++;
+  if(t>SLABREV) over375.push(q);
+  const cls=r===0.06?"tier6":r===0.03?"tier3":"tier0";
+  const tierTxt=r===0.06?"✔ 6% rebate slab":r===0.03?"✔ 3% rebate slab":"✘ Below 1.875 Cr — no rebate";
+  let gap="";
+  if(r===0) gap=`Need ${fmt(SLAB3-t)} more for 3% · ${fmt(SLAB6-t)} more for 6%`;
+  else if(r===0.03) gap=`Need ${fmt(SLAB6-t)} more for 6%`;
+  else gap=t>SLABREV?`⚠ Above ₹3.75 Cr (price-revision watch)`:`Headroom ${fmt(SLABREV-t)} below ₹3.75 Cr trigger`;
+  const pct=Math.min(100,t/MAXBAR*100);
+  const mk=v=>`<div class="mark" style="left:${v/MAXBAR*100}%"></div><div class="marklabel" style="left:${v/MAXBAR*100}%">${(v/1e7).toFixed(3)}</div>`;
+  qg.insertAdjacentHTML("beforeend",
+   `<div class="qcard ${cls}"><h3>${QLBL[q]}</h3>
+     <div class="qval">${cr(t)}</div>
+     <div style="font-size:11.5px;color:var(--muted)">${fmt(t)}</div>
+     <div class="qtier">${tierTxt}</div>
+     <div class="qrebate">Rebate: <b>${fmt(reb)}</b></div>
+     <div class="bar"><div class="fill" style="width:${pct}%"></div>${mk(SLAB3)}${mk(SLAB6)}${mk(SLABREV)}</div>
+     <div class="qgap" style="margin-top:20px">${gap}</div>
+    </div>`);
+ }
+ document.getElementById("sumPurch").textContent=cr(totP);
+ document.getElementById("sumRebate").textContent=fmt(totR);
+ document.getElementById("sumPct").textContent=totP?(totR/totP*100).toFixed(2)+"%":"–";
+ document.getElementById("sumTiers").textContent=`${counts[6]} / ${counts[3]} / ${counts[0]}`;
+
+ // consecutive >3.75 Cr warning
+ const wT=document.getElementById("warnTrigger"), wN=document.getElementById("warnNear");
+ let consec=false;
+ for(let i=1;i<over375.length;i++) if(over375[i]===over375[i-1]+1) consec=true;
+ wT.classList.toggle("show",consec);
+ if(consec) wT.innerHTML=`<b>⚠ Price-revision clause triggered:</b> purchases exceed ₹3.75 Cr in two consecutive quarters (${over375.map(q=>"Q"+(q+1)).join(", ")} above 3.75 Cr). Abbott can open price-revision discussions.`;
+ wN.classList.toggle("show",!consec&&over375.length>0);
+ if(!consec&&over375.length) wN.innerHTML=`<b>Note:</b> ${over375.map(q=>"Q"+(q+1)).join(", ")} exceed${over375.length===1?"s":""} ₹3.75 Cr. One more consecutive quarter above 3.75 Cr triggers the price-revision discussion clause.`;
+
+ renderDetail();
+}
+
+function renderDetail(){
+ const fq=document.getElementById("fQtr").value,
+       fm=document.getElementById("fMonth").value,
+       fc=document.getElementById("fCity").value;
+ const tb=document.querySelector("#detTable tbody"); tb.innerHTML="";
+ let s={cur:0,nm:0,cc:0,inc:0};
+ for(let m=0;m<12;m++){
+  const q=Math.floor(m/3);
+  if(fq!=="all"&&q!==+fq) continue;
+  if(fm!=="all"&&m!==+fm) continue;
+  CITIES.forEach(c=>{
+   if(fc!=="all"&&c!==fc) return;
+   const o=OPTMAP[sel[c][m]], inc=o.f(c,m), on=o.v!=="none";
+   s.cur+=D.cur[c][m]; s.nm+=D.nm[c][m]; s.cc+=D.cc[c][m]; s.inc+=inc;
+   tb.insertAdjacentHTML("beforeend",
+    `<tr class="${on?"included":"excluded"}">
+      <td class="cityname">${c}</td><td>${MONTHS[m]}</td>
+      <td><span class="tag ${on?"in":"out"}">${o.lbl}</span></td>
+      <td class="num">${fmt(D.cur[c][m])}</td>
+      <td class="num">${fmt(D.nm[c][m])}</td>
+      <td class="num">${fmt(D.cc[c][m])}</td>
+      <td class="num"><b>${fmt(inc)}</b></td></tr>`);
+  });
+ }
+ tb.insertAdjacentHTML("beforeend",
+  `<tr class="totalrow"><td colspan="3">Total (filtered)</td>
+   <td class="num">${fmt(s.cur)}</td><td class="num">${fmt(s.nm)}</td>
+   <td class="num">${fmt(s.cc)}</td><td class="num">${fmt(s.inc)}</td></tr>`);
+}
+
+// init filters
+const fM=document.getElementById("fMonth");
+MONTHS.forEach((m,i)=>fM.insertAdjacentHTML("beforeend",`<option value="${i}">${m}</option>`));
+const fC=document.getElementById("fCity");
+CITIES.forEach(c=>fC.insertAdjacentHTML("beforeend",`<option value="${c}">${c}</option>`));
+["fMonth","fCity"].forEach(id=>document.getElementById(id).addEventListener("change",renderDetail));
+document.getElementById("fQtr").addEventListener("change",e=>{
+ const q=e.target.value; if(q!=="all"&&fM.value!=="all"&&Math.floor(+fM.value/3)!==+q) fM.value="all";
+ renderDetail();
+});
+
+preset("matrix");
+</script>
+</body>
+</html>
