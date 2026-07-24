@@ -150,4 +150,56 @@ new Chart(document.getElementById('c_noabridge'),{type:'bar',data:{labels:[['Jan
  const dv=[-67956, -35791, 32399, 31350, 29526, -25949, -21943, 18614, -18153, 17064, -88796],dvol=[-1026, -1613, 180, 507, 373, -605, -321, 232, -11, 1353, -5387],dl=["Thyroid Function Test (TFT)", "Complete Blood Count (CBC)", "Vitamin D", "Complete Blood Count (CBC) with ES", "Insulin", "Lipid Profile", "Blood Group ABO and RH Factor", "Ferritin", "N-terminal pro B Type Natriuretic ", "Thyroid Stimulating Hormone", "All other tests"],dc=["#1baf7a", "#1baf7a", "#c0392b", "#c0392b", "#c0392b", "#1baf7a", "#1baf7a", "#c0392b", "#1baf7a", "#c0392b", "#8a8880"];
  new Chart(document.getElementById('c_dr_MUM'),{type:'bar',data:{labels:dl,datasets:[{data:dv,backgroundColor:dc,borderRadius:2}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:c=>((c.parsed.x>=0?'+':'')+'₹'+(c.parsed.x/1000).toFixed(0)+'k')+'  ('+(dvol[c.dataIndex]>=0?'+':'')+dvol[c.dataIndex]+' tests)'}}},scales:{x:{ticks:{callback:v=>(v/1000).toFixed(0)+'k'},grid:{color:'#eceae5'}},y:{grid:{display:false},ticks:{font:{size:9}}}}}});
 })();
-</script></body></html>
+</script><script data-hub-shared-state>(function(){
+  var parts = location.pathname.split("/").filter(Boolean);
+  if (!location.hostname.endsWith(".github.io") || parts.length < 2) return;
+  var owner = location.hostname.split(".")[0];
+  var repo = parts[0];
+  var statePath = parts.slice(1).join("/").replace(/\.html?$/i, "") + ".state.json";
+  var stateUrl = "/" + repo + "/" + statePath;
+  var apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/" + statePath.split("/").map(encodeURIComponent).join("/");
+  function els(){ return document.querySelectorAll("input, select, textarea"); }
+  function idOf(el, i){ return el.id || el.name || "el" + i; }
+  function apply(state){
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      if (!(k in state)) return;
+      if (el.type === "checkbox" || el.type === "radio") el.checked = state[k];
+      else el.value = state[k];
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+      el.dispatchEvent(new Event("change", {bubbles:true}));
+    });
+  }
+  function collect(){
+    var s = {};
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      s[k] = (el.type === "checkbox" || el.type === "radio") ? el.checked : el.value;
+    });
+    return s;
+  }
+  function init(){
+    fetch(stateUrl, {cache:"no-store"}).then(function(r){ if (r.ok) return r.json(); }).then(function(s){ if (s) apply(s); }).catch(function(){});
+    var token = "";
+    try { token = localStorage.getItem("hub-token") || ""; } catch(e){}
+    if (!token) return;
+    var btn = document.createElement("button");
+    btn.textContent = "Save view for everyone";
+    btn.style.cssText = "position:fixed;bottom:18px;right:18px;z-index:99999;background:#ff6d2e;color:#fff;border:0;border-radius:10px;padding:10px 14px;font:600 13px sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)";
+    btn.onclick = function(){
+      btn.textContent = "Saving...";
+      var body = { message: "Update view state: " + statePath, content: btoa(unescape(encodeURIComponent(JSON.stringify(collect(), null, 2)))) };
+      fetch(apiUrl, { headers: { "Authorization": "Bearer " + token }, cache: "no-store" })
+        .then(function(g){ return g.ok ? g.json() : null; })
+        .then(function(j){ if (j && j.sha) body.sha = j.sha;
+          return fetch(apiUrl, { method: "PUT", headers: { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" }, body: JSON.stringify(body) });
+        })
+        .then(function(r){ btn.textContent = r && r.ok ? "Saved - live in ~1 min" : "Save failed"; })
+        .catch(function(){ btn.textContent = "Save failed"; })
+        .then(function(){ setTimeout(function(){ btn.textContent = "Save view for everyone"; }, 3500); });
+    };
+    document.body.appendChild(btn);
+  }
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
+})();</script>
+</body></html>
