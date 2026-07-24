@@ -1,0 +1,438 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Orange Health · Lab Ops</title>
+<style>
+  :root, [data-theme="dark"] {
+    --bg: #0d0f16; --bg2: #12151f;
+    --card: #181c28; --card-hover: #1f2432;
+    --border: #272d3d; --text: #eceef4; --muted: #8b91a3;
+    --accent: #ff6d2e; --accent2: #ffb03d;
+    --accent-soft: rgba(255, 109, 46, 0.13);
+    --shadow: 0 10px 30px rgba(0,0,0,.35);
+    --thumb-bg: #10131c; --side: #10131d;
+  }
+  [data-theme="light"] {
+    --bg: #f7f7f9; --bg2: #ffffff;
+    --card: #ffffff; --card-hover: #fff6f1;
+    --border: #e6e8ee; --text: #1a1e2a; --muted: #6b7280;
+    --accent: #f05423; --accent2: #f59e0b;
+    --accent-soft: rgba(240, 84, 35, 0.09);
+    --shadow: 0 10px 30px rgba(20,30,60,.08);
+    --thumb-bg: #f0f2f6; --side: #ffffff;
+  }
+  * { margin: 0; padding: 0; box-sizing: border-box; }
+  body {
+    background: var(--bg); color: var(--text);
+    font-family: -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", sans-serif;
+    min-height: 100vh; transition: background .25s, color .25s;
+  }
+  /* ── Sidebar ── */
+  #sidebar {
+    position: fixed; top: 0; left: 0; bottom: 0; width: 272px; z-index: 40;
+    background: var(--side); border-right: 1px solid var(--border);
+    display: flex; flex-direction: column;
+    transition: transform .22s ease;
+  }
+  body.side-collapsed #sidebar { transform: translateX(-100%); }
+  .side-head { padding: 22px 20px 18px; border-bottom: 1px solid var(--border); display: flex; gap: 12px; align-items: center; }
+  .logo-mark {
+    width: 42px; height: 42px; border-radius: 12px; flex: none;
+    background: linear-gradient(135deg, var(--accent), var(--accent2));
+    display: grid; place-items: center; font-weight: 800; font-size: 17px; color: #fff;
+    box-shadow: 0 6px 16px rgba(255,109,46,.35);
+  }
+  .side-head h1 { font-size: 16px; font-weight: 800; letter-spacing: -.3px; line-height: 1.15; }
+  .side-head .sub { font-size: 11.5px; color: var(--accent); font-weight: 600; letter-spacing: 1.2px; text-transform: uppercase; }
+  #catNav { flex: 1; overflow-y: auto; padding: 14px 12px; }
+  .nav-label { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); padding: 6px 10px 8px; font-weight: 700; }
+  .nav-item {
+    display: flex; justify-content: space-between; align-items: center;
+    padding: 9px 12px; border-radius: 10px; cursor: pointer;
+    font-size: 13.5px; color: var(--muted); margin-bottom: 2px; user-select: none;
+    border: 1px solid transparent;
+  }
+  .nav-item:hover { color: var(--text); background: var(--card-hover); }
+  .nav-item.active { background: var(--accent-soft); color: var(--accent); font-weight: 650; border-color: var(--accent); }
+  .nav-item .count { font-size: 11.5px; opacity: .7; }
+  /* Admin */
+  #adminBox { border-top: 1px solid var(--border); padding: 14px 16px 18px; font-size: 13px; }
+  #adminBox h3 { font-size: 11px; letter-spacing: 1.4px; text-transform: uppercase; color: var(--muted); margin-bottom: 10px; font-weight: 700; }
+  .btn {
+    display: inline-block; width: 100%; text-align: center;
+    background: linear-gradient(135deg, var(--accent), var(--accent2)); color: #fff;
+    border: 0; border-radius: 10px; padding: 10px 12px; font-size: 13.5px; font-weight: 650;
+    cursor: pointer; transition: opacity .15s;
+  }
+  .btn:hover { opacity: .88; }
+  .btn.ghost { background: var(--card); color: var(--text); border: 1px solid var(--border); }
+  .btn:disabled { opacity: .5; cursor: default; }
+  .field { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 9px;
+    padding: 9px 11px; color: var(--text); font-size: 13px; outline: none; margin-bottom: 8px; }
+  .field:focus { border-color: var(--accent); }
+  .hint { color: var(--muted); font-size: 11.5px; line-height: 1.5; margin: 6px 0 10px; }
+  .hint a { color: var(--accent); }
+  #upStatus { font-size: 12px; margin-top: 8px; line-height: 1.5; }
+  #upStatus.ok { color: #3fbf6f; } #upStatus.err { color: #ff6b6b; }
+  .admin-row { display: flex; justify-content: space-between; align-items: center; margin-bottom: 10px; }
+  .admin-row .who { font-size: 12.5px; color: var(--muted); }
+  .linklike { background: none; border: none; color: var(--accent); font-size: 12px; cursor: pointer; padding: 0; }
+  input[type="file"] { color: var(--muted); font-size: 12px; margin-bottom: 8px; width: 100%; }
+  input[type="file"]::file-selector-button {
+    background: var(--card); color: var(--text); border: 1px solid var(--border);
+    border-radius: 8px; padding: 6px 10px; margin-right: 8px; cursor: pointer; font-size: 12px;
+  }
+  /* ── Main ── */
+  #main { margin-left: 272px; transition: margin .22s ease; }
+  body.side-collapsed #main { margin-left: 0; }
+  .topbar {
+    position: sticky; top: 0; z-index: 30;
+    background: var(--bg2); border-bottom: 1px solid var(--border);
+    display: flex; gap: 12px; align-items: center; padding: 12px 20px;
+  }
+  #menuBtn, #themeBtn {
+    background: var(--card); border: 1px solid var(--border); color: var(--text);
+    border-radius: 10px; width: 38px; height: 38px; font-size: 16px; cursor: pointer; flex: none;
+  }
+  .searchwrap { position: relative; flex: 1; max-width: 480px; }
+  .searchwrap svg { position: absolute; left: 12px; top: 50%; transform: translateY(-50%);
+    width: 14px; height: 14px; stroke: var(--muted); fill: none; stroke-width: 2; }
+  #search { width: 100%; background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 10px 12px 10px 34px; color: var(--text); font-size: 13.5px; outline: none; }
+  #search:focus { border-color: var(--accent); box-shadow: 0 0 0 3px var(--accent-soft); }
+  #stats { margin-left: auto; display: flex; gap: 8px; }
+  .stat { background: var(--card); border: 1px solid var(--border); border-radius: 10px;
+    padding: 7px 13px; font-size: 12px; color: var(--muted); white-space: nowrap; }
+  .stat b { color: var(--text); font-size: 14px; margin-right: 5px; }
+  .container { max-width: 1200px; margin: 0 auto; padding: 26px 24px 60px; }
+  .demo-banner { background: var(--accent-soft); border: 1px solid var(--accent); color: var(--accent);
+    border-radius: 12px; padding: 10px 16px; font-size: 13px; margin-bottom: 20px; }
+  .category { margin-bottom: 40px; }
+  .category h2 { font-size: 13px; text-transform: uppercase; letter-spacing: 1.5px; color: var(--muted);
+    margin-bottom: 14px; font-weight: 700; display: flex; align-items: center; gap: 10px; }
+  .category h2::after { content: ""; flex: 1; height: 1px; background: var(--border); }
+  .grid { display: grid; grid-template-columns: repeat(auto-fill, minmax(250px, 1fr)); gap: 18px; }
+  .card { background: var(--card); border: 1px solid var(--border); border-radius: 16px;
+    text-decoration: none; color: var(--text); overflow: hidden; display: block;
+    transition: transform .18s, border .18s, box-shadow .18s; }
+  .card:hover { transform: translateY(-4px); border-color: var(--accent); box-shadow: var(--shadow); }
+  .thumb { height: 145px; background: var(--thumb-bg); position: relative; overflow: hidden; border-bottom: 1px solid var(--border); }
+  .thumb .ph { position: absolute; inset: 0; display: grid; place-items: center; font-size: 42px;
+    font-weight: 800; color: var(--accent); opacity: .28;
+    background: linear-gradient(135deg, var(--accent-soft), transparent); }
+  .thumb iframe { position: absolute; top: 0; left: 0; width: 400%; height: 400%;
+    transform: scale(.25); transform-origin: 0 0; border: 0; pointer-events: none; background: #fff; }
+  .card-body { padding: 13px 15px 14px; }
+  .card .name { font-weight: 650; font-size: 14.5px; margin-bottom: 3px; }
+  .card .file { font-size: 11px; color: var(--muted); font-family: ui-monospace, monospace; word-break: break-all; }
+  .status { color: var(--muted); padding: 60px 0; text-align: center; font-size: 14px; line-height: 1.7; }
+  .error { color: #ff6b6b; }
+  @media (max-width: 800px) {
+    #main { margin-left: 0; }
+    #sidebar { box-shadow: 0 0 40px rgba(0,0,0,.4); }
+    body:not(.side-collapsed) #shade { display: block; }
+    #stats { display: none; }
+  }
+  #shade { display: none; position: fixed; inset: 0; background: rgba(0,0,0,.45); z-index: 35; }
+</style>
+</head>
+<body>
+<aside id="sidebar">
+  <div class="side-head">
+    <div class="logo-mark">OH</div>
+    <div>
+      <h1>Orange Health</h1>
+      <div class="sub">Lab Ops</div>
+    </div>
+  </div>
+  <nav id="catNav"></nav>
+  <div id="adminBox"></div>
+</aside>
+<div id="shade" onclick="toggleSide()"></div>
+
+<div id="main">
+  <div class="topbar">
+    <button id="menuBtn" title="Toggle sidebar" onclick="toggleSide()">☰</button>
+    <div class="searchwrap">
+      <svg viewBox="0 0 24 24"><circle cx="11" cy="11" r="7"/><line x1="16.5" y1="16.5" x2="21" y2="21"/></svg>
+      <input id="search" type="text" placeholder="Search pages…">
+    </div>
+    <div id="stats"></div>
+    <button id="themeBtn" title="Toggle theme">🌙</button>
+  </div>
+  <div class="container">
+    <div id="demoBanner"></div>
+    <div id="content"><div class="status">Loading…</div></div>
+  </div>
+</div>
+
+<script>
+// ── Config (only needed when NOT hosted at <owner>.github.io/<repo>) ──
+const CONFIG = { owner: "", repo: "", branch: "" };
+
+const DEMO = location.protocol === "file:";
+const DEMO_FILES = [
+  { category: "dashboards", path: "dashboards/tat-dashboard.html" },
+  { category: "dashboards", path: "dashboards/sample-volume.html" },
+  { category: "sops",       path: "sops/phlebotomy-checklist.html" },
+  { category: "reports",    path: "reports/weekly-lab-summary.html" },
+  { category: "examples",   path: "examples/hello-world.html" }
+];
+
+let OWNER = "", REPO = "", BRANCH = "main";
+let allFiles = [], allCats = [], activeCategory = null;
+
+function detect() {
+  const h = location.hostname, p = location.pathname.split("/").filter(Boolean);
+  if (h.endsWith(".github.io")) {
+    return { owner: h.split(".")[0], repo: p.length && !p[0].endsWith(".html") ? p[0] : h };
+  }
+  return { owner: CONFIG.owner, repo: CONFIG.repo };
+}
+
+const IGNORED = new Set(["assets", "images", "img", "css", "js", "fonts"]);
+const pretty = s => s.replace(/\.html?$/i, "").replace(/[-_]+/g, " ").replace(/\b\w/g, c => c.toUpperCase());
+const esc = s => String(s).replace(/[&<>"]/g, c => ({ "&":"&amp;", "<":"&lt;", ">":"&gt;", '"':"&quot;" }[c]));
+const getToken = () => { try { return localStorage.getItem("hub-token") || ""; } catch (e) { return ""; } };
+
+function gh(path, opts) {
+  opts = opts || {};
+  const t = getToken();
+  const headers = Object.assign({ "Accept": "application/vnd.github+json" }, opts.headers || {});
+  if (t) headers["Authorization"] = "Bearer " + t;
+  return fetch("https://api.github.com" + path, Object.assign({}, opts, { headers: headers, cache: "no-store" }));
+}
+
+async function load() {
+  const content = document.getElementById("content");
+  if (DEMO) {
+    document.getElementById("demoBanner").innerHTML =
+      '<div class="demo-banner">Demo mode — you\'re viewing this file locally with sample data. Upload the folder to GitHub Pages to go live.</div>';
+    allFiles = DEMO_FILES.map(f => Object.assign({}, f, { name: pretty(f.path.split("/").pop()) }));
+    allCats = [...new Set(allFiles.map(f => f.category))].sort();
+    render(); renderAdmin();
+    return;
+  }
+  const d = detect();
+  OWNER = d.owner; REPO = d.repo;
+  if (!OWNER || !REPO) {
+    content.innerHTML = '<div class="status error">Not on GitHub Pages and no CONFIG set.<br>Edit the CONFIG object at the top of the script in index.html.</div>';
+    renderAdmin();
+    return;
+  }
+  try {
+    const repoInfo = await gh("/repos/" + OWNER + "/" + REPO).then(r => {
+      if (!r.ok) throw new Error("repo lookup failed (" + r.status + ")");
+      return r.json();
+    });
+    BRANCH = CONFIG.branch || repoInfo.default_branch || "main";
+    const tree = await gh("/repos/" + OWNER + "/" + REPO + "/git/trees/" + BRANCH + "?recursive=1")
+      .then(r => { if (!r.ok) throw new Error("tree fetch failed (" + r.status + ")"); return r.json(); });
+
+    const okCat = c => !c.startsWith(".") && !c.startsWith("_") && !IGNORED.has(c.toLowerCase());
+
+    allFiles = tree.tree
+      .filter(t => t.type === "blob" && /\.html?$/i.test(t.path) && t.path.includes("/"))
+      .map(t => {
+        const parts = t.path.split("/");
+        return { category: parts[0], path: t.path, name: pretty(parts[parts.length - 1]) };
+      })
+      .filter(f => okCat(f.category));
+
+    // Categories = top-level folders (including empty ones)
+    allCats = [...new Set(
+      tree.tree.filter(t => t.type === "tree" && !t.path.includes("/") && okCat(t.path)).map(t => t.path)
+        .concat(allFiles.map(f => f.category))
+    )].sort();
+
+    if (tree.truncated) console.warn("Repo tree truncated; some files may be missing.");
+    render(); renderAdmin();
+  } catch (e) {
+    content.innerHTML = '<div class="status error">Couldn\'t load repo contents: ' + esc(e.message) + '.<br>Is the repo public? The GitHub API allows 60 unauthenticated requests/hour per IP.</div>';
+    renderAdmin();
+  }
+}
+
+function render() {
+  const q = document.getElementById("search").value.trim().toLowerCase();
+  const files = allFiles.filter(f =>
+    (!activeCategory || f.category === activeCategory) &&
+    (!q || f.name.toLowerCase().includes(q) || f.path.toLowerCase().includes(q))
+  );
+
+  document.getElementById("stats").innerHTML =
+    '<div class="stat"><b>' + allFiles.length + '</b>pages</div>' +
+    '<div class="stat"><b>' + allCats.length + '</b>categories</div>';
+
+  // Sidebar nav
+  const counts = {};
+  allFiles.forEach(f => counts[f.category] = (counts[f.category] || 0) + 1);
+  document.getElementById("catNav").innerHTML =
+    '<div class="nav-label">Categories</div>' +
+    '<div class="nav-item ' + (!activeCategory ? "active" : "") + '" data-cat="">All pages<span class="count">' + allFiles.length + '</span></div>' +
+    allCats.map(c =>
+      '<div class="nav-item ' + (activeCategory === c ? "active" : "") + '" data-cat="' + esc(c) + '">' +
+      esc(pretty(c)) + '<span class="count">' + (counts[c] || 0) + '</span></div>').join("");
+  document.querySelectorAll(".nav-item").forEach(el =>
+    el.onclick = () => {
+      activeCategory = el.dataset.cat || null;
+      render();
+      if (window.innerWidth <= 800) toggleSide(true);
+    });
+
+  const content = document.getElementById("content");
+  if (!files.length) {
+    content.innerHTML = allFiles.length
+      ? '<div class="status">No pages match.</div>'
+      : '<div class="status">No pages yet.<br>Log in as admin in the sidebar to add a category and upload your first HTML.</div>';
+    return;
+  }
+  const grouped = {};
+  files.forEach(f => (grouped[f.category] = grouped[f.category] || []).push(f));
+  content.innerHTML = Object.keys(grouped).sort().map(cat =>
+    '<div class="category"><h2>' + esc(pretty(cat)) + '</h2><div class="grid">' +
+    grouped[cat].map(f =>
+      '<a class="card" href="' + esc(f.path) + '" target="_blank" rel="noopener">' +
+        '<div class="thumb"><div class="ph">' + esc(f.name.charAt(0)) + '</div>' +
+        (DEMO ? "" : '<iframe src="' + esc(f.path) + '" loading="lazy" scrolling="no" tabindex="-1" sandbox="allow-scripts allow-same-origin"></iframe>') +
+        '</div><div class="card-body">' +
+        '<div class="name">' + esc(f.name) + '</div>' +
+        '<div class="file">' + esc(f.path) + '</div>' +
+        '</div></a>').join("") +
+    '</div></div>').join("");
+}
+
+/* ── Admin ── */
+function renderAdmin() {
+  const box = document.getElementById("adminBox");
+  if (DEMO) {
+    box.innerHTML = '<h3>Admin</h3><div class="hint">Admin tools activate once this is hosted on GitHub Pages.</div>';
+    return;
+  }
+  if (!getToken()) {
+    box.innerHTML =
+      '<h3>Admin</h3>' +
+      '<div id="loginArea"><button class="btn ghost" onclick="showLogin()">Admin login</button></div>';
+    return;
+  }
+  const catOpts = allCats.map(c => '<option value="' + esc(c) + '">' + esc(pretty(c)) + '</option>').join("");
+  box.innerHTML =
+    '<h3>Admin</h3>' +
+    '<div class="admin-row"><span class="who">Logged in ✓</span><button class="linklike" onclick="logout()">Log out</button></div>' +
+    '<select id="upCat" class="field" onchange="onCatSel()">' + catOpts +
+      '<option value="__new__">➕ New category…</option></select>' +
+    '<input id="newCatName" class="field" placeholder="new-category-name" style="display:' + (allCats.length ? "none" : "block") + '">' +
+    '<input type="file" id="upFiles" accept=".html,.htm" multiple>' +
+    '<button class="btn" id="upBtn" onclick="doUpload()">Upload</button>' +
+    '<div id="upStatus"></div>';
+  if (!allCats.length) document.getElementById("upCat").value = "__new__";
+}
+
+function showLogin() {
+  document.getElementById("loginArea").innerHTML =
+    '<input id="tokenInput" class="field" type="password" placeholder="GitHub fine-grained token">' +
+    '<div class="hint">Create one at GitHub → Settings → Developer settings → Fine-grained tokens. Give it access to <b>this repo only</b>, with <b>Contents: Read &amp; write</b>. The token stays in this browser only.</div>' +
+    '<button class="btn" onclick="doLogin()">Log in</button>' +
+    '<div id="upStatus"></div>';
+}
+
+async function doLogin() {
+  const t = document.getElementById("tokenInput").value.trim();
+  const st = document.getElementById("upStatus");
+  if (!t) return;
+  st.className = ""; st.textContent = "Checking…";
+  const r = await fetch("https://api.github.com/repos/" + OWNER + "/" + REPO, {
+    headers: { "Authorization": "Bearer " + t, "Accept": "application/vnd.github+json" }, cache: "no-store"
+  });
+  const j = await r.json().catch(() => ({}));
+  if (r.ok && j.permissions && j.permissions.push) {
+    try { localStorage.setItem("hub-token", t); } catch (e) {}
+    renderAdmin();
+  } else {
+    st.className = "err";
+    st.textContent = r.ok ? "Token valid but has no write access to this repo." : "Login failed (" + r.status + "). Check the token.";
+  }
+}
+
+function logout() { try { localStorage.removeItem("hub-token"); } catch (e) {} renderAdmin(); }
+
+function onCatSel() {
+  document.getElementById("newCatName").style.display =
+    document.getElementById("upCat").value === "__new__" ? "block" : "none";
+}
+
+function slugify(s) { return s.trim().toLowerCase().replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, ""); }
+
+async function toB64(file) {
+  const buf = new Uint8Array(await file.arrayBuffer());
+  let s = "";
+  for (let i = 0; i < buf.length; i += 8192) s += String.fromCharCode.apply(null, buf.subarray(i, i + 8192));
+  return btoa(s);
+}
+
+async function putFile(path, b64, msg) {
+  const url = "/repos/" + OWNER + "/" + REPO + "/contents/" + path.split("/").map(encodeURIComponent).join("/");
+  let sha = null;
+  const g = await gh(url + "?ref=" + BRANCH);
+  if (g.ok) { const j = await g.json(); if (j && j.sha) sha = j.sha; }
+  const body = { message: msg, content: b64, branch: BRANCH };
+  if (sha) body.sha = sha;
+  const r = await gh(url, { method: "PUT", body: JSON.stringify(body) });
+  if (!r.ok) {
+    const j = await r.json().catch(() => ({}));
+    throw new Error((j.message || "upload failed") + " (" + r.status + ")");
+  }
+}
+
+async function doUpload() {
+  const st = document.getElementById("upStatus");
+  const btn = document.getElementById("upBtn");
+  const sel = document.getElementById("upCat").value;
+  const files = document.getElementById("upFiles").files;
+  let cat = sel === "__new__" ? slugify(document.getElementById("newCatName").value) : sel;
+  st.className = "";
+  if (!cat) { st.className = "err"; st.textContent = "Enter a category name."; return; }
+  if (!files.length && sel !== "__new__") { st.className = "err"; st.textContent = "Choose one or more .html files."; return; }
+  btn.disabled = true;
+  try {
+    if (!files.length) {
+      st.textContent = "Creating category…";
+      await putFile(cat + "/.gitkeep", "", "Add category: " + cat);
+    }
+    for (let i = 0; i < files.length; i++) {
+      const f = files[i];
+      st.textContent = "Uploading " + (i + 1) + "/" + files.length + ": " + f.name + "…";
+      await putFile(cat + "/" + f.name, await toB64(f), "Add " + cat + "/" + f.name);
+    }
+    st.className = "ok"; st.textContent = "Done ✓ Refreshing…";
+    setTimeout(() => { activeCategory = cat; load(); }, 1800);
+  } catch (e) {
+    st.className = "err"; st.textContent = e.message;
+  }
+  btn.disabled = false;
+}
+
+/* ── UI chrome ── */
+function toggleSide(forceClose) {
+  document.body.classList[forceClose === true ? "add" : "toggle"]("side-collapsed");
+}
+if (window.innerWidth <= 800) document.body.classList.add("side-collapsed");
+
+const themeBtn = document.getElementById("themeBtn");
+function setTheme(t) {
+  document.documentElement.dataset.theme = t;
+  themeBtn.textContent = t === "dark" ? "🌙" : "☀️";
+  try { localStorage.setItem("hub-theme", t); } catch (e) {}
+}
+themeBtn.onclick = () => setTheme(document.documentElement.dataset.theme === "dark" ? "light" : "dark");
+let savedTheme = null;
+try { savedTheme = localStorage.getItem("hub-theme"); } catch (e) {}
+setTheme(savedTheme || "dark");
+
+document.getElementById("search").addEventListener("input", render);
+load();
+</script>
+</body>
+</html>
