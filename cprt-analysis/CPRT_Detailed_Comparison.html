@@ -403,6 +403,62 @@ details[open].sec>summary .s2::before{content:'▾ ';}
 <tr><td><b>PNQ</b></td><td>0</td><td>556</td><td class="r">+556</td><td class="r">—</td></tr>
 <tr style="font-weight:700;border-top:2px solid #d8d6d0"><td>Total</td><td>1,047,144</td><td>1,108,395</td><td>+61,251</td><td>+5.8%</td></tr></table>
 <p class="small">PG is ~0.6–0.7% of revenue everywhere; MUM (+₹17k) and BLR (+₹34k) drove the small rise.</p>
+<h3>Outsource / external lab cost</h3>
+<div class="callout"><b>Outsource GM% fell 53.44% → 48.18% (−5.26pp) in July</b> because <b>cost grew far faster than revenue</b>: revenue +8.2% (₹1.13Cr → ₹1.22Cr) but outsource cost <b>+20.5%</b> (₹52.6L → ₹63.4L). Cost outran revenue by ~12pp — that gap is the entire GM drop.</div>
+<table><tr><th>Outsource P&L</th><th>Jun</th><th>Jul</th><th>Δ %</th></tr>
+<tr><td>Revenue</td><td>₹1,13,06,085</td><td>₹1,22,37,763</td><td class="r">+8.2%</td></tr>
+<tr><td>Cost</td><td>₹52,64,387</td><td>₹63,41,104</td><td class="r">+20.5%</td></tr>
+<tr style="font-weight:700"><td>GM%</td><td>53.44%</td><td>48.18%</td><td class="r">−5.26pp</td></tr></table>
+<p class="small">July external-lab cost, <b>with NRL send-outs allocated back to the city that ordered the test</b> (vendor city-ratio per the NRL Allocation sheet). Totals reconcile to the ₹63.4L P&L line.</p>
+<div class="mixcols">
+<div><div class="subh" style="border:none;padding:0">By city (NRL allocated)</div><table><tr><th>City</th><th>July ₹</th><th>Share</th></tr>
+<tr><td>BLR</td><td>3,662,856</td><td>57.8%</td></tr>
+<tr><td>MUM</td><td>1,084,381</td><td>17.1%</td></tr>
+<tr><td>HYD</td><td>631,434</td><td>10.0%</td></tr>
+<tr><td>GGN</td><td>550,354</td><td>8.7%</td></tr>
+<tr><td>NOA</td><td>406,566</td><td>6.4%</td></tr>
+<tr><td>PNQ</td><td>5,513</td><td>0.1%</td></tr>
+<tr style="font-weight:700"><td>Total</td><td>6,341,104</td><td>100%</td></tr></table></div>
+<div style="flex:2;min-width:300px"><div class="subh" style="border:none;padding:0">By vendor</div><div class="chartbox" style="height:300px"><canvas id="c_out"></canvas></div></div>
+</div>
+<div class="ins"><b>Read:</b> once NRL send-outs are allocated to the ordering city, <b>BLR carries 58% of all outsource cost (₹36.6L)</b>, then MUM ₹10.8L (17%) and HYD ₹6.3L (10%). By vendor it is overwhelmingly <b>RV Metropolis — ₹37.4L, 59% of the entire outsource bill</b> (₹26.6L of it on BLR's behalf), with Anand Diagnostic ₹6.8L (11%) and Metropolis Lab ₹4.6L (7%) next. So the July GM slide is driven by <b>BLR-origin esoteric send-outs to RV Metropolis growing faster than the revenue they earn</b>. <b>Test-wise detail to follow</b> to isolate exactly which send-out tests moved.</div>
+<div class="subh">RV Metropolis — test-wise, Jun → Jul (invoice-level)</div>
+<p class="small">RVM is 59% of the outsource bill. Its send-out cost rose <b>₹33.5L → ₹36.8L (+₹3.3L, +9.8%)</b> on ~3% more sends — a <b>volume/mix shift toward expensive esoteric tests, not rate hikes</b> (per-test rates unchanged). Invoice-verified (July NET grand total ₹37.0L).</p>
+<div class="card"><div class="chartbox"><canvas id="c_rvm"></canvas></div></div>
+<table><tr><th>Test</th><th>Jun ₹</th><th>Jul ₹</th><th>Δ ₹</th><th>tests</th></tr>
+<tr><td style="text-align:left">NextGen NIPT Advance (Non-Invasive Prenata</td><td>200,000</td><td>265,000</td><td class="r">+65,000</td><td>40→53</td></tr>
+<tr><td style="text-align:left">Vitamin D Gold Profile - Quantitative, Ser</td><td>224,580</td><td>268,708</td><td class="r">+44,128</td><td>285→341</td></tr>
+<tr><td style="text-align:left">Allergy Panel - Adult Comprehensive Panel</td><td>34,200</td><td>68,400</td><td class="r">+34,200</td><td>4→8</td></tr>
+<tr><td style="text-align:left">Heavy and Trace Metals Profile - 1</td><td>17,250</td><td>37,375</td><td class="r">+20,125</td><td>6→13</td></tr>
+<tr><td style="text-align:left">Chromogranin A, Serum</td><td>10,017</td><td>30,051</td><td class="r">+20,034</td><td>3→9</td></tr>
+<tr><td style="text-align:left">Karyotyping by G-Banding, Heparin Blood</td><td>41,040</td><td>60,480</td><td class="r">+19,440</td><td>19→28</td></tr>
+<tr><td style="text-align:left">Chlamydia Trachomatis DNA Detection by RT-</td><td>21,789</td><td>39,952</td><td class="r">+18,163</td><td>12→22</td></tr>
+<tr><td style="text-align:left">Vitamin K1 - Quantitative, Serum**</td><td>8,910</td><td>26,730</td><td class="r">+17,820</td><td>2→6</td></tr>
+<tr><td style="text-align:left">Cyclosporine - Quantitative, EDTA Blood</td><td>3,024</td><td>18,144</td><td class="r">+15,120</td><td>2→12</td></tr>
+<tr><td style="text-align:left">Allergy Panel - Mold - 2</td><td>2,060</td><td>16,480</td><td class="r">+14,420</td><td>1→8</td></tr>
+<tr><td style="text-align:left">Allergy Panel - Child</td><td>30,285</td><td>12,114</td><td class="g">-18,171</td><td>5→2</td></tr>
+<tr><td style="text-align:left">CA 15.3, Serum</td><td>21,600</td><td>0</td><td class="g">-21,600</td><td>32→0</td></tr>
+<tr><td style="text-align:left">Food Intolerance (Food IgG) Test, Serum</td><td>104,500</td><td>82,500</td><td class="g">-22,000</td><td>19→15</td></tr>
+<tr><td style="text-align:left">17-Hydroxy Progesterone (17-OHP) by CLIA, </td><td>24,304</td><td>0</td><td class="g">-24,304</td><td>56→0</td></tr>
+<tr><td style="text-align:left">Calcitonin Thyrocalcitonin, Serum</td><td>83,066</td><td>52,676</td><td class="g">-30,390</td><td>82→52</td></tr>
+<tr><td style="text-align:left">CCP Antibody, Serum</td><td>191,100</td><td>145,860</td><td class="g">-45,240</td><td>490→374</td></tr>
+</table>
+<div class="ins"><b>Going off:</b> the rise is concentrated in a few high-ticket sends — <b>NIPT +₹65k (40→53)</b> and <b>Vitamin D Gold +₹44k (285→341)</b> alone are ₹1.1L of the ₹3.3L; an allergy-panel cluster (Adult Comprehensive, Mold, Asthma/Rhinitis) adds ~₹0.6L, plus Heavy Metals, Chromogranin A, Karyotyping and Chlamydia PCR. Offset by fewer <b>CCP (−₹45k, 490→374)</b> and Calcitonin. Action: review whether NIPT, Vitamin D Gold and the allergy panels can be in-sourced or renegotiated.</div>
+<div class="subh">Metropolis Lab (Mumbai) — charged vs agreed, & Jun → Jul</div>
+<div class="callout">⚠ <b>Metropolis was over-billing vs agreed in Apr–May, now corrected:</b> billed net ran <b>+28% over agreed in April (₹2.12L)</b> and <b>+137% in May (₹1.76L)</b>; by <b>June it is aligned</b> (only ₹7,835 over). <b>~₹3.96L of credit notes are recoverable</b> for Apr–May.</div>
+<table><tr><th>Month</th><th>Billed net</th><th>Agreed net</th><th>Overcharge (CN)</th></tr><tr><td>Apr</td><td>₹9,57,194</td><td>₹7,45,518</td><td class="r">+₹2,11,676</td></tr><tr><td>May</td><td>₹3,04,441</td><td>₹1,28,208</td><td class="r">+₹1,76,233</td></tr><tr><td>Jun</td><td>₹4,31,659</td><td>₹4,23,824</td><td class="g">+₹7,835</td></tr></table>
+<p class="small">Jun → Jul billed net <b>₹4.32L → ₹9.62L (+₹5.30L)</b> — rates unchanged (agreed), so it is pure <b>volume/mix into expensive esoteric sends</b>. Two tests explain 71% of the jump.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_metro"></canvas></div></div>
+<table><tr><th>Test</th><th>Jun ₹</th><th>Jul ₹</th><th>Δ ₹</th><th>tests</th></tr>
+<tr><td style="text-align:left">Omega 3 & 6 Fatty Acid</td><td>167,900</td><td>393,300</td><td class="r">+225,400</td><td>8→19</td></tr>
+<tr><td style="text-align:left">Folate Pathway SNP Profiling</td><td>90,720</td><td>241,920</td><td class="r">+151,200</td><td>6→16</td></tr>
+<tr><td style="text-align:left">Vitamin B panels (B1/2/3/5/6/7)</td><td>68,496</td><td>152,252</td><td class="r">+83,756</td><td>~8→~19</td></tr>
+<tr><td style="text-align:left">Culture & Sensitivity</td><td>0</td><td>20,105</td><td class="r">+20,105</td><td>0→43</td></tr>
+<tr><td style="text-align:left">Heavy & Trace Metals</td><td>28,750</td><td>46,000</td><td class="r">+17,250</td><td>10→16</td></tr>
+<tr><td style="text-align:left">Zinc by ICPMS</td><td>24,288</td><td>19,504</td><td class="g">-4,784</td><td>66→53</td></tr>
+<tr><td style="text-align:left">Lipoprotein(a)</td><td>51,300</td><td>46,500</td><td class="g">-4,800</td><td>342→310</td></tr>
+</table>
+<div class="ins"><b>Why July is high:</b> <b>Omega 3 &amp; 6 Fatty Acid</b> (~₹20.7k/test, 8→19, +₹2.25L) and <b>Folate Pathway SNP Profiling</b> (~₹15.1k/test, 6→16, +₹1.51L) alone are ₹3.77L of the ₹5.30L rise; the Vitamin B panel suite adds ~₹0.84L. All are high-ticket esoteric/vitamin panels whose volumes roughly doubled — a utilisation surge, not a price issue. Focus a utilisation review on Omega 3&amp;6, Folate SNP and the Vitamin B panels.</div>
 </details>
 <div class="foot">Source: monthly consumption Summary boxes (Overall CPRT:CPT after OCD &amp; ex-validation) and cost-split boxes; revenue = inhouse revenue. Cost/test = Σ(8 cost lines) ÷ tests. All shares are % of inhouse revenue. NRL has no OCD-adjusted CPRT.</div>
 </div>
@@ -426,6 +482,9 @@ new Chart(document.getElementById('c_cbt6'),{type:'bar',data:{labels:["Estradiol
 new Chart(document.getElementById('c_log'),{type:'bar',data:{labels:["BLR", "GGN", "HYD", "MUM", "NOA"],datasets:[{label:'Jun',data:[3686456, 492349, 841897, 664357, 306356],backgroundColor:'#9db4c9'},{label:'Jul',data:[4538831, 445332, 936088, 850762, 369510],backgroundColor:'#1F4E78'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:function(x){return x.dataset.label+': ₹'+x.parsed.y.toLocaleString();}}}},scales:{y:{title:{display:true,text:'₹'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
 new Chart(document.getElementById('c_pg'),{type:'bar',data:{labels:["BLR", "GGN", "HYD", "MUM", "NOA", "PNQ"],datasets:[{label:'Jun',data:[680813, 66024, 126186, 128734, 45387, 0],backgroundColor:'#9db4c9'},{label:'Jul',data:[715198, 67739, 130103, 145651, 49148, 556],backgroundColor:'#1F4E78'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:function(x){return x.dataset.label+': ₹'+x.parsed.y.toLocaleString();}}}},scales:{y:{title:{display:true,text:'₹'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
 document.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open){window.dispatchEvent(new Event('resize'));}});});
+new Chart(document.getElementById('c_out'),{type:'bar',data:{labels:["RV Metropolis", "Anand Diagnostic", "Metropolis Lab", "Max Labs", "Camp", "Max healthcare", "Neuberg", "Apollo", "Strands", "Bugspeaks"],datasets:[{data:[3739888, 683975, 460731, 283769, 259260, 218467, 217464, 191719, 173172, 62533],backgroundColor:'#1F4E78'}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'July outsource cost (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_rvm'),{type:'bar',data:{labels:["NextGen NIPT Advance (Non-\u2026", "Vitamin D Gold", "Allergy Panel - Adult Comp\u2026", "Heavy and Trace Metals - 1", "Chromogranin A", "Karyotyping by G-Banding, \u2026", "Chlamydia Trachomatis DNA \u2026", "Vitamin K1**", "Cyclosporine, EDTA Blood", "Allergy Panel - Mold - 2", "All other tests", "Allergy Panel - Child", "CA 15.3", "Food Intolerance (Food IgG\u2026", "17-Hydroxy Progesterone (1\u2026", "Calcitonin Thyrocalcitonin", "CCP Antibody"],datasets:[{data:[65000, 44128, 34200, 20125, 20034, 19440, 18163, 17820, 15120, 14420, 220961, -18171, -21600, -22000, -24304, -30390, -45240],backgroundColor:["#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#999", "#1baf7a", "#1baf7a", "#1baf7a", "#1baf7a", "#1baf7a", "#1baf7a"]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'change in cost'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_metro'),{type:'bar',data:{labels:["Omega 3 & 6 Fatty Acid", "Folate Pathway SNP Profiling", "Vitamin B panels", "Culture & Sensitivity", "Heavy & Trace Metals", "Zinc by ICPMS", "Lipoprotein(a)"],datasets:[{data:[225400, 151200, 83756, 20105, 17250, -4784, -4800],backgroundColor:["#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#1baf7a", "#1baf7a"]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'change in cost Jun to Jul'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
 </script><script data-hub-shared-state>(function(){
   var parts = location.pathname.split("/").filter(Boolean);
   if (!location.hostname.endsWith(".github.io") || parts.length < 2) return;
