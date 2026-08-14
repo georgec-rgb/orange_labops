@@ -1,0 +1,480 @@
+<!doctype html><html lang="en"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width,initial-scale=1">
+<title>CPRT Detailed Comparison — Mar to Jul 2026</title>
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/4.4.1/chart.umd.min.js"></script>
+<link rel="preconnect" href="https://fonts.googleapis.com"><link rel="preconnect" href="https://fonts.gstatic.com" crossorigin><link href="https://fonts.googleapis.com/css2?family=Montserrat:wght@600;700&display=swap" rel="stylesheet">
+<style>
+:root{--bg:#faf9f6;--card:#fff;--ink:#25241f;--muted:#6b6a63;--line:#e7e5df;--navy:#1F4E78;--red:#c0392b;--green:#1baf7a;--amber:#b8860b}
+*{box-sizing:border-box}body{margin:0;background:var(--bg);color:var(--ink);font-family:Arial,Helvetica,sans-serif;line-height:1.55}
+.wrap{max-width:1000px;margin:0 auto;padding:34px 22px 80px}
+h1,h2,h3,.s2,.subh{font-family:'Montserrat',Arial,sans-serif}
+h1{font-size:29px;margin:0 0 4px;letter-spacing:-.01em}
+.sub{color:var(--muted);font-size:14px;margin:0 0 8px}
+h2{font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:5px;margin:40px 0 6px}
+h3{font-size:20px;margin:24px 0 2px}
+p{font-size:14.5px;margin:8px 0}
+.ins{font-size:14px;background:#eef4fb;border-left:4px solid var(--navy);border-radius:0 8px 8px 0;padding:10px 14px;margin:12px 0}
+.card{background:var(--card);border:1px solid var(--line);border-radius:12px;padding:16px 18px;margin:16px 0}
+.chartbox{position:relative;height:340px;width:100%;margin:8px 0}
+.chartbox.sm{height:230px}
+table{width:100%;border-collapse:collapse;font-size:12.5px;margin:10px 0;text-align:center}
+th{background:#f2f0ea;padding:7px 6px;font-weight:700;border-bottom:2px solid var(--line)}
+td{padding:6px 6px;border-bottom:1px solid var(--line)}
+td:first-child,th:first-child{text-align:left}
+.g{color:var(--green);font-weight:700}.r{color:var(--red);font-weight:700}
+.kpis{display:flex;gap:10px;flex-wrap:wrap;margin:8px 0}
+.kpi{flex:1;min-width:120px;background:#f7f6f2;border:1px solid var(--line);border-radius:10px;padding:9px 12px}
+.kpi .n{font-size:19px;font-weight:700}.kpi .l{font-size:10.5px;color:var(--muted);text-transform:uppercase;letter-spacing:.04em}
+.kpi .d{font-size:11px;margin-top:1px}
+.foot{font-size:11px;color:var(--muted);border-top:1px solid var(--line);margin-top:34px;padding-top:12px}
+.tag{display:inline-block;font-size:11px;font-weight:700;padding:2px 8px;border-radius:10px;margin-left:6px}
+.tag.up{background:#fdecea;color:var(--red)}.tag.dn{background:#e7f7ef;color:var(--green)}.tag.fl{background:#eee;color:#666}
+.pill{font-size:11px;color:var(--muted)}
+details.sec>summary{list-style:none;cursor:pointer;margin:40px 0 0}
+details.sec>summary::-webkit-details-marker{display:none}
+.s2{display:block;font-size:12px;letter-spacing:.13em;text-transform:uppercase;color:var(--navy);border-bottom:2px solid var(--navy);padding-bottom:5px}
+.s2::before{content:'▸ ';}
+details[open].sec>summary .s2::before{content:'▾ ';}
+.subh{font-size:14px;font-weight:700;color:var(--navy);margin:16px 0 4px;padding-top:8px;border-top:1px dashed var(--line)}
+.mixcols{display:flex;gap:14px;flex-wrap:wrap}.mixcols>div{flex:1;min-width:220px}
+.small{font-size:12px;color:var(--muted)}
+.callout{background:#fef9e7;border:1px solid #f1c40f;border-left:5px solid #d4ac0d;border-radius:8px;padding:11px 14px;margin:8px 0 4px;font-size:13.5px}
+.callout b{color:#8a6d0b}
+</style></head><body><div class="wrap">
+<h1>July CPRT Analysis</h1>
+<p class="sub">Overall CPRT:CPT (After OCD Reimbursement &amp; Ex-Validation) · March → July 2026 · everything viewed through a GM% lens (% of revenue, not absolute ₹).</p>
+
+<h2>Section 1 · Adjusted CPRT:CPT — month on month (Mar → Jul)</h2>
+<p>The adjusted ratio (after OCD reimbursement, ex-validation) is the one to steer by. Lower = closer to standard CPT benchmark. Below: the full trajectory and what moved each month.</p>
+<div class="card"><div class="chartbox"><canvas id="c_cprt"></canvas></div></div>
+<table><tr><th>Lab</th><th>Mar</th><th>Apr</th><th>May</th><th>Jun</th><th>Jul</th><th>Jun→Jul</th></tr>
+<tr><td><b>BLR 1</b></td><td>1.157</td><td>1.107</td><td>1.174</td><td>1.144</td><td>1.151</td><td class="r">+0.007</td></tr>
+<tr><td><b>BLR 2</b></td><td>1.128</td><td>1.080</td><td>1.150</td><td>1.091</td><td>1.131</td><td class="r">+0.041</td></tr>
+<tr><td><b>HYD</b></td><td>1.147</td><td>1.154</td><td>1.139</td><td>1.112</td><td>1.104</td><td class="g">-0.008</td></tr>
+<tr><td><b>MUM</b></td><td>1.088</td><td>1.159</td><td>1.169</td><td>1.130</td><td>1.105</td><td class="g">-0.025</td></tr>
+<tr><td><b>GGN</b></td><td>1.121</td><td>1.145</td><td>1.145</td><td>1.161</td><td>1.159</td><td class="g">-0.002</td></tr>
+<tr><td><b>NOA</b></td><td>1.144</td><td>1.152</td><td>1.187</td><td>1.195</td><td>1.146</td><td class="g">-0.049</td></tr>
+</table>
+<p class="small">NRL is shown separately — its box has no OCD-adjusted CPRT (no reimbursement structure); its raw CPRT:CPT ran ~1.29–1.37 across the period.</p>
+<div class="ins"><b>What moved:</b><ul style="margin:6px 0">
+<li><b>BLR 1:</b> biggest swing Apr→May (+0.067); Jun→Jul +0.007 — up.</li><li><b>BLR 2:</b> biggest swing Apr→May (+0.069); Jun→Jul +0.041 — up.</li><li><b>HYD:</b> biggest swing May→Jun (-0.027); Jun→Jul -0.008 — down.</li><li><b>MUM:</b> biggest swing Mar→Apr (+0.071); Jun→Jul -0.025 — down.</li><li><b>GGN:</b> biggest swing Mar→Apr (+0.023); Jun→Jul -0.002 — down.</li><li><b>NOA:</b> biggest swing Jun→Jul (-0.049); Jun→Jul -0.049 — down.</li></ul></div>
+<h2>Section 2 · Lab by lab — June vs July</h2>
+<p>Each lab: the split of cost as a share of revenue (GM lens), the test-mix shift, and what drove CPRT. Absolute ₹ take a back seat to % of revenue.</p>
+<h3>BLR 1<span class="tag up">CPRT +0.007</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">75.1%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 74.9% (+0.2pp)</div></div>
+<div class="kpi"><div class="n">₹708.2L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹677.8L</div></div>
+<div class="kpi"><div class="n">₹180.9L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹174.9L</div></div>
+<div class="kpi"><div class="n">1.151</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.144</div></div>
+<div class="kpi"><div class="n">₹50.1</div><div class="l">Cost / test</div><div class="d small">Jun ₹50.1</div></div>
+<div class="kpi"><div class="n">₹200.8</div><div class="l">Revenue / test</div><div class="d small">Jun ₹201.5</div></div>
+<div class="kpi"><div class="n">352,675</div><div class="l">Tests (Jul)</div><div class="d small">Jun 336,306</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>20.49%</td><td>20.82%</td><td class="r">+0.32</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>0.97%</td><td>0.83%</td><td class="g">-0.14</td></tr>
+<tr><td>QC</td><td>0.77%</td><td>0.66%</td><td class="g">-0.12</td></tr>
+<tr><td>Cons</td><td>2.43%</td><td>2.44%</td><td class="r">+0.02</td></tr>
+<tr><td>Calib</td><td>0.01%</td><td>0.02%</td><td class="">+0.01</td></tr>
+<tr><td>Rerun</td><td>0.02%</td><td>0.07%</td><td class="r">+0.05</td></tr>
+<tr><td>Incomplete</td><td>0.17%</td><td>0.12%</td><td class="g">-0.05</td></tr>
+<tr><td>ILC</td><td>0.00%</td><td>0.00%</td><td class="">+0.00</td></tr>
+<tr><td>Validation</td><td>0.31%</td><td>0.15%</td><td class="g">-0.16</td></tr>
+<tr><td>Stores expiry</td><td>0.20%</td><td>0.04%</td><td class="g">-0.16</td></tr>
+<tr><td>Lab expiry</td><td>0.01%</td><td>0.05%</td><td class="r">+0.04</td></tr>
+<tr><td>EQAS</td><td>0.08%</td><td>0.02%</td><td class="g">-0.05</td></tr>
+<tr><td>Other items</td><td>0.34%</td><td>0.30%</td><td class="g">-0.04</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>0.69%</td><td>0.62%</td><td class="g">-0.07</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹48.6 → ₹48.1: <b>mix -1.26</b> (basket shift) and <b>rate +0.83</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br0"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt0"></canvas></div></div>
+<div class="ins"><b>Broad-based, no single driver:</b> Microalbumin (+₹0.35) is offset by Homocysteine (−₹0.34) and Estradiol (−₹0.33). Net −₹0.5/test.</div>
+<div class="callout">⚠ <b>Micro-albumin reagent substitution (supply shortage) — reimbursable:</b> a costlier micro-albumin reagent replaced the usual one across cities, <b>this is the driver of the Microalbumin/Creatinine Ratio cost rise</b>. Extra cost this month <b>₹88,432</b> (₹88,433 → ₹176,865), <b>fully recoverable via credit note (CN)</b>. Once the CN is received, adjusted CPRT:CPT eases <b>1.151 → 1.145</b> (−0.006). Network CN to receive: ₹1,47,260.</div>
+<div class="small">New parameters: HBsAg (Abbot), HIV 1&2 (Abbot) · Dropped: —</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT rose</b> 1.144 → 1.151 (+0.007).</li><li><b>Cost rose in</b> Reagent (testing) (+0.32pp), Rerun (+0.05pp), Lab expiry (+0.04pp).</li><li><b>Savings in</b> Stores expiry (-0.16pp), Validation (-0.16pp), Reagent for QC & Calib (-0.14pp).</li><li><b>Volume</b> 336,306 → 352,675 (+16,369); <b>revenue/test</b> ₹201.5 → ₹200.8 (-0.7); <b>cost/test</b> ₹50.1 → ₹50.1 (+0.0).</li><li><b>Mix:</b> Biochemistry share 41.6% → 42.4% (+0.8pp).</li><li><b>Net GM%</b> 74.9% → 75.1% (+0.2pp). <b>Watch:</b> reagent (testing).</li></ul></div>
+<h3>BLR 2<span class="tag up">CPRT +0.041</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">75.7%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 76.2% (-0.5pp)</div></div>
+<div class="kpi"><div class="n">₹240.9L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹233.1L</div></div>
+<div class="kpi"><div class="n">₹60.1L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹57.2L</div></div>
+<div class="kpi"><div class="n">1.131</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.091</div></div>
+<div class="kpi"><div class="n">₹48.5</div><div class="l">Cost / test</div><div class="d small">Jun ₹46.1</div></div>
+<div class="kpi"><div class="n">₹203.8</div><div class="l">Revenue / test</div><div class="d small">Jun ₹193.5</div></div>
+<div class="kpi"><div class="n">118,219</div><div class="l">Tests (Jul)</div><div class="d small">Jun 120,418</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>20.64%</td><td>20.56%</td><td class="g">-0.08</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>0.96%</td><td>0.65%</td><td class="g">-0.31</td></tr>
+<tr><td>QC</td><td>0.90%</td><td>1.03%</td><td class="r">+0.13</td></tr>
+<tr><td>Cons</td><td>1.16%</td><td>1.24%</td><td class="r">+0.09</td></tr>
+<tr><td>Calib</td><td>0.05%</td><td>0.14%</td><td class="r">+0.10</td></tr>
+<tr><td>Rerun</td><td>0.00%</td><td>0.02%</td><td class="r">+0.02</td></tr>
+<tr><td>Incomplete</td><td>0.12%</td><td>0.15%</td><td class="r">+0.04</td></tr>
+<tr><td>ILC</td><td>0.01%</td><td>0.01%</td><td class="">+0.00</td></tr>
+<tr><td>Validation</td><td>0.09%</td><td>0.63%</td><td class="r">+0.54</td></tr>
+<tr><td>Stores expiry</td><td>0.16%</td><td>0.01%</td><td class="g">-0.16</td></tr>
+<tr><td>Lab expiry</td><td>0.13%</td><td>0.00%</td><td class="g">-0.13</td></tr>
+<tr><td>EQAS</td><td>0.07%</td><td>0.07%</td><td class="">-0.00</td></tr>
+<tr><td>Other items</td><td>0.26%</td><td>0.43%</td><td class="r">+0.18</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>0.74%</td><td>0.65%</td><td class="g">-0.09</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹44.5 → ₹47.0: <b>mix +0.22</b> (basket shift) and <b>rate +2.23</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<p class="small">Of the +₹2.5 cost/test, <b style="color:#8a6d0b">HbA1c alone added ₹1.09 (~44%)</b> — the TSK-gel-column spike (gold step below).</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br1"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt1"></canvas></div></div>
+<div class="callout">⚠ <b>HbA1c — TSK Gel Column (alternating spike, self-correcting):</b> The gel column is running ~<b>7,000 tests against the promised ~4,000</b>, so its cost lands unevenly across months. That shows up as an <b>alternating jump in HbA1c consumption and CPRT</b> — high one month, lower the next — rather than a genuine cost increase. July is an “up” month (highlighted gold below); <b>we have normalized this from this month onwards</b>.</div>
+<div class="callout"><b>Other changes (+₹1.41/test):</b> cost added by IgE (+₹0.46), Microalbumin Creatinine (+₹0.36) and Vitamin D (+₹0.32); partly offset by Vitamin B12 (−₹0.34), KFT-Elec (−₹0.31) and hsCRP (−₹0.29). None of these are structural — routine month-to-month basket movement.</div>
+<div class="callout">⚠ <b>Micro-albumin reagent substitution (supply shortage) — reimbursable:</b> a costlier micro-albumin reagent replaced the usual one across cities, <b>this is the driver of the Microalbumin/Creatinine Ratio cost rise</b>. Extra cost this month <b>₹34,996</b> (₹34,997 → ₹69,993), <b>fully recoverable via credit note (CN)</b>. Once the CN is received, adjusted CPRT:CPT eases <b>1.131 → 1.124</b> (−0.007). Network CN to receive: ₹1,47,260.</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT rose</b> 1.091 → 1.131 (+0.041).</li><li><b>Cost rose in</b> Validation (+0.54pp), Other items (+0.18pp), QC (+0.13pp).</li><li><b>Savings in</b> Reagent for QC & Calib (-0.31pp), Stores expiry (-0.16pp), Lab expiry (-0.13pp).</li><li><b>Volume</b> 120,418 → 118,219 (-2,199); <b>revenue/test</b> ₹193.5 → ₹203.8 (+10.2); <b>cost/test</b> ₹46.1 → ₹48.5 (+2.4).</li><li><b>Mix:</b> General share 1.8% → 4.4% (+2.6pp).</li><li><b>Net GM%</b> 76.2% → 75.7% (-0.5pp). <b>Watch:</b> validation, GM slippage.</li></ul></div>
+<h3>HYD<span class="tag dn">CPRT -0.008</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">73.5%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 72.5% (+1.0pp)</div></div>
+<div class="kpi"><div class="n">₹202.9L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹191.0L</div></div>
+<div class="kpi"><div class="n">₹53.7L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹52.6L</div></div>
+<div class="kpi"><div class="n">1.104</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.112</div></div>
+<div class="kpi"><div class="n">₹47.3</div><div class="l">Cost / test</div><div class="d small">Jun ₹45.7</div></div>
+<div class="kpi"><div class="n">₹182.3</div><div class="l">Revenue / test</div><div class="d small">Jun ₹168.2</div></div>
+<div class="kpi"><div class="n">111,284</div><div class="l">Tests (Jul)</div><div class="d small">Jun 113,576</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>22.68%</td><td>21.89%</td><td class="g">-0.79</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>1.44%</td><td>1.10%</td><td class="g">-0.33</td></tr>
+<tr><td>QC</td><td>1.03%</td><td>0.93%</td><td class="g">-0.09</td></tr>
+<tr><td>Cons</td><td>1.42%</td><td>1.39%</td><td class="g">-0.03</td></tr>
+<tr><td>Calib</td><td>0.02%</td><td>0.01%</td><td class="">-0.00</td></tr>
+<tr><td>Rerun</td><td>0.37%</td><td>0.35%</td><td class="g">-0.03</td></tr>
+<tr><td>Incomplete</td><td>0.21%</td><td>0.25%</td><td class="r">+0.04</td></tr>
+<tr><td>Validation</td><td>0.04%</td><td>0.33%</td><td class="r">+0.28</td></tr>
+<tr><td>Lab expiry</td><td>0.00%</td><td>0.01%</td><td class="r">+0.01</td></tr>
+<tr><td>EQAS</td><td>0.18%</td><td>0.11%</td><td class="g">-0.07</td></tr>
+<tr><td>Other items</td><td>0.15%</td><td>0.12%</td><td class="g">-0.03</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>1.14%</td><td>1.10%</td><td class="g">-0.03</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹43.6 → ₹45.1: <b>mix +1.99</b> (basket shift) and <b>rate -0.48</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br2"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt2"></canvas></div></div>
+<div class="ins"><b>Broad-based (+₹1.5/test):</b> spread across KFT, LFT, CBC and Dengue; PSA and HbA1c pulled the other way. No single driver.</div>
+<div class="callout">⚠ <b>Micro-albumin reagent substitution (supply shortage) — reimbursable:</b> a costlier micro-albumin reagent replaced the usual one across cities, <b>this is the driver of the Microalbumin/Creatinine Ratio cost rise</b>. Extra cost this month <b>₹7,057</b> (₹7,058 → ₹14,115), <b>fully recoverable via credit note (CN)</b>. Once the CN is received, adjusted CPRT:CPT eases <b>1.104 → 1.102</b> (−0.002). Network CN to receive: ₹1,47,260.</div>
+<div class="small">New parameters: Dengue profile (ELISA) · Dropped: Bilirubin Indirect, Cholesterol:HDL ratio</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT fell</b> 1.112 → 1.104 (-0.008).</li><li><b>Cost rose in</b> Validation (+0.28pp), Incomplete (+0.04pp).</li><li><b>Savings in</b> Reagent (testing) (-0.79pp), Reagent for QC & Calib (-0.33pp), QC (-0.09pp).</li><li><b>Volume</b> 113,576 → 111,284 (-2,292); <b>revenue/test</b> ₹168.2 → ₹182.3 (+14.1); <b>cost/test</b> ₹45.7 → ₹47.3 (+1.6).</li><li><b>Mix:</b> Serology share 5.4% → 6.9% (+1.5pp).</li><li><b>Net GM%</b> 72.5% → 73.5% (+1.0pp). <b>Watch:</b> validation, GM recovery.</li></ul></div>
+<h3>MUM<span class="tag dn">CPRT -0.025</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">72.0%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 71.5% (+0.5pp)</div></div>
+<div class="kpi"><div class="n">₹167.9L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹154.2L</div></div>
+<div class="kpi"><div class="n">₹47.1L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹44.0L</div></div>
+<div class="kpi"><div class="n">1.105</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.130</div></div>
+<div class="kpi"><div class="n">₹46.3</div><div class="l">Cost / test</div><div class="d small">Jun ₹47.9</div></div>
+<div class="kpi"><div class="n">₹167.3</div><div class="l">Revenue / test</div><div class="d small">Jun ₹171.5</div></div>
+<div class="kpi"><div class="n">100,338</div><div class="l">Tests (Jul)</div><div class="d small">Jun 89,930</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>23.14%</td><td>23.53%</td><td class="r">+0.39</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>1.50%</td><td>1.08%</td><td class="g">-0.42</td></tr>
+<tr><td>QC</td><td>1.11%</td><td>0.98%</td><td class="g">-0.13</td></tr>
+<tr><td>Cons</td><td>1.50%</td><td>1.51%</td><td class="">+0.01</td></tr>
+<tr><td>Calib</td><td>0.06%</td><td>0.02%</td><td class="g">-0.04</td></tr>
+<tr><td>Rerun</td><td>0.37%</td><td>0.28%</td><td class="g">-0.09</td></tr>
+<tr><td>Incomplete</td><td>0.28%</td><td>0.25%</td><td class="g">-0.02</td></tr>
+<tr><td>ILC</td><td>0.01%</td><td>0.01%</td><td class="">+0.00</td></tr>
+<tr><td>Validation</td><td>0.18%</td><td>0.05%</td><td class="g">-0.13</td></tr>
+<tr><td>Stores expiry</td><td>0.06%</td><td>0.00%</td><td class="g">-0.06</td></tr>
+<tr><td>EQAS</td><td>0.12%</td><td>0.09%</td><td class="g">-0.04</td></tr>
+<tr><td>Other items</td><td>0.21%</td><td>0.24%</td><td class="r">+0.03</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>1.17%</td><td>1.08%</td><td class="g">-0.09</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹45.8 → ₹44.3: <b>mix -0.36</b> (basket shift) and <b>rate -1.15</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br3"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt3"></canvas></div></div>
+<div class="callout"><b>Big driver — Dengue profile ELISA (+₹0.58/test):</b> seasonal monsoon demand; overall cost/test still fell −₹1.5.</div>
+<div class="callout">⚠ <b>Micro-albumin reagent substitution (supply shortage) — reimbursable:</b> a costlier micro-albumin reagent replaced the usual one across cities, <b>this is the driver of the Microalbumin/Creatinine Ratio cost rise</b>. Extra cost this month <b>₹4,207</b> (₹4,208 → ₹8,415), <b>fully recoverable via credit note (CN)</b>. Once the CN is received, adjusted CPRT:CPT eases <b>1.105 → 1.104</b> (−0.001). Network CN to receive: ₹1,47,260.</div>
+<div class="small">New parameters: Dengue profile (ELISA), Dengue NS1 Antigen ELISA, 12 Lead Electrocardiogram (12  · Dropped: —</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT fell</b> 1.130 → 1.105 (-0.025).</li><li><b>Cost rose in</b> Reagent (testing) (+0.39pp), Other items (+0.03pp).</li><li><b>Savings in</b> Reagent for QC & Calib (-0.42pp), QC (-0.13pp), Validation (-0.13pp).</li><li><b>Volume</b> 89,930 → 100,338 (+10,408); <b>revenue/test</b> ₹171.5 → ₹167.3 (-4.2); <b>cost/test</b> ₹47.9 → ₹46.3 (-1.7).</li><li><b>Mix:</b> Hematology share 7.4% → 7.8% (+0.4pp).</li><li><b>Net GM%</b> 71.5% → 72.0% (+0.5pp). <b>Watch:</b> reagent (testing), GM recovery.</li></ul></div>
+<h3>GGN<span class="tag fl">flat</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">67.0%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 66.9% (+0.0pp)</div></div>
+<div class="kpi"><div class="n">₹101.3L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹94.7L</div></div>
+<div class="kpi"><div class="n">₹35.7L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹33.7L</div></div>
+<div class="kpi"><div class="n">1.159</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.161</div></div>
+<div class="kpi"><div class="n">₹55.5</div><div class="l">Cost / test</div><div class="d small">Jun ₹52.3</div></div>
+<div class="kpi"><div class="n">₹159.3</div><div class="l">Revenue / test</div><div class="d small">Jun ₹149.8</div></div>
+<div class="kpi"><div class="n">63,613</div><div class="l">Tests (Jul)</div><div class="d small">Jun 63,210</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>27.08%</td><td>27.83%</td><td class="r">+0.75</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>2.70%</td><td>2.18%</td><td class="g">-0.52</td></tr>
+<tr><td>QC</td><td>2.00%</td><td>1.78%</td><td class="g">-0.23</td></tr>
+<tr><td>Cons</td><td>1.65%</td><td>1.67%</td><td class="r">+0.02</td></tr>
+<tr><td>Calib</td><td>0.02%</td><td>0.05%</td><td class="r">+0.03</td></tr>
+<tr><td>Rerun</td><td>0.94%</td><td>0.86%</td><td class="g">-0.08</td></tr>
+<tr><td>Incomplete</td><td>0.51%</td><td>0.48%</td><td class="g">-0.03</td></tr>
+<tr><td>ILC</td><td>0.02%</td><td>0.02%</td><td class="">-0.00</td></tr>
+<tr><td>Validation</td><td>0.24%</td><td>0.00%</td><td class="g">-0.24</td></tr>
+<tr><td>EQAS</td><td>0.20%</td><td>0.16%</td><td class="g">-0.04</td></tr>
+<tr><td>Other items</td><td>0.18%</td><td>0.20%</td><td class="r">+0.02</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>2.48%</td><td>2.18%</td><td class="g">-0.30</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹48.2 → ₹51.5: <b>mix +3.67</b> (basket shift) and <b>rate -0.43</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br4"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt4"></canvas></div></div>
+<div class="ins"><b>Broad-based (+₹3.3/test):</b> Insulin, LFT, KFT-Elec, Dengue and B12 each added ~₹0.3/test — a general lift, not one test.</div>
+<div class="callout">⚠ <b>Micro-albumin reagent substitution (supply shortage) — reimbursable:</b> a costlier micro-albumin reagent replaced the usual one across cities, <b>this is the driver of the Microalbumin/Creatinine Ratio cost rise</b>. Extra cost this month <b>₹12,568</b> (₹12,569 → ₹25,137), <b>fully recoverable via credit note (CN)</b>. Once the CN is received, adjusted CPRT:CPT eases <b>1.159 → 1.155</b> (−0.004). Network CN to receive: ₹1,47,260.</div>
+<div class="small">New parameters: Dengue profile (ELISA), Dengue NS1 Antigen ELISA · Dropped: —</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT held flat</b> 1.161 → 1.159 (-0.002).</li><li><b>Cost rose in</b> Reagent (testing) (+0.75pp), Calib (+0.03pp).</li><li><b>Savings in</b> Reagent for QC & Calib (-0.52pp), OCD reimbursement (credit) (-0.30pp), Validation (-0.24pp).</li><li><b>Volume</b> 63,210 → 63,613 (+403); <b>revenue/test</b> ₹149.8 → ₹159.3 (+9.4); <b>cost/test</b> ₹52.3 → ₹55.5 (+3.2).</li><li><b>Mix:</b> Immunology share 50.6% → 56.0% (+5.4pp).</li><li><b>Net GM%</b> 66.9% → 67.0% (+0.0pp). <b>Watch:</b> reagent (testing).</li></ul></div>
+<h3>NOA<span class="tag dn">CPRT -0.049</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">66.6%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 66.7% (-0.1pp)</div></div>
+<div class="kpi"><div class="n">₹80.4L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹65.0L</div></div>
+<div class="kpi"><div class="n">₹28.9L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹24.0L</div></div>
+<div class="kpi"><div class="n">1.146</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun 1.195</div></div>
+<div class="kpi"><div class="n">₹53.0</div><div class="l">Cost / test</div><div class="d small">Jun ₹58.8</div></div>
+<div class="kpi"><div class="n">₹149.7</div><div class="l">Revenue / test</div><div class="d small">Jun ₹162.5</div></div>
+<div class="kpi"><div class="n">53,699</div><div class="l">Tests (Jul)</div><div class="d small">Jun 40,024</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent (testing)</td><td>26.86%</td><td>27.74%</td><td class="r">+0.88</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>3.90%</td><td>2.47%</td><td class="g">-1.42</td></tr>
+<tr><td>QC</td><td>2.55%</td><td>2.01%</td><td class="g">-0.55</td></tr>
+<tr><td>Cons</td><td>1.67%</td><td>1.61%</td><td class="g">-0.06</td></tr>
+<tr><td>Calib</td><td>0.03%</td><td>0.15%</td><td class="r">+0.12</td></tr>
+<tr><td>Rerun</td><td>0.82%</td><td>0.96%</td><td class="r">+0.14</td></tr>
+<tr><td>Incomplete</td><td>0.34%</td><td>0.48%</td><td class="r">+0.14</td></tr>
+<tr><td>ILC</td><td>0.02%</td><td>0.02%</td><td class="">-0.00</td></tr>
+<tr><td>Validation</td><td>0.08%</td><td>0.00%</td><td class="g">-0.08</td></tr>
+<tr><td>Stores expiry</td><td>0.04%</td><td>0.00%</td><td class="g">-0.04</td></tr>
+<tr><td>EQAS</td><td>0.30%</td><td>0.20%</td><td class="g">-0.09</td></tr>
+<tr><td>Other items</td><td>0.32%</td><td>0.27%</td><td class="g">-0.04</td></tr>
+<tr><td>OCD reimbursement (credit)</td><td>3.60%</td><td>2.47%</td><td class="g">-1.13</td></tr>
+</table>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹52.7 → ₹49.1: <b>mix -1.47</b> (basket shift) and <b>rate -2.11</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br5"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt5"></canvas></div></div>
+<div class="callout">⚠ <b>Big driver — Vitamin D 25-OH (+₹1.67/test):</b> the single largest cost adder anywhere in the network this month, with Vitamin B12 (+₹1.08) next. Even so, NOA's overall cost/test <b>fell −₹3.6</b> on savings across other tests — worth checking whether the Vit D / B12 spike is a genuine volume shift or a consumption issue.</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>CPRT fell</b> 1.195 → 1.146 (-0.049).</li><li><b>Cost rose in</b> Reagent (testing) (+0.88pp), Incomplete (+0.14pp), Rerun (+0.14pp).</li><li><b>Savings in</b> Reagent for QC & Calib (-1.42pp), OCD reimbursement (credit) (-1.13pp), QC (-0.55pp).</li><li><b>Volume</b> 40,024 → 53,699 (+13,675); <b>revenue/test</b> ₹162.5 → ₹149.7 (-12.8); <b>cost/test</b> ₹58.8 → ₹53.0 (-5.8).</li><li><b>Mix:</b> Serology share 4.5% → 5.3% (+0.8pp).</li><li><b>Net GM%</b> 66.7% → 66.6% (-0.1pp). <b>Watch:</b> reagent (testing).</li></ul></div>
+<h3>NRL<span class="tag fl">flat</span></h3>
+<div class="kpis">
+<div class="kpi"><div class="n">68.9%</div><div class="l">GM% (Jul)</div><div class="d small">Jun 66.7% (+2.3pp)</div></div>
+<div class="kpi"><div class="n">₹101.9L</div><div class="l">Revenue (Jul)</div><div class="d small">Jun ₹92.3L</div></div>
+<div class="kpi"><div class="n">₹31.7L</div><div class="l">Cost / consumption (Jul)</div><div class="d small">Jun ₹30.8L</div></div>
+<div class="kpi"><div class="n">—</div><div class="l">Adj CPRT:CPT</div><div class="d small">Jun —</div></div>
+<div class="kpi"><div class="n">₹206.5</div><div class="l">Cost / test</div><div class="d small">Jun ₹210.9</div></div>
+<div class="kpi"><div class="n">₹695.0</div><div class="l">Revenue / test</div><div class="d small">Jun ₹723.0</div></div>
+<div class="kpi"><div class="n">14,668</div><div class="l">Tests (Jul)</div><div class="d small">Jun 12,771</div></div>
+</div>
+<table><tr><th>Split of cost</th><th>Jun % rev</th><th>Jul % rev</th><th>Δ pp</th></tr>
+<tr><td>Reagent</td><td>21.86%</td><td>16.21%</td><td class="g">-5.64</td></tr>
+<tr><td>Rerun</td><td>0.67%</td><td>0.39%</td><td class="g">-0.28</td></tr>
+<tr><td>Incomplete</td><td>0.84%</td><td>1.15%</td><td class="r">+0.31</td></tr>
+<tr><td>ILC</td><td>0.00%</td><td>0.00%</td><td class="">+0.00</td></tr>
+<tr><td>Reagent for QC & Calib</td><td>2.12%</td><td>2.06%</td><td class="g">-0.06</td></tr>
+<tr><td>QC</td><td>0.93%</td><td>0.73%</td><td class="g">-0.20</td></tr>
+<tr><td>Cons</td><td>2.77%</td><td>2.99%</td><td class="r">+0.22</td></tr>
+<tr><td>Calib</td><td>0.00%</td><td>0.00%</td><td class="">+0.00</td></tr>
+</table>
+<p class="small">NRL split from the authoritative boxes (file layout not auto-parsable). Cost/test ₹210.93 → ₹206.46, revenue/test ₹723 → ₹695. Reagent fell sharply as a share of revenue (21.9% → 16.2%).</p>
+<div class="subh">Test-mix &amp; cost drivers · Jun → Jul</div>
+<p class="small">Cost/test moved ₹218.6 → ₹207.2: <b>mix +7.01</b> (basket shift) and <b>rate -18.46</b> (per-test consumption). Bars: which tests added or removed cost.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_br6"></canvas></div></div>
+<div class="card"><div class="chartbox"><canvas id="c_cbt6"></canvas></div></div>
+<div class="callout"><b>Big driver — Estradiol (+₹7.40/test):</b> flagged, but NRL's low volume (~14.7k tests) magnifies every test's ₹/test; overall cost/test fell −₹11.4. Read NRL drivers as directional, not absolute.</div>
+<div class="small">New parameters: Estradiol (E2) · Dropped: CA 15.3</div>
+<div class="subh">What changed vs June · observations</div>
+<div class="ins"><ul style="margin:6px 0 0"><li><b>Cost rose in</b> Cons (+2.99pp), QC (+0.73pp).</li><li><b>Savings in</b> Reagent (testing) (-3.72pp), Stores expiry (-1.09pp), Other items (-0.61pp).</li><li><b>Volume</b> 12,771 → 14,668 (+1,897); <b>revenue/test</b> ₹723.0 → ₹695.0 (-28.0); <b>cost/test</b> ₹210.9 → ₹206.5 (-4.5).</li><li><b>Mix:</b> Molecular Biology share 22.0% → 20.2% (-1.8pp).</li><li><b>Net GM%</b> 66.7% → 68.9% (+2.3pp). <b>Watch:</b> cons, GM recovery.</li></ul></div>
+<h2>Section 3 · Cost components across labs — where is the scope? (Jul, % of revenue)</h2>
+<p>Same eight cost lines, every lab, as a share of revenue. Darker red = a bigger drag on GM → more scope to improve. Compare a lab against the lightest performer in each column.</p>
+<table><tr><th>Lab</th><th>Reagent</th><th>Rerun</th><th>Incomplete</th><th>ILC</th><th>Reagent for QC & Calib</th><th>QC</th><th>Cons</th><th>Calib</th></tr>
+<tr><td><b>BLR 1</b></td>
+<td style="background:rgba(192,57,43,0.43)">20.82%</td>
+<td style="background:rgba(192,57,43,0.10)">0.07%</td>
+<td style="background:rgba(192,57,43,0.11)">0.12%</td>
+<td style="background:rgba(192,57,43,0.11)">0.00%</td>
+<td style="background:rgba(192,57,43,0.23)">0.84%</td>
+<td style="background:rgba(192,57,43,0.22)">0.65%</td>
+<td style="background:rgba(192,57,43,0.47)">2.44%</td>
+<td style="background:rgba(192,57,43,0.13)">0.02%</td>
+</tr>
+<tr><td><b>BLR 2</b></td>
+<td style="background:rgba(192,57,43,0.43)">20.56%</td>
+<td style="background:rgba(192,57,43,0.07)">0.02%</td>
+<td style="background:rgba(192,57,43,0.13)">0.16%</td>
+<td style="background:rgba(192,57,43,0.24)">0.01%</td>
+<td style="background:rgba(192,57,43,0.19)">0.65%</td>
+<td style="background:rgba(192,57,43,0.32)">1.03%</td>
+<td style="background:rgba(192,57,43,0.27)">1.24%</td>
+<td style="background:rgba(192,57,43,0.54)">0.14%</td>
+</tr>
+<tr><td><b>HYD</b></td>
+<td style="background:rgba(192,57,43,0.45)">21.89%</td>
+<td style="background:rgba(192,57,43,0.24)">0.35%</td>
+<td style="background:rgba(192,57,43,0.17)">0.25%</td>
+<td style="background:rgba(192,57,43,0.08)">0.00%</td>
+<td style="background:rgba(192,57,43,0.28)">1.10%</td>
+<td style="background:rgba(192,57,43,0.29)">0.93%</td>
+<td style="background:rgba(192,57,43,0.29)">1.39%</td>
+<td style="background:rgba(192,57,43,0.11)">0.02%</td>
+</tr>
+<tr><td><b>MUM</b></td>
+<td style="background:rgba(192,57,43,0.48)">23.53%</td>
+<td style="background:rgba(192,57,43,0.20)">0.28%</td>
+<td style="background:rgba(192,57,43,0.17)">0.25%</td>
+<td style="background:rgba(192,57,43,0.24)">0.01%</td>
+<td style="background:rgba(192,57,43,0.28)">1.08%</td>
+<td style="background:rgba(192,57,43,0.30)">0.98%</td>
+<td style="background:rgba(192,57,43,0.31)">1.51%</td>
+<td style="background:rgba(192,57,43,0.14)">0.02%</td>
+</tr>
+<tr><td><b>GGN</b></td>
+<td style="background:rgba(192,57,43,0.56)">27.83%</td>
+<td style="background:rgba(192,57,43,0.51)">0.86%</td>
+<td style="background:rgba(192,57,43,0.27)">0.48%</td>
+<td style="background:rgba(192,57,43,0.55)">0.02%</td>
+<td style="background:rgba(192,57,43,0.50)">2.18%</td>
+<td style="background:rgba(192,57,43,0.50)">1.78%</td>
+<td style="background:rgba(192,57,43,0.34)">1.67%</td>
+<td style="background:rgba(192,57,43,0.21)">0.05%</td>
+</tr>
+<tr><td><b>NOA</b></td>
+<td style="background:rgba(192,57,43,0.56)">27.74%</td>
+<td style="background:rgba(192,57,43,0.56)">0.96%</td>
+<td style="background:rgba(192,57,43,0.27)">0.48%</td>
+<td style="background:rgba(192,57,43,0.56)">0.02%</td>
+<td style="background:rgba(192,57,43,0.56)">2.47%</td>
+<td style="background:rgba(192,57,43,0.56)">2.01%</td>
+<td style="background:rgba(192,57,43,0.33)">1.61%</td>
+<td style="background:rgba(192,57,43,0.56)">0.15%</td>
+</tr>
+<tr><td><b>NRL</b></td>
+<td style="background:rgba(192,57,43,0.35)">16.21%</td>
+<td style="background:rgba(192,57,43,0.26)">0.39%</td>
+<td style="background:rgba(192,57,43,0.56)">1.15%</td>
+<td style="">0.00%</td>
+<td style="background:rgba(192,57,43,0.48)">2.06%</td>
+<td style="background:rgba(192,57,43,0.24)">0.73%</td>
+<td style="background:rgba(192,57,43,0.56)">2.99%</td>
+<td style="">0.00%</td>
+</tr>
+</table>
+<div class="ins"><b>Where to look first (highest % of revenue in each line):</b><ul style="margin:6px 0">
+<li><b>Reagent:</b> GGN highest at 27.83% vs NRL 16.21% — gap 11.62pp.</li>
+<li><b>Rerun:</b> NOA highest at 0.96% vs BLR 2 0.02% — gap 0.93pp.</li>
+<li><b>Incomplete:</b> NRL highest at 1.15% vs BLR 1 0.12% — gap 1.03pp.</li>
+<li><b>Reagent for QC & Calib:</b> NOA highest at 2.47% vs BLR 2 0.65% — gap 1.82pp.</li>
+<li><b>QC:</b> NOA highest at 2.01% vs BLR 1 0.65% — gap 1.35pp.</li>
+<li><b>Cons:</b> NRL highest at 2.99% vs BLR 2 1.24% — gap 1.75pp.</li>
+<li><b>Calib:</b> NOA highest at 0.15% vs NRL 0.00% — gap 0.15pp.</li>
+</ul></div>
+<div class="chartbox"><canvas id="c_scope"></canvas></div>
+<p class="small">Reagent excluded from the chart (dominant scale); shown are the improvable overhead lines: QC, Reagent for QC &amp; Calib, Cons, Rerun, Incomplete, Calib, ILC.</p>
+<div class="subh">Changes under-way</div>
+<div class="callout"><b>BLR 2 — QC aliquot volume optimization (in progress):</b> Aliquoting volume for Speciality IA controls reduced <b>200 µL → 150 µL → currently 120 µL</b>, targeting <b>100 µL for Speciality IA across all locations</b>. This directly lowers the <b>QC</b> and <b>Reagent-for-QC &amp; Calib</b> lines above. Impact expected to show from the <b>August</b> month; further optimizations are ongoing.</div>
+<details class="sec" open><summary><span class="s2">Section 4 · Other components — city-wise (Jun vs Jul)</span></summary>
+<h3>Logistics</h3>
+<p class="small">Transport logistics (excl. logistic-kit), from inventory consumption. Network total ₹59.9L → ₹71.4L (+₹11.5L).</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_log"></canvas></div></div>
+<table><tr><th>City</th><th>Jun (₹)</th><th>Jul (₹)</th><th>Δ (₹)</th><th>Δ %</th></tr>
+<tr><td><b>BLR</b></td><td>3,686,456</td><td>4,538,831</td><td class="r">+852,375</td><td class="r">+23.1%</td></tr>
+<tr><td><b>GGN</b></td><td>492,349</td><td>445,332</td><td class="g">-47,017</td><td class="g">-9.5%</td></tr>
+<tr><td><b>HYD</b></td><td>841,897</td><td>936,088</td><td class="r">+94,191</td><td class="r">+11.2%</td></tr>
+<tr><td><b>MUM</b></td><td>664,357</td><td>850,762</td><td class="r">+186,405</td><td class="r">+28.1%</td></tr>
+<tr><td><b>NOA</b></td><td>306,356</td><td>369,510</td><td class="r">+63,154</td><td class="r">+20.6%</td></tr>
+<tr style="font-weight:700;border-top:2px solid #d8d6d0"><td>Total</td><td>5,991,415</td><td>7,140,523</td><td>+1,149,108</td><td>+19.2%</td></tr></table>
+<p class="small">BLR is ~74% of the network increase (+₹8.5L of ₹11.5L). GGN is the only city down.</p>
+<h3>Payment Gateway charges</h3>
+<p class="small">From MIS City PL. Network total ₹10.47L (Jun) → ₹11.08L (Jul). <b>Note:</b> the raw MIS shows PG rising Jun→Jul — the opposite of the Jun/Jul labels in the GM-check template; figures here follow the MIS City PL month columns.</p>
+<div class="card"><div class="chartbox sm"><canvas id="c_pg"></canvas></div></div>
+<table><tr><th>City</th><th>Jun (₹)</th><th>Jul (₹)</th><th>Δ (₹)</th><th>Δ %</th></tr>
+<tr><td><b>BLR</b></td><td>680,813</td><td>715,198</td><td class="r">+34,385</td><td class="r">+5.1%</td></tr>
+<tr><td><b>GGN</b></td><td>66,024</td><td>67,739</td><td class="r">+1,715</td><td class="r">+2.6%</td></tr>
+<tr><td><b>HYD</b></td><td>126,186</td><td>130,103</td><td class="r">+3,917</td><td class="r">+3.1%</td></tr>
+<tr><td><b>MUM</b></td><td>128,734</td><td>145,651</td><td class="r">+16,917</td><td class="r">+13.1%</td></tr>
+<tr><td><b>NOA</b></td><td>45,387</td><td>49,148</td><td class="r">+3,761</td><td class="r">+8.3%</td></tr>
+<tr><td><b>PNQ</b></td><td>0</td><td>556</td><td class="r">+556</td><td class="r">—</td></tr>
+<tr style="font-weight:700;border-top:2px solid #d8d6d0"><td>Total</td><td>1,047,144</td><td>1,108,395</td><td>+61,251</td><td>+5.8%</td></tr></table>
+<p class="small">PG is ~0.6–0.7% of revenue everywhere; MUM (+₹17k) and BLR (+₹34k) drove the small rise.</p>
+</details>
+<div class="foot">Source: monthly consumption Summary boxes (Overall CPRT:CPT after OCD &amp; ex-validation) and cost-split boxes; revenue = inhouse revenue. Cost/test = Σ(8 cost lines) ÷ tests. All shares are % of inhouse revenue. NRL has no OCD-adjusted CPRT.</div>
+</div>
+<script>Chart.defaults.font.family="Arial";Chart.defaults.color="#6b6a63";
+new Chart(document.getElementById('c_cprt'),{type:'line',data:{labels:["Mar", "Apr", "May", "Jun", "Jul"],datasets:[{label:'BLR 1',data:[1.157, 1.107, 1.174, 1.144, 1.151],borderColor:'#c0392b',backgroundColor:'#c0392b',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true},{label:'BLR 2',data:[1.128, 1.08, 1.15, 1.091, 1.131],borderColor:'#e07b39',backgroundColor:'#e07b39',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true},{label:'HYD',data:[1.147, 1.154, 1.139, 1.112, 1.104],borderColor:'#2c6fbb',backgroundColor:'#2c6fbb',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true},{label:'MUM',data:[1.088, 1.159, 1.169, 1.13, 1.105],borderColor:'#8e44ad',backgroundColor:'#8e44ad',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true},{label:'GGN',data:[1.121, 1.145, 1.145, 1.161, 1.159],borderColor:'#1baf7a',backgroundColor:'#1baf7a',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true},{label:'NOA',data:[1.144, 1.152, 1.187, 1.195, 1.146],borderColor:'#b8860b',backgroundColor:'#b8860b',borderWidth:2,tension:.3,pointRadius:3,spanGaps:true}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:function(c){return c.dataset.label+': '+c.parsed.y;}}}},scales:{y:{title:{display:true,text:'Adj CPRT:CPT'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_scope'),{type:'bar',data:{labels:["BLR 1", "BLR 2", "HYD", "MUM", "GGN", "NOA", "NRL"],datasets:[{label:'QC',data:[0.655, 1.031, 0.934, 0.981, 1.778, 2.006, 0.733],backgroundColor:'#2c6fbb'},{label:'Reagent for QC & Calib',data:[0.835, 0.649, 1.102, 1.076, 2.178, 2.471, 2.056],backgroundColor:'#8e44ad'},{label:'Cons',data:[2.443, 1.243, 1.391, 1.513, 1.671, 1.606, 2.989],backgroundColor:'#1baf7a'},{label:'Rerun',data:[0.073, 0.023, 0.346, 0.275, 0.862, 0.956, 0.39],backgroundColor:'#c0392b'},{label:'Incomplete',data:[0.124, 0.155, 0.25, 0.252, 0.481, 0.48, 1.154],backgroundColor:'#e07b39'},{label:'Calib',data:[0.02, 0.145, 0.015, 0.023, 0.046, 0.15, 0.0],backgroundColor:'#b8860b'},{label:'ILC',data:[0.002, 0.006, 0.001, 0.006, 0.016, 0.017, 0.0],backgroundColor:'#999'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:10},boxWidth:10}},tooltip:{callbacks:{label:function(x){return x.dataset.label+': '+x.parsed.y+'%';}}}},scales:{x:{stacked:true,grid:{display:false}},y:{stacked:true,title:{display:true,text:'% of revenue'},grid:{color:'#eceae5'}}}}});
+new Chart(document.getElementById('c_br0'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 48.6], [47.34, 48.6], [47.34, 48.17], [0, 48.1]],backgroundColor:["#1F4E78", "#1baf7a", "#c0392b", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt0'),{type:'bar',data:{labels:["Microalbumin Creatinine Ratio,", "Homocysteine (HCY)", "Estradiol (E2)", "Vitamin B12, Vitamin B12 - Abb", "Vitamin D - Abbot, Vitamin D, ", "Anti Mullerian Hormone (AMH)", "Liver Function Test (LFT)", "Complete Blood Count (CBC)", "Hepatitis C Virus antibodies (", "HBsAg (ECLIA)", "Kidney Function Test with Elec", "All other tests"],datasets:[{data:[122931, -119972, -118002, 93142, 86685, 76057, 58524, 56162, -53273, -52204, 49362, 443598],backgroundColor:["#c0392b", "#1baf7a", "#1baf7a", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#1baf7a", "#1baf7a", "#c0392b", "#999"],borderColor:["rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br1'),{type:'bar',data:{labels:["Jun", "HbA1c (TSK Gel)", "Other changes", "Jul"],datasets:[{data:[[0, 44.5], [44.5, 45.59], [45.59, 47.0], [0, 47.0]],backgroundColor:["#1F4E78", "#f1c40f", "#c0392b", "#2c6fbb"],borderColor:["rgba(0,0,0,0)", "#7d5a00", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[0, 2, 0, 0]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2)+'/test';}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt1'),{type:'bar',data:{labels:["Glycosylated Haemoglobin (HbA1", "Immunoglobulin E (Total IgE)", "Microalbumin Creatinine Ratio,", "Vitamin B12, Vitamin B12 - Abb", "Vitamin D - Abbot, Vitamin D, ", "Kidney Function Test with Elec", "High Sensitive C-Reactive Prot", "Estradiol (E2)", "Liver Function Test (LFT)", "N-terminal pro B Type Natriure", "Iron Profile", "All other tests"],datasets:[{data:[128316, 54338, 42820, -39942, 38381, -36438, -33842, 29133, -26471, -20884, -18472, 74259],backgroundColor:["#f1c40f", "#c0392b", "#c0392b", "#1baf7a", "#c0392b", "#1baf7a", "#1baf7a", "#c0392b", "#1baf7a", "#1baf7a", "#1baf7a", "#999"],borderColor:["#7d5a00", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br2'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 43.6], [43.6, 45.59], [45.11000000000001, 45.59], [0, 45.1]],backgroundColor:["#1F4E78", "#c0392b", "#1baf7a", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt2'),{type:'bar',data:{labels:["Prostate Specific Antigen (PSA", "Glycosylated Haemoglobin (HbA1", "Kidney Function Test with Elec", "Liver Function Test (LFT)", "Complete Blood Count (CBC)", "Dengue profile (ELISA)", "High Sensitive C-Reactive Prot", "C-Reactive Protein (CRP)", "Vitamin B12, Vitamin B12 - Abb", "Magnesium (Mg)", "Insulin - Fasting", "All other tests"],datasets:[{data:[-35266, -31335, 23140, 17227, 14838, 14136, 13746, 13433, 13014, 12261, 11618, 1331],backgroundColor:["#1baf7a", "#1baf7a", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#999"],borderColor:["rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br3'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 45.8], [45.44, 45.8], [44.29, 45.44], [0, 44.3]],backgroundColor:["#1F4E78", "#1baf7a", "#1baf7a", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt3'),{type:'bar',data:{labels:["Dengue profile (ELISA)", "Liver Function Test (LFT)", "Glycosylated Haemoglobin (HbA1", "Anti Mullerian Hormone (AMH)", "Complete Blood Count (CBC) wit", "Lipid Profile", "Kidney Function Test with Elec", "Vitamin D - Abbot, Vitamin D, ", "Iron Profile", "Anti Thyroid Peroxidase (Anti-", "Vitamin B12, Vitamin B12 - Abb", "All other tests"],datasets:[{data:[58294, 41043, -30215, 27547, 25731, 24357, 24106, 21599, 21474, -20582, 20513, 112001],backgroundColor:["#f1c40f", "#c0392b", "#1baf7a", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#1baf7a", "#c0392b", "#999"],borderColor:["#7d5a00", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br4'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 48.2], [48.2, 51.870000000000005], [51.440000000000005, 51.870000000000005], [0, 51.5]],backgroundColor:["#1F4E78", "#c0392b", "#1baf7a", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt4'),{type:'bar',data:{labels:["Insulin - Fasting", "Liver Function Test (LFT)", "Kidney Function Test with Elec", "Dengue profile (ELISA)", "Vitamin B12", "Complete Blood Count (CBC)", "Lipase", "Iron Profile", "Anti Mullerian Hormone (AMH)", "Ferritin", "High Sensitive C-Reactive Prot", "All other tests"],datasets:[{data:[20601, 19972, 19018, 17479, 17205, 14019, 11238, 10918, 10857, 10825, 10485, 58673],backgroundColor:["#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#999"],borderColor:["rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br5'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 52.7], [51.230000000000004, 52.7], [49.120000000000005, 51.230000000000004], [0, 49.1]],backgroundColor:["#1F4E78", "#1baf7a", "#1baf7a", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt5'),{type:'bar',data:{labels:["Vitamin D, 25-Hydroxy", "Vitamin B12", "Liver Function Test (LFT)", "Complete Blood Count (CBC) wit", "Rheumatoid Factor (RA) Quantit", "Lipid Profile", "Glycosylated Haemoglobin (HbA1", "Iron Profile", "Kidney Function Test (KFT) Min", "Electrolytes", "Thyroid Function Test (TFT)", "All other tests"],datasets:[{data:[89669, 57952, 35963, 34668, 33494, 26877, 22097, 19081, 15572, 14251, 12754, 166029],backgroundColor:["#f1c40f", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#c0392b", "#999"],borderColor:["#7d5a00", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_br6'),{type:'bar',data:{labels:["Jun", "Mix shift", "Rate change", "Jul"],datasets:[{data:[[0, 218.6], [218.6, 225.60999999999999], [207.14999999999998, 225.60999999999999], [0, 207.2]],backgroundColor:["#1F4E78", "#c0392b", "#1baf7a", "#2c6fbb"]}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(c){var v=c.raw;return '₹'+(v[1]-v[0]).toFixed(2);}}}},scales:{y:{title:{display:true,text:'cost/test (₹)'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_cbt6'),{type:'bar',data:{labels:["Estradiol (E2)", "Dengue profile (ELISA)", "COVID -19 RT PCR", "Gonorrhoea PCR (Qualitative)", "HLA-B27, Qualitative PCR", "Influenza Virus Panel - Real T", "Anti Nuclear Antibody (ANA) Pr", "Urine Culture", "Abnormal HB Studies(HB Electro", "First Trimester Maternal Scree", "H1N1 Qualitative, Real Time PC", "All other tests"],datasets:[{data:[108571, 68116, -55067, 51573, -49288, 42125, 41283, 33645, -26868, 21272, 20029, -8615],backgroundColor:["#f1c40f", "#c0392b", "#1baf7a", "#c0392b", "#1baf7a", "#c0392b", "#c0392b", "#c0392b", "#1baf7a", "#c0392b", "#c0392b", "#999"],borderColor:["#7d5a00", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)", "rgba(0,0,0,0)"],borderWidth:[2, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0, 0]}]},options:{indexAxis:'y',responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false},tooltip:{callbacks:{label:function(x){return '₹'+x.parsed.x.toLocaleString();}}}},scales:{x:{title:{display:true,text:'Δ cost, Jun→Jul (₹)'},grid:{color:'#eceae5'}},y:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_log'),{type:'bar',data:{labels:["BLR", "GGN", "HYD", "MUM", "NOA"],datasets:[{label:'Jun',data:[3686456, 492349, 841897, 664357, 306356],backgroundColor:'#9db4c9'},{label:'Jul',data:[4538831, 445332, 936088, 850762, 369510],backgroundColor:'#1F4E78'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:function(x){return x.dataset.label+': ₹'+x.parsed.y.toLocaleString();}}}},scales:{y:{title:{display:true,text:'₹'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+new Chart(document.getElementById('c_pg'),{type:'bar',data:{labels:["BLR", "GGN", "HYD", "MUM", "NOA", "PNQ"],datasets:[{label:'Jun',data:[680813, 66024, 126186, 128734, 45387, 0],backgroundColor:'#9db4c9'},{label:'Jul',data:[715198, 67739, 130103, 145651, 49148, 556],backgroundColor:'#1F4E78'}]},options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'top',labels:{font:{size:11},boxWidth:12}},tooltip:{callbacks:{label:function(x){return x.dataset.label+': ₹'+x.parsed.y.toLocaleString();}}}},scales:{y:{title:{display:true,text:'₹'},grid:{color:'#eceae5'}},x:{grid:{display:false}}}}});
+document.querySelectorAll('details').forEach(function(d){d.addEventListener('toggle',function(){if(d.open){window.dispatchEvent(new Event('resize'));}});});
+</script><script data-hub-shared-state>(function(){
+  var parts = location.pathname.split("/").filter(Boolean);
+  if (!location.hostname.endsWith(".github.io") || parts.length < 2) return;
+  var owner = location.hostname.split(".")[0];
+  var repo = parts[0];
+  var statePath = parts.slice(1).join("/").replace(/\.html?$/i, "") + ".state.json";
+  var stateUrl = "/" + repo + "/" + statePath;
+  var apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/" + statePath.split("/").map(encodeURIComponent).join("/");
+  function els(){ return document.querySelectorAll("input, select, textarea"); }
+  function idOf(el, i){ return el.id || el.name || "el" + i; }
+  function apply(state){
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      if (!(k in state)) return;
+      if (el.type === "checkbox" || el.type === "radio") el.checked = state[k];
+      else el.value = state[k];
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+      el.dispatchEvent(new Event("change", {bubbles:true}));
+    });
+  }
+  function collect(){
+    var s = {};
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      s[k] = (el.type === "checkbox" || el.type === "radio") ? el.checked : el.value;
+    });
+    return s;
+  }
+  function init(){
+    fetch(stateUrl, {cache:"no-store"}).then(function(r){ if (r.ok) return r.json(); }).then(function(s){ if (s) apply(s); }).catch(function(){});
+    var token = "";
+    try { token = localStorage.getItem("hub-token") || ""; } catch(e){}
+    if (!token) return;
+    var btn = document.createElement("button");
+    btn.textContent = "Save view for everyone";
+    btn.style.cssText = "position:fixed;bottom:18px;right:18px;z-index:99999;background:#ff6d2e;color:#fff;border:0;border-radius:10px;padding:10px 14px;font:600 13px sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)";
+    btn.onclick = function(){
+      btn.textContent = "Saving...";
+      var body = { message: "Update view state: " + statePath, content: btoa(unescape(encodeURIComponent(JSON.stringify(collect(), null, 2)))) };
+      fetch(apiUrl, { headers: { "Authorization": "Bearer " + token }, cache: "no-store" })
+        .then(function(g){ return g.ok ? g.json() : null; })
+        .then(function(j){ if (j && j.sha) body.sha = j.sha;
+          return fetch(apiUrl, { method: "PUT", headers: { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" }, body: JSON.stringify(body) });
+        })
+        .then(function(r){ btn.textContent = r && r.ok ? "Saved - live in ~1 min" : "Save failed"; })
+        .catch(function(){ btn.textContent = "Save failed"; })
+        .then(function(){ setTimeout(function(){ btn.textContent = "Save view for everyone"; }, 3500); });
+    };
+    document.body.appendChild(btn);
+  }
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
+})();</script>
+</body></html>
