@@ -1,0 +1,921 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OT Delay Ledger</title>
+<meta name="description" content="Consumer OT, Lab OT and Machine OT delay reasons across eight labs for the three weeks to 23 August 2026, categorised week by week for the monthly review.">
+<style>*{margin:0;padding:0}</style>
+</head>
+<body>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Instrument+Sans:wght@400..700&family=Newsreader:ital,wght@0,300..600;1,300..600&family=IBM+Plex+Mono:wght@400;500;600&display=swap">
+
+<style>
+:root{
+  color-scheme: light;
+  --ground:#F3F6F7;
+  --surface:#FFFFFF;
+  --surface-2:#EAF0F1;
+  --surface-3:#E0E8EA;
+  --ink:#0F1A1E;
+  --ink-2:#4C5F67;
+  --ink-3:#788C93;
+  --rule:#D8E2E4;
+  --rule-strong:#BECBCE;
+
+  --ok:#006E93;
+  --ok-tint:rgba(0,110,147,.10);
+  --watch:#B07D12;
+  --watch-tint:rgba(176,125,18,.12);
+  --breach:#B02A3D;
+  --breach-tint:rgba(176,42,61,.11);
+
+  --w1:#8FABB5;
+  --w2:#5A7F8A;
+  --w3:#31525D;
+
+  --shadow:0 1px 2px rgba(15,26,30,.05), 0 8px 24px -16px rgba(15,26,30,.18);
+
+  --font-head:'Instrument Sans', ui-sans-serif, system-ui, sans-serif;
+  --font-body:'Newsreader', Georgia, 'Times New Roman', serif;
+  --font-mono:'IBM Plex Mono', ui-monospace, 'SFMono-Regular', Menlo, monospace;
+}
+@media (prefers-color-scheme: dark){
+  :root:not([data-theme="light"]){
+    color-scheme: dark;
+    --ground:#0C1215;
+    --surface:#151D21;
+    --surface-2:#1C262B;
+    --surface-3:#232F34;
+    --ink:#E9F0F2;
+    --ink-2:#9BAFB6;
+    --ink-3:#71858C;
+    --rule:#243036;
+    --rule-strong:#33434A;
+    --ok:#4FB6CF;
+    --ok-tint:rgba(79,182,207,.13);
+    --watch:#D9A72C;
+    --watch-tint:rgba(217,167,44,.13);
+    --breach:#E86A80;
+    --breach-tint:rgba(232,106,128,.13);
+    --w1:#3E5F6B;
+    --w2:#6E9099;
+    --w3:#A8C6CF;
+    --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.7);
+  }
+}
+:root[data-theme="dark"]{
+  color-scheme: dark;
+  --ground:#0C1215;
+  --surface:#151D21;
+  --surface-2:#1C262B;
+  --surface-3:#232F34;
+  --ink:#E9F0F2;
+  --ink-2:#9BAFB6;
+  --ink-3:#71858C;
+  --rule:#243036;
+  --rule-strong:#33434A;
+  --ok:#4FB6CF;
+  --ok-tint:rgba(79,182,207,.13);
+  --watch:#D9A72C;
+  --watch-tint:rgba(217,167,44,.13);
+  --breach:#E86A80;
+  --breach-tint:rgba(232,106,128,.13);
+  --w1:#3E5F6B;
+  --w2:#6E9099;
+  --w3:#A8C6CF;
+  --shadow:0 1px 2px rgba(0,0,0,.4), 0 10px 30px -18px rgba(0,0,0,.7);
+}
+
+*{box-sizing:border-box}
+body{
+  margin:0;
+  background:var(--ground);
+  color:var(--ink);
+  font-family:var(--font-body);
+  font-size:17px;
+  line-height:1.62;
+  -webkit-font-smoothing:antialiased;
+}
+a{color:inherit}
+:focus-visible{outline:2px solid var(--ink);outline-offset:2px;border-radius:2px}
+
+.wrap{max-width:1180px;margin:0 auto;padding:0 24px}
+.measure{max-width:70ch}
+section{padding:0 0 4px;scroll-margin-top:60px}
+
+.topbar{position:sticky;top:0;z-index:40;background:var(--ground);border-bottom:1px solid var(--rule)}
+.topbar .wrap{display:flex;align-items:center;gap:20px;min-height:52px;flex-wrap:wrap}
+.brandmark{font-family:var(--font-mono);font-size:11px;font-weight:600;letter-spacing:.14em;text-transform:uppercase;color:var(--ink);white-space:nowrap}
+.navlinks{display:flex;gap:2px;flex-wrap:wrap;margin-left:auto}
+.navlinks a{font-family:var(--font-head);font-size:12.5px;font-weight:500;text-decoration:none;color:var(--ink-2);padding:5px 9px;border-radius:3px}
+.navlinks a:hover{color:var(--ink);background:var(--surface-2)}
+
+.masthead{padding:56px 0 34px;border-bottom:1px solid var(--rule-strong)}
+.eyebrow{font-family:var(--font-mono);font-size:10.5px;font-weight:600;letter-spacing:.16em;text-transform:uppercase;color:var(--ink-3)}
+h1{font-family:var(--font-head);font-weight:600;letter-spacing:-.022em;font-size:clamp(2.1rem,5.4vw,3.35rem);line-height:1.03;margin:14px 0 0;text-wrap:balance}
+h1 em{font-style:normal;color:var(--ink-2)}
+.dek{margin:18px 0 0;font-size:19px;color:var(--ink-2);max-width:60ch}
+.chips{display:flex;flex-wrap:wrap;gap:8px;margin-top:24px}
+.chip{font-family:var(--font-mono);font-size:11px;letter-spacing:.04em;padding:5px 10px;border:1px solid var(--rule-strong);border-radius:999px;color:var(--ink-2);background:var(--surface);white-space:nowrap}
+.chip.excl{border-color:var(--breach);color:var(--breach);background:var(--breach-tint)}
+.chip.pend{border-style:dashed}
+
+h2{font-family:var(--font-head);font-weight:600;letter-spacing:-.017em;font-size:clamp(1.4rem,3vw,1.95rem);line-height:1.12;margin:0;text-wrap:balance}
+h3{font-family:var(--font-head);font-weight:600;font-size:16px;letter-spacing:-.006em;margin:0 0 8px}
+h4{font-family:var(--font-head);font-weight:600;font-size:13.5px;letter-spacing:-.003em;margin:0 0 4px}
+.sechead{padding:52px 0 20px;border-top:1px solid var(--rule);margin-top:8px}
+.sechead .eyebrow{display:block;margin-bottom:10px}
+.sechead p{margin:14px 0 0;color:var(--ink-2)}
+p{margin:0 0 15px}
+p:last-child{margin-bottom:0}
+strong{font-weight:600;color:var(--ink)}
+.src{font-family:var(--font-mono);font-size:10.5px;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase}
+
+.tiles{display:grid;grid-template-columns:repeat(auto-fit,minmax(228px,1fr));gap:12px;margin:8px 0 6px}
+.tile{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 18px 16px;box-shadow:var(--shadow)}
+.tile .lab{font-family:var(--font-head);font-size:12px;font-weight:600;color:var(--ink-2);letter-spacing:.01em}
+.tile .big{font-family:var(--font-mono);font-variant-numeric:tabular-nums;font-size:34px;font-weight:500;line-height:1.05;margin-top:10px;letter-spacing:-.02em}
+.tile .sub{font-family:var(--font-mono);font-size:11.5px;color:var(--ink-2);margin-top:7px;letter-spacing:.01em}
+.tile .trail{display:flex;gap:5px;align-items:flex-end;margin-top:13px;height:26px}
+.tile .trail span{flex:1;border-radius:2px 2px 0 0;display:block;font-size:0}
+.tile.flag{border-color:var(--breach)}
+.tile.flag .big{color:var(--breach)}
+
+.scroller{overflow-x:auto;border:1px solid var(--rule);border-radius:6px;background:var(--surface);box-shadow:var(--shadow)}
+table{border-collapse:collapse;width:100%;font-family:var(--font-mono);font-size:12.5px}
+caption{text-align:left;padding:14px 16px 12px;border-bottom:1px solid var(--rule);font-family:var(--font-head);font-size:14px;font-weight:600;color:var(--ink)}
+caption .sub{display:block;margin-top:3px;font-family:var(--font-mono);font-size:10.5px;font-weight:400;letter-spacing:.05em;color:var(--ink-3);text-transform:uppercase}
+th,td{padding:8px 12px;text-align:right;border-bottom:1px solid var(--rule);white-space:nowrap}
+thead th{font-family:var(--font-head);font-size:11.5px;font-weight:600;color:var(--ink-2);background:var(--surface-2);border-bottom:1px solid var(--rule-strong)}
+th.l,td.l{text-align:left}
+td.l{white-space:normal;min-width:300px;max-width:460px}
+thead th.l{white-space:normal}
+tbody th{font-family:var(--font-head);font-size:12.5px;font-weight:600;text-align:left;background:var(--surface);white-space:nowrap}
+td{font-variant-numeric:tabular-nums;color:var(--ink)}
+tbody tr:last-child th,tbody tr:last-child td{border-bottom:none}
+tbody tr:hover th,tbody tr:hover td{background:var(--surface-2)}
+.cell.ok{background:var(--ok-tint)}
+.cell.watch{background:var(--watch-tint);color:var(--watch);font-weight:500}
+.cell.breach{background:var(--breach-tint);color:var(--breach);font-weight:500}
+tbody tr:hover .cell.ok{background:var(--ok-tint)}
+tbody tr:hover .cell.watch{background:var(--watch-tint)}
+tbody tr:hover .cell.breach{background:var(--breach-tint)}
+td.pend{background:repeating-linear-gradient(135deg,transparent,transparent 5px,var(--surface-2) 5px,var(--surface-2) 10px);color:var(--ink-3)}
+td.dl{color:var(--ink-2)}
+.up{color:var(--ok)}
+.dn{color:var(--breach)}
+.flat{color:var(--ink-3)}
+.grp th{background:var(--surface-3);font-family:var(--font-mono);font-size:10.5px;letter-spacing:.13em;text-transform:uppercase;color:var(--ink-2);font-weight:600;padding:6px 12px}
+.legend{display:flex;flex-wrap:wrap;gap:16px;align-items:center;padding:12px 0 0;font-family:var(--font-mono);font-size:11px;color:var(--ink-2)}
+.legend b{display:inline-flex;align-items:center;gap:6px;font-weight:400}
+.sw{width:11px;height:11px;border-radius:2px;display:inline-block}
+.dotflag{display:inline-block;width:0;height:0;border-left:5px solid transparent;border-right:5px solid transparent;border-bottom:8px solid var(--breach);margin-right:5px;vertical-align:1px}
+
+.chartcard{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:18px 18px 14px;box-shadow:var(--shadow)}
+.barlist{display:flex;flex-direction:column;gap:2px;margin-top:6px}
+.barrow{display:grid;grid-template-columns:minmax(150px,26%) 1fr;gap:14px;align-items:center;padding:7px 0;border-bottom:1px solid var(--rule)}
+.barrow:last-child{border-bottom:none}
+.barrow .name{font-family:var(--font-head);font-size:13px;font-weight:600;line-height:1.25}
+.barrow .name em{display:block;font-family:var(--font-mono);font-size:10px;font-weight:400;font-style:normal;letter-spacing:.05em;text-transform:uppercase;color:var(--ink-3);margin-top:2px}
+.stack{display:flex;flex-direction:column;gap:3px}
+.bline{display:flex;align-items:center;gap:8px;height:13px}
+.bline .track{flex:1;height:9px;position:relative;display:block;min-width:0;background:var(--surface-2);border-radius:0 2px 2px 0}
+.bline .fill{display:block;height:9px;border-radius:0 3px 3px 0;position:relative;cursor:default;min-width:0}
+.bline .wk{font-family:var(--font-mono);font-size:9.5px;color:var(--ink-3);width:52px;letter-spacing:.02em;white-space:nowrap}
+.bline .num{font-family:var(--font-mono);font-size:11px;color:var(--ink-2);font-variant-numeric:tabular-nums;width:34px;text-align:right}
+.tip{position:absolute;left:0;bottom:calc(100% + 7px);transform:translateY(3px);background:var(--ink);color:var(--ground);font-family:var(--font-mono);font-size:10.5px;line-height:1.45;padding:5px 8px;border-radius:3px;width:max-content;max-width:min(270px,66vw);white-space:normal;opacity:0;pointer-events:none;transition:opacity .12s ease,transform .12s ease;z-index:5}
+.bline .fill:hover .tip,.bline .fill:focus-visible .tip{opacity:1;transform:translateY(0)}
+
+.grid2{display:grid;grid-template-columns:repeat(auto-fit,minmax(300px,1fr));gap:12px}
+.grid3{display:grid;grid-template-columns:repeat(auto-fit,minmax(250px,1fr));gap:12px}
+.card{background:var(--surface);border:1px solid var(--rule);border-radius:6px;padding:16px 17px;box-shadow:var(--shadow)}
+.card.sev{border-left:3px solid var(--breach)}
+.card.mid{border-left:3px solid var(--watch)}
+.card.low{border-left:3px solid var(--ok)}
+.card p{font-size:15.5px;line-height:1.55;color:var(--ink-2)}
+.card p strong{color:var(--ink)}
+.kv{font-family:var(--font-mono);font-size:11px;letter-spacing:.03em;color:var(--ink-3);text-transform:uppercase;margin-bottom:9px}
+.quote{font-family:var(--font-mono);font-size:11.5px;line-height:1.55;color:var(--ink-2);border-left:2px solid var(--rule-strong);padding:2px 0 2px 11px;margin:10px 0 0;white-space:pre-line}
+ul.tight{margin:8px 0 0;padding-left:0;list-style:none}
+ul.tight li{position:relative;padding-left:16px;margin-bottom:7px;font-size:15.5px;color:var(--ink-2);line-height:1.5}
+ul.tight li::before{content:"";position:absolute;left:2px;top:.62em;width:5px;height:1.5px;background:var(--ink-3)}
+ul.tight li strong{color:var(--ink)}
+ul.tight li:last-child{margin-bottom:0}
+ol.steps{margin:10px 0 0;padding-left:0;list-style:none;counter-reset:s}
+ol.steps li{counter-increment:s;position:relative;padding-left:30px;margin-bottom:12px;font-size:15.5px;color:var(--ink-2);line-height:1.5}
+ol.steps li::before{content:counter(s,decimal-leading-zero);position:absolute;left:0;top:.15em;font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.05em}
+ol.steps li strong{color:var(--ink)}
+.note{background:var(--surface-2);border:1px solid var(--rule);border-radius:6px;padding:14px 16px;font-size:15px;color:var(--ink-2)}
+.note strong{color:var(--ink)}
+.stack-gap{display:flex;flex-direction:column;gap:12px}
+footer{margin-top:60px;border-top:1px solid var(--rule);padding:22px 0 56px;font-family:var(--font-mono);font-size:11px;color:var(--ink-3);letter-spacing:.03em;line-height:1.8}
+@media (prefers-reduced-motion:reduce){*{transition:none!important;animation:none!important}}
+@media (max-width:640px){
+  body{font-size:16px}
+  .barrow{grid-template-columns:1fr;gap:6px}
+  .masthead{padding:36px 0 26px}
+}
+</style>
+
+<div class="topbar">
+  <div class="wrap">
+    <span class="brandmark">Lab Review · Aug 2026</span>
+    <nav class="navlinks">
+      <a href="#verdict">Verdict</a>
+      <a href="#scorecard">Scorecard</a>
+      <a href="#machine">Machine OT</a>
+      <a href="#reasons">Reasons</a>
+      <a href="#pattern">Pattern</a>
+      <a href="#sites">Sites</a>
+      <a href="#downtime">Downtime</a>
+      <a href="#review">Review pack</a>
+    </nav>
+  </div>
+</div>
+
+<div class="wrap">
+
+  <header class="masthead">
+    <span class="eyebrow">Orange Health · Lab operations · three weeks to 23 August</span>
+    <h1>Three weeks of OT<br><em>and what actually broke it</em></h1>
+    <p class="dek">Consumer OT, Inhouse Lab OT and Machine OT across the eight labs, read together with every delay note the site teams wrote against them. Built to carry straight into the monthly review once the fourth week closes.</p>
+    <div class="chips">
+      <span class="chip">Week 1 · 3–9 Aug</span>
+      <span class="chip">Week 2 · 10–16 Aug</span>
+      <span class="chip">Week 3 · 17–23 Aug</span>
+      <span class="chip pend">Week 4 · 24–30 Aug · pending</span>
+      <span class="chip excl">Fatal Delays excluded on instruction</span>
+    </div>
+  </header>
+
+  <!-- ============ VERDICT ============ -->
+  <section id="verdict">
+    <div class="sechead measure">
+      <span class="eyebrow">01 · The read</span>
+      <h2>OT recovered in week 2, then gave a third of it back</h2>
+      <p>Order volume was flat across the three weeks, so the movement in OT is operational rather than load-driven. The network figure hides the story: two labs carry almost all of the shortfall, and their causes are different in kind — one is infrastructure, the other is capacity.</p>
+    </div>
+
+    <div class="tiles">
+      <div class="tile">
+        <div class="lab">Consumer OT — network, order-weighted</div>
+        <div class="big">95.05%</div>
+        <div class="sub">93.95 → 95.94 → 95.05 &nbsp;·&nbsp; net +1.10pp</div>
+        <div class="trail">
+          <span style="background:var(--w1);height:69.8%" title="Week 1 · 93.95%"></span>
+          <span style="background:var(--w2);height:79.7%" title="Week 2 · 95.94%"></span>
+          <span style="background:var(--w3);height:75.3%" title="Week 3 · 95.05%"></span>
+        </div>
+      </div>
+      <div class="tile">
+        <div class="lab">Inhouse Lab OT — network, order-weighted</div>
+        <div class="big">93.37%</div>
+        <div class="sub">91.32 → 94.27 → 93.37 &nbsp;·&nbsp; net +2.05pp</div>
+        <div class="trail">
+          <span style="background:var(--w1);height:56.6%" title="Week 1 · 91.32%"></span>
+          <span style="background:var(--w2);height:71.4%" title="Week 2 · 94.27%"></span>
+          <span style="background:var(--w3);height:66.9%" title="Week 3 · 93.37%"></span>
+        </div>
+      </div>
+      <div class="tile flag">
+        <div class="lab">GGN Consumer OT — the network's floor</div>
+        <div class="big">83.86%</div>
+        <div class="sub">82.07 → 92.84 → 83.86 &nbsp;·&nbsp; power lost in all 3 weeks</div>
+        <div class="trail">
+          <span style="background:var(--w1);height:10.4%" title="Week 1 · 82.07%"></span>
+          <span style="background:var(--w2);height:64.2%" title="Week 2 · 92.84%"></span>
+          <span style="background:var(--w3);height:19.3%" title="Week 3 · 83.86%"></span>
+        </div>
+      </div>
+      <div class="tile flag">
+        <div class="lab">NRL Consumer OT — steepest sustained slide</div>
+        <div class="big">92.17%</div>
+        <div class="sub">97.53 → 94.30 → 92.17 &nbsp;·&nbsp; net −5.36pp</div>
+        <div class="trail">
+          <span style="background:var(--w1);height:87.7%" title="Week 1 · 97.53%"></span>
+          <span style="background:var(--w2);height:71.5%" title="Week 2 · 94.30%"></span>
+          <span style="background:var(--w3);height:60.9%" title="Week 3 · 92.17%"></span>
+        </div>
+      </div>
+    </div>
+    <p class="src" style="margin:10px 0 0">Micro-bars scaled 80–100% · hover any bar for its value</p>
+
+    <div class="note measure" style="margin-top:20px">
+      <strong>Four things the three weeks say plainly.</strong> One — GGN is not an operations problem, it is a power problem: outage hours roughly doubled, then doubled again, and it is the only lab whose Consumer OT sat below 85% twice. Two — NRL is the quiet one to worry about, sliding every week with nobody escalating it. Three — Vitros/OCD machine OT at BLR 1 never once cleared 81%; it is the most persistent instrument miss in the network. Four — accession at BLR 1 is capped by duplicate barcodes at the receiving step, not by lab throughput, and the notes say so in the first two weeks running.
+    </div>
+  </section>
+
+  <!-- ============ SCORECARD ============ -->
+  <section id="scorecard">
+    <div class="sechead measure">
+      <span class="eyebrow">02 · Week-by-week scorecard</span>
+      <h2>Where each lab stood, week over week</h2>
+      <p>Bands are set against the 95% working target: on target at or above 95%, watch between 90 and 95, breach below 90. A triangle marks a reading below 85% — severe enough that the week's cause needs naming in the review, not just noting.</p>
+    </div>
+
+    <div class="stack-gap">
+
+      <div class="scroller">
+        <table>
+          <caption>Consumer OT<span class="sub">Order placed to report delivered</span></caption>
+          <thead>
+            <tr>
+              <th class="l">Lab</th>
+              <th>Wk 1 · 3–9 Aug</th>
+              <th>Wk 2 · 10–16 Aug</th>
+              <th>Wk 3 · 17–23 Aug</th>
+              <th>Net</th>
+              <th>Wk 4 · 24–30 Aug</th>
+              <th class="l">Dominant driver in the window</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>BLR 1</th><td class="cell watch">94.26</td><td class="cell ok">95.02</td><td class="cell ok">95.40</td><td class="dl up">+1.14</td><td class="pend">—</td><td class="l dl">Alinity and Vitros breakdowns; duplicate barcodes at receiving</td></tr>
+            <tr><th>BLR 2</th><td class="cell breach">89.71</td><td class="cell ok">97.19</td><td class="cell ok">98.43</td><td class="dl up">+8.72</td><td class="pend">—</td><td class="l dl">Week 1 Alinity outage and reagent supply; recovered fully</td></tr>
+            <tr><th>HYD</th><td class="cell ok">97.34</td><td class="cell ok">97.95</td><td class="cell ok">97.99</td><td class="dl up">+0.65</td><td class="pend">—</td><td class="l dl">Stable; OCD and AVE interface faults absorbed internally</td></tr>
+            <tr><th>NOA</th><td class="cell ok">96.47</td><td class="cell ok">98.50</td><td class="cell ok">95.37</td><td class="dl dn">−1.10</td><td class="pend">—</td><td class="l dl">Week 3 cluster: AVE-772, Mindray and Morphle down on consecutive days</td></tr>
+            <tr><th>GGN</th><td class="cell breach"><span class="dotflag"></span>82.07</td><td class="cell watch">92.84</td><td class="cell breach"><span class="dotflag"></span>83.86</td><td class="dl up">+1.79</td><td class="pend">—</td><td class="l dl">NABL audit in week 1; power outages in weeks 2 and 3</td></tr>
+            <tr><th>MUM</th><td class="cell ok">97.33</td><td class="cell ok">98.01</td><td class="cell ok">98.45</td><td class="dl up">+1.12</td><td class="pend">—</td><td class="l dl">Best in network all three weeks</td></tr>
+            <tr><th>PNQ</th><td class="cell breach">87.50</td><td class="cell watch">90.54</td><td class="cell watch">93.45</td><td class="dl up">+5.95</td><td class="pend">—</td><td class="l dl">Shift-handover sample transfer timing; improving weekly</td></tr>
+            <tr><th>NRL</th><td class="cell ok">97.53</td><td class="cell watch">94.30</td><td class="cell watch">92.17</td><td class="dl dn">−5.36</td><td class="pend">—</td><td class="l dl">Micro approval lag, then an Influenza/H1N1 volume spike</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="scroller">
+        <table>
+          <caption>Inhouse Lab OT<span class="sub">Accession scan to test completed</span></caption>
+          <thead>
+            <tr>
+              <th class="l">Lab</th><th>Wk 1</th><th>Wk 2</th><th>Wk 3</th><th>Net</th><th>Wk 4 · pending</th>
+              <th class="l">What the lab's own notes say</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>BLR 1</th><td class="cell breach">89.20</td><td class="cell watch">91.60</td><td class="cell watch">91.42</td><td class="dl up">+2.22</td><td class="pend">—</td><td class="l dl">Day-level detail every week; ES Flex and Alinity dominate</td></tr>
+            <tr><th>BLR 2</th><td class="cell breach"><span class="dotflag"></span>82.76</td><td class="cell ok">95.45</td><td class="cell ok">97.41</td><td class="dl up">+14.65</td><td class="pend">—</td><td class="l dl">7 August bottomed at 57.14% on the Alinity outage</td></tr>
+            <tr><th>HYD</th><td class="cell ok">96.05</td><td class="cell watch">94.78</td><td class="cell ok">96.89</td><td class="dl up">+0.84</td><td class="pend">—</td><td class="l dl">Week 2 dip traced to an AVE queue backlog on 15 August</td></tr>
+            <tr><th>NOA</th><td class="cell ok">96.65</td><td class="cell ok">99.03</td><td class="cell ok">95.64</td><td class="dl dn">−1.01</td><td class="pend">—</td><td class="l dl">Week 3 pulled down by three instrument breakdowns</td></tr>
+            <tr><th>GGN</th><td class="cell breach"><span class="dotflag"></span>83.91</td><td class="cell watch">91.70</td><td class="cell breach"><span class="dotflag"></span>80.61</td><td class="dl dn">−3.30</td><td class="pend">—</td><td class="l dl">22 August fell to 40.46%; bulk samples flagged as a standing bottleneck</td></tr>
+            <tr><th>MUM</th><td class="cell ok">98.13</td><td class="cell ok">98.25</td><td class="cell ok">97.83</td><td class="dl flat">−0.30</td><td class="pend">—</td><td class="l dl">No commentary needed</td></tr>
+            <tr><th>PNQ</th><td class="cell ok">100.00</td><td class="cell ok">99.18</td><td class="cell ok">100.00</td><td class="dl flat">0.00</td><td class="pend">—</td><td class="l dl">Lab clean — the PNQ shortfall sits outside the lab</td></tr>
+            <tr><th>NRL</th><td class="cell ok">98.09</td><td class="cell ok">96.03</td><td class="cell watch">94.72</td><td class="dl dn">−3.37</td><td class="pend">—</td><td class="l dl">Sliding in step with Consumer OT — same root</td></tr>
+          </tbody>
+        </table>
+      </div>
+
+      <div class="scroller">
+        <table>
+          <caption>Accession OT — overall and Part B<span class="sub">Overall: runner drop to dept scan, 30 min · Part B: accession scan to dept scan, 20 min</span></caption>
+          <thead>
+            <tr>
+              <th class="l">Lab</th>
+              <th>Overall Wk 1</th><th>Wk 2</th><th>Wk 3</th>
+              <th>Part B Wk 1</th><th>Wk 2</th><th>Wk 3</th>
+              <th class="l">The gap tells you where the loss is</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr><th>BLR 1</th><td class="cell breach"><span class="dotflag"></span>82.32</td><td class="cell breach">88.55</td><td class="cell breach">89.10</td><td class="cell watch">94.62</td><td class="cell ok">95.30</td><td class="cell ok">95.00</td><td class="l dl">Part A alone: 68.05 → 73.00 → 75.90. Duplicate barcodes at receiving.</td></tr>
+            <tr><th>BLR 2</th><td class="cell ok">95.79</td><td class="cell watch">92.36</td><td class="cell watch">91.76</td><td class="cell ok">95.35</td><td class="cell watch">92.26</td><td class="cell breach">88.40</td><td class="l dl">Deteriorating. Part A 85.78 → 82.28 → 83.65; manpower named in weeks 2 and 3.</td></tr>
+            <tr><th>HYD</th><td class="cell ok">98.34</td><td class="cell ok">98.18</td><td class="cell ok">97.70</td><td class="cell ok">97.90</td><td class="cell ok">96.45</td><td class="cell ok">97.90</td><td class="l dl">Clean throughout</td></tr>
+            <tr><th>NOA</th><td class="cell ok">95.70</td><td class="cell ok">98.90</td><td class="cell ok">98.10</td><td class="cell ok">95.10</td><td class="cell ok">98.60</td><td class="cell ok">95.30</td><td class="l dl">Clean throughout</td></tr>
+            <tr><th>GGN</th><td class="cell breach"><span class="dotflag"></span>79.77</td><td class="cell watch">90.86</td><td class="cell watch">92.91</td><td class="cell breach">85.00</td><td class="cell breach"><span class="dotflag"></span>84.00</td><td class="cell watch">91.91</td><td class="l dl">Improving. Bulk orders and multi-floor transport; most misses run about five minutes late.</td></tr>
+            <tr><th>MUM</th><td class="cell ok">98.19</td><td class="cell ok">98.25</td><td class="cell ok">98.08</td><td class="cell ok">97.79</td><td class="cell ok">97.15</td><td class="cell ok">97.55</td><td class="l dl">Clean throughout</td></tr>
+            <tr><th>PNQ</th><td class="cell ok">100.00</td><td class="cell ok">100.00</td><td class="cell ok">100.00</td><td class="cell ok">100.00</td><td class="cell ok">100.00</td><td class="cell ok">100.00</td><td class="l dl">Clean throughout</td></tr>
+            <tr><th>NRL</th><td class="cell ok">99.00</td><td class="cell ok">98.68</td><td class="cell ok">99.10</td><td class="cell ok">98.09</td><td class="cell ok">97.05</td><td class="cell ok">98.30</td><td class="l dl">Clean throughout</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <div class="legend">
+      <b><i class="sw" style="background:var(--ok)"></i> On target, 95% and above</b>
+      <b><i class="sw" style="background:var(--watch)"></i> Watch, 90 to 95</b>
+      <b><i class="sw" style="background:var(--breach)"></i> Breach, below 90</b>
+      <b><span class="dotflag"></span> Severe, below 85</b>
+      <b><i class="sw" style="background:var(--surface-2);border:1px dashed var(--rule-strong)"></i> Week 4 slot, awaiting 24–30 Aug</b>
+    </div>
+  </section>
+
+  <!-- ============ MACHINE OT ============ -->
+  <section id="machine">
+    <div class="sechead measure">
+      <span class="eyebrow">03 · Machine OT</span>
+      <h2>Machine OT: two chronic offenders, everything else noise</h2>
+      <p>Only instruments that fell below 90% in at least one week are listed — the other thirty-four reported machine lines stayed at or above 90% throughout and do not need review time. Lab averages are the mean of that lab's reported instruments, so they show which site is carrying instrument drag overall.</p>
+    </div>
+
+    <div class="scroller">
+      <table>
+        <caption>Instruments below 90% in any week<span class="sub">Machine processing OT · two-hour standard unless the line says otherwise</span></caption>
+        <thead>
+          <tr><th class="l">Instrument</th><th>Wk 1</th><th>Wk 2</th><th>Wk 3</th><th class="l">Pattern</th></tr>
+        </thead>
+        <tbody>
+          <tr class="grp"><th colspan="5">BLR 1 · lab avg 91.16 → 93.44 → 93.78</th></tr>
+          <tr><th>OCD (Vitros)</th><td class="cell breach"><span class="dotflag"></span>77.37</td><td class="cell breach"><span class="dotflag"></span>80.23</td><td class="cell breach"><span class="dotflag"></span>79.67</td><td class="l dl"><strong>Chronic.</strong> Never above 81%. Well-wash, uWell, versatip, microtip and slide-supply faults, with ES Flex feeding it.</td></tr>
+          <tr><th>Rapid (1 hr)</th><td class="cell watch">90.40</td><td class="cell breach">86.90</td><td class="cell breach">88.58</td><td class="l dl"><strong>Chronic, worsening.</strong> Reported lab TAT stays in the high nineties, so the one-hour machine clock is the binding constraint.</td></tr>
+          <tr><th>AVE 773</th><td class="cell breach"><span class="dotflag"></span>77.87</td><td class="cell ok">99.55</td><td class="cell ok">97.80</td><td class="l dl">One-off. Week 1 note: “Manpower issue - Warning given to the Department”. Fixed and held.</td></tr>
+          <tr><th>VIDAS</th><td class="cell ok">95.68</td><td class="cell breach">88.93</td><td class="cell watch">93.80</td><td class="l dl">Week 2 dip from admin renovation switching Vitros off mid-run, plus report-saving delays.</td></tr>
+          <tr class="grp"><th colspan="5">BLR 2 · lab avg 93.46 → 96.75 → 97.84</th></tr>
+          <tr><th>OCD (Vitros)</th><td class="cell breach"><span class="dotflag"></span>73.37</td><td class="cell breach">88.63</td><td class="cell watch">91.32</td><td class="l dl">Recovering strongly. Week 1 was reagent supply on 5 August plus the Alinity outage cascading into OCD.</td></tr>
+          <tr><th>Alinity</th><td class="cell breach">88.26</td><td class="cell watch">94.65</td><td class="cell ok">97.92</td><td class="l dl">7 August crashed to 30.53% on a 1 hr 15 min module stop. Clean since.</td></tr>
+          <tr class="grp"><th colspan="5">NOA · lab avg 94.51 → 95.98 → 96.11</th></tr>
+          <tr><th>AVE-772</th><td class="cell breach">87.93</td><td class="cell ok">95.45</td><td class="cell breach">87.52</td><td class="l dl"><strong>Recurring hardware.</strong> On 22 August an eight-hour microscopic-capture failure took the day to 24.76%.</td></tr>
+          <tr><th>Rapid (1 hr)</th><td class="cell ok">96.05</td><td class="cell breach">89.81</td><td class="cell ok">95.04</td><td class="l dl">Single-week dip, no standing cause.</td></tr>
+          <tr class="grp"><th colspan="5">GGN · lab avg 89.51 → 92.95 → 86.79 &nbsp;— worst in network</th></tr>
+          <tr><th>OCD (Vitros)</th><td class="cell breach"><span class="dotflag"></span>77.41</td><td class="cell breach">86.13</td><td class="cell breach"><span class="dotflag"></span>74.26</td><td class="l dl"><strong>Chronic and power-exposed.</strong> 32.04% on 22 August and 45.14% on 21 August — both outage days.</td></tr>
+          <tr><th>Rapid (1 hr)</th><td class="cell breach">85.79</td><td class="cell breach">89.35</td><td class="cell breach"><span class="dotflag"></span>80.51</td><td class="l dl"><strong>Chronic.</strong> Below 90% in all three weeks, and 60% on 23 August with no outage that day.</td></tr>
+          <tr><th>Mindray</th><td class="cell watch">90.17</td><td class="cell watch">94.54</td><td class="cell breach">88.43</td><td class="l dl">Tracks the outage calendar exactly.</td></tr>
+          <tr><th>Biorad Variant</th><td class="cell breach">89.91</td><td class="cell ok">97.63</td><td class="cell breach">88.12</td><td class="l dl">44.44% on 8 August during the audit; 57.99% on 22 August during the outage.</td></tr>
+          <tr><th>AVE-772</th><td class="cell ok">95.53</td><td class="cell watch">91.76</td><td class="cell breach"><span class="dotflag"></span>82.46</td><td class="l dl"><strong>Deteriorating three weeks running.</strong></td></tr>
+        </tbody>
+      </table>
+    </div>
+
+    <div class="grid2" style="margin-top:12px">
+      <div class="card low">
+        <div class="kv">Clean labs</div>
+        <h4>MUM and HYD need no machine-OT review time</h4>
+        <p>MUM averaged <strong>99.26 / 99.26 / 98.50</strong> across nine reported instruments with nothing below 95% in any week. HYD averaged <strong>97.10 / 96.66 / 97.08</strong> across nine, and absorbed a six-and-a-half-hour OCD outage without breaching.</p>
+      </div>
+      <div class="card mid">
+        <div class="kv">Reporting gap</div>
+        <h4>PNQ machine OT is not reported at all</h4>
+        <p>The PNQ instrument block is empty for all three weeks. PNQ Consumer OT missed target in every week, and its notes point at shift handovers rather than machines — but with nothing reported that cannot be confirmed. <strong>Either populate the PNQ instrument lines or mark them formally out of scope.</strong></p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REASONS ============ -->
+  <section id="reasons">
+    <div class="sechead measure">
+      <span class="eyebrow">04 · Delay-reason taxonomy</span>
+      <h2>Eleven reason categories, counted by lab-week</h2>
+      <p>Every delay note in the three weeks was read and tagged. A bar counts the <em>number of labs</em> that cited that category in that week, so a category reaching five or six labs wide is a network condition rather than one site's bad luck. Fatal Delays notes were dropped before tagging.</p>
+    </div>
+
+    <div class="chartcard">
+      <div class="barlist">
+
+        <div class="barrow">
+          <div class="name">Instrument breakdown<em>Analyser hardware failure</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:83.3%;background:var(--w1)"><span class="tip">Week 1 · 5 labs · BLR 1, BLR 2, HYD, NOA, GGN</span></span></span><span class="num">5</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:100%;background:var(--w2)"><span class="tip">Week 2 · 6 labs · BLR 1, BLR 2, HYD, NOA, MUM, NRL</span></span></span><span class="num">6</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:83.3%;background:var(--w3)"><span class="tip">Week 3 · 5 labs · BLR 1, HYD, NOA, GGN, NRL</span></span></span><span class="num">5</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">IT, LIS and interface<em>Results not transferring, network, Attune</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:50%;background:var(--w1)"><span class="tip">Week 1 · 3 labs · BLR 1, HYD, NOA</span></span></span><span class="num">3</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:100%;background:var(--w2)"><span class="tip">Week 2 · 6 labs · BLR 1, BLR 2, HYD, NOA, MUM, NRL</span></span></span><span class="num">6</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:50%;background:var(--w3)"><span class="tip">Week 3 · 3 labs · BLR 1, BLR 2, HYD</span></span></span><span class="num">3</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Volume and load spike<em>Weekend peaks, epidemic panels, reruns</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:50%;background:var(--w1)"><span class="tip">Week 1 · 3 labs · BLR 2, HYD, GGN</span></span></span><span class="num">3</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w2)"></span></span><span class="num">0</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:50%;background:var(--w3)"><span class="tip">Week 3 · 3 labs · HYD (724 orders on 22 Aug), NRL (Influenza/H1N1), GGN (Dengue rerun)</span></span></span><span class="num">3</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Manpower shortage<em>Named explicitly in the note</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w1)"><span class="tip">Week 1 · 1 lab · BLR 1, AVE 773 department</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w2)"><span class="tip">Week 2 · 1 lab · BLR 2, three people on leave</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:50%;background:var(--w3)"><span class="tip">Week 3 · 3 labs · BLR 2, GGN (formal escalation), HYD (biochemistry)</span></span></span><span class="num">3</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Duplicate barcodes and receiving<em>Sample-in failures before the bench</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:33.3%;background:var(--w1)"><span class="tip">Week 1 · 2 labs · BLR 1 (60–80%), BLR 2 (urine containers)</span></span></span><span class="num">2</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:33.3%;background:var(--w2)"><span class="tip">Week 2 · 2 labs · BLR 1 (blood 40–50%, urine 70–80%), BLR 2</span></span></span><span class="num">2</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w3)"><span class="tip">Week 3 · 1 lab · GGN, urine containers</span></span></span><span class="num">1</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Process and approval delay<em>Report saving, doctor approval, shift transfer</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w1)"></span></span><span class="num">0</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:33.3%;background:var(--w2)"><span class="tip">Week 2 · 2 labs · BLR 1 (report saving), NRL (micro approved next day)</span></span></span><span class="num">2</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:33.3%;background:var(--w3)"><span class="tip">Week 3 · 2 labs · PNQ (shift transfer), NRL (reports saved after 1 am)</span></span></span><span class="num">2</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Power and utility outage<em>Site-wide, all instruments down</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w1)"><span class="tip">Week 1 · 1 lab · GGN, 5 Aug, about 2 hrs</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:33.3%;background:var(--w2)"><span class="tip">Week 2 · 2 labs · GGN (about 8 hrs over two days), BLR 1 (Alinity power interruptions)</span></span></span><span class="num">2</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w3)"><span class="tip">Week 3 · 1 lab · GGN, about 19.5 hrs over three days including 12 hrs overnight</span></span></span><span class="num">1</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Facility and admin works<em>Painting, flooring, renovation</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w1)"><span class="tip">Week 1 · 1 lab · BLR 1, AVE-776 held up after lab painting, 2 hrs</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w2)"><span class="tip">Week 2 · 1 lab · BLR 1, haematology flooring and renovation switching instruments off mid-run</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w3)"></span></span><span class="num">0</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Bulk samples and multi-floor<em>GGN structural constraint</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w1)"></span></span><span class="num">0</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w2)"><span class="tip">Week 2 · 1 lab · GGN — “mostly orders out of time ~ 5 minutes only”</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w3)"><span class="tip">Week 3 · 1 lab · GGN — bulk samples still a bottleneck</span></span></span><span class="num">1</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">Reagent and consumable supply<em>At the bench, not the indent</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w1)"><span class="tip">Week 1 · 1 lab · BLR 2 — OCD reagent supply, 5 Aug at 68.66%</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w2)"></span></span><span class="num">0</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w3)"></span></span><span class="num">0</span></div>
+          </div>
+        </div>
+
+        <div class="barrow">
+          <div class="name">External audit<em>Planned event, unplanned OT impact</em></div>
+          <div class="stack">
+            <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:16.7%;background:var(--w1)"><span class="tip">Week 1 · 1 lab · GGN NABL audit — 33.43% on 8 Aug, 70.46% on 9 Aug</span></span></span><span class="num">1</span></div>
+            <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w2)"></span></span><span class="num">0</span></div>
+            <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w3)"></span></span><span class="num">0</span></div>
+          </div>
+        </div>
+
+      </div>
+      <div class="legend" style="border-top:1px solid var(--rule);margin-top:10px">
+        <b><i class="sw" style="background:var(--w1)"></i> Week 1 · 3–9 Aug</b>
+        <b><i class="sw" style="background:var(--w2)"></i> Week 2 · 10–16 Aug</b>
+        <b><i class="sw" style="background:var(--w3)"></i> Week 3 · 17–23 Aug</b>
+        <b>Scale: labs citing the category, out of 8 · full bar = 6</b>
+      </div>
+    </div>
+
+    <div class="note measure" style="margin-top:14px">
+      <strong>What the shape says.</strong> Instrument breakdown is the constant — five or six labs every week, so it reads as background cost rather than a signal. The categories that <em>moved</em> are the ones worth agenda time: IT and interface faults doubled in week 2 then halved, manpower tripled in week 3, and duplicate barcodes shifted from the Bengaluru labs to Gurgaon. Power appears in every week and, in the third, accounts for the largest block of lost hours anywhere in the window.
+    </div>
+  </section>
+
+  <!-- ============ PATTERN ============ -->
+  <section id="pattern">
+    <div class="sechead measure">
+      <span class="eyebrow">05 · Week-by-week pattern classification</span>
+      <h2>Escalating, recurring, resolved, one-off</h2>
+      <p>The same cause appearing three weeks running is a system that needs changing. The same cause appearing once is a Tuesday. Sorting the window this way is what makes the monthly review different from three weekly reviews stacked up.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card sev">
+        <div class="kv">Escalating across all three weeks</div>
+        <h4>GGN power outages</h4>
+        <p>Roughly <strong>2 hours, then 8, then 19.5</strong> — the third week included a single twelve-hour overnight loss. Every GGN measure tracks the outage calendar: Consumer OT, Lab OT, and the OCD, Mindray, Rapid, Biorad and AVE lines.</p>
+        <p class="quote">“Power Supply issue on 22nd Aug 2026 from 12:50PM to 1:25PM and 6:00PM to next day 6:00AM” — GGN weekly note</p>
+      </div>
+      <div class="card sev">
+        <div class="kv">Escalating across all three weeks</div>
+        <h4>GGN AVE-772 machine OT</h4>
+        <p><strong>95.53 → 91.76 → 82.46.</strong> It fell in week 2 on days with no outage, so this is not purely power. Worth an engineer's view before the review rather than after it.</p>
+      </div>
+      <div class="card sev">
+        <div class="kv">Escalating across all three weeks</div>
+        <h4>NRL Consumer OT and Lab OT</h4>
+        <p><strong>Consumer 97.53 → 94.30 → 92.17; Lab 98.09 → 96.03 → 94.72.</strong> No note was filed in week 1, and weeks 2 and 3 name three unrelated causes — a micro approval lag, a Dengue ELISA interface failure, and an Influenza/H1N1 volume spike. That is the profile of a lab running without slack, not a lab with one fault.</p>
+      </div>
+      <div class="card sev">
+        <div class="kv">Escalating across all three weeks</div>
+        <h4>BLR 2 Part B accession</h4>
+        <p><strong>95.35 → 92.26 → 88.40.</strong> One of nine measures that fell every week, and the only one where the lab named the cause both times it commented: manpower shortage, and duplicate barcodes on urine containers.</p>
+      </div>
+
+      <div class="card mid">
+        <div class="kv">Recurring in all three weeks</div>
+        <h4>Vitros and OCD machine OT</h4>
+        <p>BLR 1 at <strong>77.37 / 80.23 / 79.67</strong> and GGN at <strong>77.41 / 86.13 / 74.26</strong>. A different failure mode each week — well-wash, uWell, versatip, microtip, reflectometer, metering, tip locator — but the same platform. BLR 2 has climbed out of it; HYD sits in the low-to-mid nineties.</p>
+      </div>
+      <div class="card mid">
+        <div class="kv">Recurring, and migrating</div>
+        <h4>Duplicate barcodes</h4>
+        <p>Cited at both Bengaluru labs in weeks 1 and 2, then at GGN in week 3. Accession Part A at BLR 1 is the visible symptom: <strong>68.05 → 73.00 → 75.90</strong> against Part B at 95%. Rates quoted in the notes ran 60–80% in week 1, then blood at 40–50% and urine at 70–80% in week 2.</p>
+      </div>
+      <div class="card mid">
+        <div class="kv">Recurring in all three weeks</div>
+        <h4>Alinity module and reagent carousel</h4>
+        <p>Present every week at BLR 1 and in the first two at BLR 2, with a different trigger each time: module stop, loader queue error, distilled-water plant blockage, power interruption, then three separate reagent-carousel failures in week 3. Same subsystem, rising frequency.</p>
+      </div>
+      <div class="card mid">
+        <div class="kv">Recurring across sites</div>
+        <h4>AVE interface and result transfer</h4>
+        <p>Results failing to transfer from AVE analysers appears at HYD and BLR 2 in week 2, and at BLR 1 in week 3 — the last running a full eight hours. HYD also lost result transfer from a Mindray analyser in week 1. Cross-site and vendor-level rather than local.</p>
+      </div>
+
+      <div class="card low">
+        <div class="kv">Resolved inside the window</div>
+        <h4>Four causes fixed and held</h4>
+        <ul class="tight">
+          <li><strong>BLR 2 Alinity</strong> — 88.26 → 94.65 → 97.92 after the 7 August module stop.</li>
+          <li><strong>BLR 2 OCD</strong> — 73.37 → 88.63 → 91.32 once the reagent supply cleared.</li>
+          <li><strong>BLR 1 AVE 773</strong> — 77.87 → 99.55 → 97.80 after the departmental manpower warning.</li>
+          <li><strong>PNQ Consumer OT</strong> — 87.50 → 90.54 → 93.45, three straight weeks of gain.</li>
+        </ul>
+      </div>
+      <div class="card low">
+        <div class="kv">One-off, no follow-up needed</div>
+        <h4>Events that will not repeat</h4>
+        <ul class="tight">
+          <li><strong>GGN NABL audit</strong>, 8–9 August — took two consecutive days to 33.43% and 70.46%.</li>
+          <li><strong>BLR 1 distilled-water plant blockage</strong>, 10 August — stopped every Alinity module at once.</li>
+          <li><strong>BLR 1 Morphle scanner</strong>, 11 August — 26 hours, the longest single outage at that lab in the window.</li>
+          <li><strong>BLR 1 lab painting and haematology flooring</strong> — admin works landing inside processing hours, twice.</li>
+        </ul>
+      </div>
+    </div>
+
+    <div class="note measure" style="margin-top:14px">
+      <strong>One weekly rhythm worth naming.</strong> BLR 2 and HYD both degrade on Saturday and Sunday — BLR 2's week 1 notes read “Weekend high workload” for both days, and HYD's OCD and Alinity lines dip on the same two dates. HYD repeated it on 22 August at 724 orders. That is a rostering pattern rather than an instrument pattern, and it is the cheapest thing on this page to fix.
+    </div>
+  </section>
+
+  <!-- ============ SITES ============ -->
+  <section id="sites">
+    <div class="sechead measure">
+      <span class="eyebrow">06 · Lab notes</span>
+      <h2>Eight labs, in the order they need attention</h2>
+    </div>
+
+    <div class="stack-gap">
+      <div class="card sev">
+        <div class="kv">1 · GGN · Consumer OT 82.07 / 92.84 / 83.86</div>
+        <h3>A power problem wearing an operations problem's clothes</h3>
+        <p>Three weeks, three different headline causes — NABL audit, then outages, then outages plus manpower — but the outages are the through-line and they are growing. The lab's machine-OT average fell to <strong>86.79%</strong> in week 3, the worst in the network. Underneath sit two structural constraints the team has now put in writing twice: bulk sample batches, and sample transport across multiple floors at peak hours.</p>
+        <p class="quote">“As we evaluated mostly orders out of time ~ 5 minutes only.We are looking for interns to solve samples transportation challenges from accessioning to the floors at peak hours.” — GGN accession note, week 2
+
+“1. Shortage of manpower.
+2. With current manpower its very difficult to run two batches of Dengue
+3. request to process both OCD all parameters daily for evening” — GGN issues note, week 3</p>
+        <p>The second is a formal escalation sitting in a spreadsheet note. It should be an agenda item with an owner.</p>
+      </div>
+
+      <div class="card sev">
+        <div class="kv">2 · NRL · Consumer OT 97.53 / 94.30 / 92.17</div>
+        <h3>Sliding quietly, three weeks running</h3>
+        <p>The only lab with no single villain and a consistent downward slope on both Consumer and Lab OT. Week 2 was micro reports held for next-day doctor approval; week 3 was an Influenza/H1N1 spike on 22–23 August plus an ELISA fault on 21 August that pushed report saves past 1 am. Downtime also spiked in week 2, largely a nine-hour Dengue ELISA interface failure.</p>
+        <p>Only one of the three named causes is panel volume; the others are a process delay and an interface fault. If the slope continues into week 4, the question is seasonal capacity as much as instrument reliability.</p>
+      </div>
+
+      <div class="card mid">
+        <div class="kv">3 · BLR 1 · Consumer OT 94.26 / 95.02 / 95.40</div>
+        <h3>Improving on the surface, two chronic faults underneath</h3>
+        <p>Consumer OT climbed all three weeks and Lab OT held above 91% after week 1 — but this lab carries the two most persistent misses in the window. <strong>Vitros/OCD machine OT never cleared 81%.</strong> And <strong>accession Part A sat between 68 and 76%</strong> against Part B at 95%, which localises the loss entirely to the receiving step: duplicate barcodes running 40 to 80% depending on specimen type.</p>
+        <p>Downtime peaked in week 2 on two genuine one-offs — the Morphle scanner at 26 hours and ES Flex at eleven and a half — plus admin renovation switching instruments off mid-processing.</p>
+      </div>
+
+      <div class="card mid">
+        <div class="kv">4 · BLR 2 · Consumer OT 89.71 / 97.19 / 98.43</div>
+        <h3>Best recovery in the network, with one measure still falling</h3>
+        <p>Consumer OT gained <strong>8.72pp</strong> and Lab OT <strong>14.65pp</strong> off a bad first week — the Alinity module stop on 7 August alone took that day's Lab OT to 57.14%. Machine OT is now the second-cleanest in the network.</p>
+        <p>The exception is accession Part B: <strong>95.35 → 92.26 → 88.40</strong>, falling every week, with manpower shortage named in week 2 (three people on leave) and again in week 3. This is the one place where a recovering lab is still losing ground.</p>
+      </div>
+
+      <div class="card mid">
+        <div class="kv">5 · PNQ · Consumer OT 87.50 / 90.54 / 93.45</div>
+        <h3>Improving fast, but the cause is a handover, not a lab</h3>
+        <p>Lab OT is at or near 100% and accession OT is 100% across all three weeks — the lab itself is clean. Every named cause is a shift handover: samples transferred late, or approved at eight in the morning. Machine OT is unreported, so nothing contradicts that reading, but nothing confirms it either.</p>
+      </div>
+
+      <div class="card low">
+        <div class="kv">6 · HYD · Consumer OT 97.34 / 97.95 / 97.99</div>
+        <h3>Absorbing real downtime without breaching</h3>
+        <p>Held above 97% every week while carrying meaningful instrument loss, including a six-and-a-half-hour OCD metering failure on 10 August and a four-hour AVE transfer failure on 15 August. The only visible cracks are weekend and high-load days: 22 August at 724 orders took Alinity to 87.28%, and a biochemistry manpower gap on 20 August took it to 79.15%.</p>
+      </div>
+
+      <div class="card low">
+        <div class="kv">7 · NOA · Consumer OT 96.47 / 98.50 / 95.37</div>
+        <h3>Solid, with a week 3 instrument cluster</h3>
+        <p>The week 3 dip is fully explained by three overlapping breakdowns on consecutive days — the Morphle scanner, Mindray, and AVE-772, the last of which alone took its own day to 24.76%. AVE-772 has now failed on a microscopic-capture fault in two of the three weeks; that is the item to watch.</p>
+      </div>
+
+      <div class="card low">
+        <div class="kv">8 · MUM · Consumer OT 97.33 / 98.01 / 98.45</div>
+        <h3>Cleanest lab in the window</h3>
+        <p>Improving every week on Consumer OT, machine OT averaging above 98% with no instrument below 95%, and no OT-related commentary required. The only open item is a reporting one — see below.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ DOWNTIME ============ -->
+  <section id="downtime">
+    <div class="sechead measure">
+      <span class="eyebrow">07 · Breakdown hours</span>
+      <h2>529 hours logged — but not all of it means the same thing</h2>
+      <p>Breakdown hours are the supporting evidence for most Machine OT misses, so they belong in this analysis. They are also the least standardised figure the labs report, and the review should treat them as directional until the definition is agreed.</p>
+    </div>
+
+    <div class="chartcard">
+      <div class="barlist">
+        <div class="barrow"><div class="name">BLR 1<em>Multiple platforms</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:22.9%;background:var(--w1)"><span class="tip">Week 1 · 24 hrs</span></span></span><span class="num">24</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:66.7%;background:var(--w2)"><span class="tip">Week 2 · 70 hrs — Morphle scanner 26h, ES Flex 11.5h, D-100 11h</span></span></span><span class="num">70</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:30%;background:var(--w3)"><span class="tip">Week 3 · 31.5 hrs — ES Flex 10h, three Alinity carousel failures</span></span></span><span class="num">31.5</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">BLR 2<em>Definition suspect</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:1.2%;background:var(--w1)"><span class="tip">Week 1 · 1 hr 15 min</span></span></span><span class="num">1.3</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:100%;background:var(--w2)"><span class="tip">Week 2 · 105 hrs logged, but the listed incidents total about 8 hrs plus one analyser down from 13 August — cumulative machine-unavailable time, not lab downtime</span></span></span><span class="num">105</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:0.8%;background:var(--w3)"><span class="tip">Week 3 · 48 min</span></span></span><span class="num">0.8</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">MUM<em>Week 1 unexplained</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:85.7%;background:var(--w1)"><span class="tip">Week 1 · 90 hrs with no explanatory note — largest unexplained figure in the window</span></span></span><span class="num">90</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:40%;background:var(--w2)"><span class="tip">Week 2 · 42 hrs — AVE 772 rack error 42h plus an internet outage</span></span></span><span class="num">42</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:3.8%;background:var(--w3)"><span class="tip">Week 3 · 4 hrs, no note</span></span></span><span class="num">4</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">NRL<em>Week 2 spike</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w1)"></span></span><span class="num">0</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:54.3%;background:var(--w2)"><span class="tip">Week 2 · 2 days 9 hrs — Dengue ELISA interface 9h, plus a filter fault</span></span></span><span class="num">57</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:1%;background:var(--w3)"><span class="tip">Week 3 · 1 hr — ELISA plate stuck</span></span></span><span class="num">1</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">GGN<em>Power, escalating</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:4.3%;background:var(--w1)"><span class="tip">Week 1 · 4.5 hrs — 2h power outage plus a Vitros tip-seal fault, 2.5h</span></span></span><span class="num">4.5</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:7.6%;background:var(--w2)"><span class="tip">Week 2 · 8 hrs — outages on 12 and 13 August, both power</span></span></span><span class="num">8</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:19%;background:var(--w3)"><span class="tip">Week 3 · 20 hrs — outages on 20, 21 and 22 August including 12h overnight, plus a Vidas fault</span></span></span><span class="num">20</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">NOA<em>Instrument-led</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:10.2%;background:var(--w1)"><span class="tip">Week 1 · 10 hrs 40 min — Morphle 4h20, internet 2h50</span></span></span><span class="num">10.7</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:6%;background:var(--w2)"><span class="tip">Week 2 · 6 hrs 20 min</span></span></span><span class="num">6.3</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:17.1%;background:var(--w3)"><span class="tip">Week 3 · 18 hrs — Morphle 5h, Mindray 5h, AVE-772 8h</span></span></span><span class="num">18</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">HYD<em>Absorbed without breach</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:11%;background:var(--w1)"><span class="tip">Week 1 · 11 hrs 30 min</span></span></span><span class="num">11.5</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:15.7%;background:var(--w2)"><span class="tip">Week 2 · 16 hrs 30 min — OCD metering 6h30, AVE transfer 4h</span></span></span><span class="num">16.5</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:6.2%;background:var(--w3)"><span class="tip">Week 3 · 6 hrs 30 min</span></span></span><span class="num">6.5</span></div>
+        </div></div>
+        <div class="barrow"><div class="name">PNQ<em>Nil reported</em></div><div class="stack">
+          <div class="bline"><span class="wk">Wk 1</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w1)"></span></span><span class="num">0</span></div>
+          <div class="bline"><span class="wk">Wk 2</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w2)"></span></span><span class="num">0</span></div>
+          <div class="bline"><span class="wk">Wk 3</span><span class="track"><span class="fill" tabindex="0" style="width:0;background:var(--w3)"></span></span><span class="num">0</span></div>
+        </div></div>
+      </div>
+      <div class="legend" style="border-top:1px solid var(--rule);margin-top:10px">
+        <b><i class="sw" style="background:var(--w1)"></i> Week 1</b>
+        <b><i class="sw" style="background:var(--w2)"></i> Week 2</b>
+        <b><i class="sw" style="background:var(--w3)"></i> Week 3</b>
+        <b>Hours · full bar = 105 · network totals 141.9 / 304.8 / 81.8</b>
+      </div>
+    </div>
+
+    <div class="grid3" style="margin-top:12px">
+      <div class="card">
+        <div class="kv">Data quality · 1</div>
+        <h4>“Breakdown hours” means three different things</h4>
+        <p>BLR 1 logs lab-impacting downtime. BLR 2's 105 hours and MUM's 42 are cumulative unavailable hours for a single analyser. NRL reports a wall-clock duration rather than a sum. <strong>Agree one definition before week 4 is reviewed.</strong></p>
+      </div>
+      <div class="card">
+        <div class="kv">Data quality · 2</div>
+        <h4>Two unexplained figures</h4>
+        <p>MUM's 90 hours in week 1 and 4 hours in week 3 carry no explanatory note. The 90 is the second-largest single figure in the window and the review cannot interpret it. Otherwise discipline is good: <strong>every OT reading below 95% and every machine reading below 90% in the three weeks carries a note.</strong></p>
+      </div>
+      <div class="card">
+        <div class="kv">Data quality · 3</div>
+        <h4>Duplicate and misplaced notes</h4>
+        <p>Two BLR 1 measures carry near-identical notes filed twice — one pair by two different people, one pair by the same person. And at least a dozen machine lines carry an overall lab TAT figure instead of the machine's own, which reads as the wrong measure in the wrong place.</p>
+      </div>
+    </div>
+  </section>
+
+  <!-- ============ REVIEW PACK ============ -->
+  <section id="review">
+    <div class="sechead measure">
+      <span class="eyebrow">08 · Monthly review pack</span>
+      <h2>Carrying this into the review when week 4 closes</h2>
+      <p>The three weeks here plus the week to 30 August are August. The structure below is what that fourth week slots into.</p>
+    </div>
+
+    <div class="grid2">
+      <div class="card sev">
+        <div class="kv">Agenda · decisions, not updates</div>
+        <h3>Five items that need an owner</h3>
+        <ol class="steps">
+          <li><strong>GGN power resilience.</strong> Outage hours roughly doubled twice over, including a twelve-hour overnight loss. The question for the room: backup cover for the analyser bank, or accept GGN OT below target through the season?</li>
+          <li><strong>Vitros and OCD platform review at BLR 1 and GGN.</strong> Three weeks below 81% and 87% respectively, with a different subsystem failing each week. A vendor and preventive-maintenance conversation, not a weekly firefight.</li>
+          <li><strong>Duplicate barcodes.</strong> Urine specimens running 70 to 80% at the Bengaluru labs and now appearing at GGN. It caps BLR 1 accession Part A in the low-to-mid seventies and no lab-side action will move it.</li>
+          <li><strong>NRL capacity for the Dengue and Influenza season.</strong> OT has fallen every week and the third week's cause was panel volume.</li>
+          <li><strong>Accession manpower at BLR 2.</strong> Part B down every week to 88.40%, with manpower named twice.</li>
+        </ol>
+      </div>
+
+      <div class="card mid">
+        <div class="kv">Watchlist · check these first in week 4</div>
+        <h3>Ten readings that decide whether the trend holds</h3>
+        <ul class="tight">
+          <li><strong>GGN Consumer OT and Lab OT</strong> — recovery, or a third breach?</li>
+          <li><strong>GGN breakdown hours</strong> — anything above 20 confirms escalation.</li>
+          <li><strong>NRL Consumer OT and Lab OT</strong> — a fourth consecutive fall makes it the month's headline.</li>
+          <li><strong>Vitros/OCD machine OT at BLR 1 and GGN</strong> — above 85% would be the first break in the pattern.</li>
+          <li><strong>BLR 2 accession Part B</strong> — below 88.40 means four straight weeks down.</li>
+          <li><strong>BLR 1 accession overall, and the Part A figure behind it.</strong></li>
+          <li><strong>GGN AVE-772</strong> — three weeks declining already.</li>
+        </ul>
+      </div>
+
+      <div class="card low">
+        <div class="kv">Method · reproduce this for week 4</div>
+        <h3>How to refresh in one pass</h3>
+        <ol class="steps">
+          <li><strong>Pull the week-4 figures</strong> for Consumer OT, Inhouse Lab OT, accession overall and Part B, the instrument lines and breakdown hours, plus order counts for weighting.</li>
+          <li><strong>Read every week-4 delay note</strong> against those measures. Skip Fatal Delays.</li>
+          <li><strong>Tag each note</strong> to the eleven categories in section 04. Add a category only if two or more labs cite something genuinely new.</li>
+          <li><strong>Re-run the four-way classification</strong> in section 05: a cause present in all four weeks moves from recurring to structural; a cause present only in week 4 is a one-off until the next week says otherwise.</li>
+          <li><strong>Close the loop on the watchlist</strong> above, then take the agenda in as a month view rather than four week views.</li>
+        </ol>
+      </div>
+
+      <div class="card">
+        <div class="kv">Scope, stated</div>
+        <h3>What is and is not in this analysis</h3>
+        <ul class="tight">
+          <li><strong>In:</strong> Consumer OT, Inhouse Lab OT, accession OT overall and Part B, machine processing OT, and breakdown hours — for all eight labs.</li>
+          <li><strong>Excluded on instruction:</strong> Fatal Delays per 1000. Twenty-seven notes filed against it in these three weeks were dropped before any tagging or counting.</li>
+          <li><strong>Read but not analysed here:</strong> CP approval, report automation, indent bounce rate, SKU fill rate and inventory gap. Available on request.</li>
+          <li><strong>Source:</strong> 134 delay notes across the three weeks once Fatal Delays was removed, of which 102 sit against the measures in scope above.</li>
+        </ul>
+      </div>
+    </div>
+  </section>
+
+  <footer>
+    Source · weekly lab operations review, sheet read 26 August 2026 · three weeks to 23 August 2026<br>
+    Fatal Delays per 1000 excluded on instruction · figures transcribed as reported by the labs, not recalculated · network OT is order-weighted across the eight labs<br>
+    Delay notes filed by · Rajini K V · Chandrashekar Hugar · Neeraj Tyagi · Gangaraju K R · Dushyant Raghav · Darshana Ashok Nishar · Mohan Reddy Tatireddy · Chethankumar Soodesh · Pasupuleti Dhanamjayulu · Kishore Kumar Saravanan · George Cyriac · Dr Vinay Yadav
+  </footer>
+</div>
+<script data-hub-shared-state>(function(){
+  var parts = location.pathname.split("/").filter(Boolean);
+  if (!location.hostname.endsWith(".github.io") || parts.length < 2) return;
+  var owner = location.hostname.split(".")[0];
+  var repo = parts[0];
+  var statePath = parts.slice(1).join("/").replace(/\.html?$/i, "") + ".state.json";
+  var stateUrl = "/" + repo + "/" + statePath;
+  var apiUrl = "https://api.github.com/repos/" + owner + "/" + repo + "/contents/" + statePath.split("/").map(encodeURIComponent).join("/");
+  function els(){ return document.querySelectorAll("input, select, textarea"); }
+  function idOf(el, i){ return el.id || el.name || "el" + i; }
+  function apply(state){
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      if (!(k in state)) return;
+      if (el.type === "checkbox" || el.type === "radio") el.checked = state[k];
+      else el.value = state[k];
+      el.dispatchEvent(new Event("input", {bubbles:true}));
+      el.dispatchEvent(new Event("change", {bubbles:true}));
+    });
+  }
+  function collect(){
+    var s = {};
+    Array.prototype.forEach.call(els(), function(el, i){
+      var k = idOf(el, i);
+      s[k] = (el.type === "checkbox" || el.type === "radio") ? el.checked : el.value;
+    });
+    return s;
+  }
+  function init(){
+    fetch(stateUrl, {cache:"no-store"}).then(function(r){ if (r.ok) return r.json(); }).then(function(s){ if (s) apply(s); }).catch(function(){});
+    var token = "";
+    try { token = localStorage.getItem("hub-token") || ""; } catch(e){}
+    if (!token) return;
+    var btn = document.createElement("button");
+    btn.textContent = "Save view for everyone";
+    btn.style.cssText = "position:fixed;bottom:18px;right:18px;z-index:99999;background:#ff6d2e;color:#fff;border:0;border-radius:10px;padding:10px 14px;font:600 13px sans-serif;cursor:pointer;box-shadow:0 4px 14px rgba(0,0,0,.3)";
+    btn.onclick = function(){
+      btn.textContent = "Saving...";
+      var body = { message: "Update view state: " + statePath, content: btoa(unescape(encodeURIComponent(JSON.stringify(collect(), null, 2)))) };
+      fetch(apiUrl, { headers: { "Authorization": "Bearer " + token }, cache: "no-store" })
+        .then(function(g){ return g.ok ? g.json() : null; })
+        .then(function(j){ if (j && j.sha) body.sha = j.sha;
+          return fetch(apiUrl, { method: "PUT", headers: { "Authorization": "Bearer " + token, "Accept": "application/vnd.github+json" }, body: JSON.stringify(body) });
+        })
+        .then(function(r){ btn.textContent = r && r.ok ? "Saved - live in ~1 min" : "Save failed"; })
+        .catch(function(){ btn.textContent = "Save failed"; })
+        .then(function(){ setTimeout(function(){ btn.textContent = "Save view for everyone"; }, 3500); });
+    };
+    document.body.appendChild(btn);
+  }
+  if (document.readyState === "loading") window.addEventListener("DOMContentLoaded", init); else init();
+})();</script>
+</body>
+</html>
